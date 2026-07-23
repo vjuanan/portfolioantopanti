@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Antonella Barone — Portfolio</title>
+<meta name="description" content="Portfolio de Antonella Barone — Investigación social, gestión de proyectos y UX. De la pregunta al producto, combinando técnicas cuali y cuanti con plataformas agénticas y low-code." />
+<meta name="author" content="Antonella Barone" />
+<meta name="theme-color" content="#f7f0ea" />
+
+<!-- Open Graph / social -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Antonella Barone — Portfolio" />
+<meta property="og:description" content="Investigación social · Gestión de proyectos · UX. De la pregunta al producto." />
+<meta property="og:locale" content="es_AR" />
+<meta property="og:image" content="assets/antonella.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Antonella Barone — Portfolio" />
+<meta name="twitter:description" content="Investigación social · Gestión de proyectos · UX. De la pregunta al producto." />
+<meta name="twitter:image" content="assets/antonella.png" />
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='14'%20fill='%23f7f0ea'/%3E%3Ctext%20x='32'%20y='45'%20font-family='Georgia,serif'%20font-size='38'%20font-weight='700'%20text-anchor='middle'%20fill='%23231c1e'%3EA%3Ctspan%20fill='%23c75d80'%3E.%3C/tspan%3E%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+<!-- Sistema de diseño base (Organic): tokens, fuentes y componentes. Se carga
+     primero para que los overrides del portfolio (crema + rosa) ganen la cascada. -->
+<link rel="stylesheet" href="styles.css" />
+<style>
+/* ——— Portfolio editorial sobre la base Organic: crema + tinta, rosa como
+   acento. Rampas en los mismos pasos OKLCH que el sistema, matices rosa/malva. ——— */
+:root {
+  --color-bg: #f7f0ea;
+  --color-bg-warm: #f3e8e0;
+  --color-surface: #f2e2e0;
+  --color-text: #231c1e;
+  --color-accent: #c75d80;
+  --color-accent-2: #97728f;
+  --color-accent-100: #fdf0f4;
+  --color-accent-200: #fcdde7;
+  --color-accent-300: #f8bfd2;
+  --color-accent-400: #ee93b1;
+  --color-accent-500: #d97192;
+  --color-accent-600: #b55473;
+  --color-accent-700: #8f3e58;
+  --color-accent-800: #662a3e;
+  --color-accent-900: #421a28;
+  --color-accent-2-100: #faf0f8;
+  --color-accent-2-200: #f1dcef;
+  --color-accent-2-300: #e3c0e0;
+  --color-accent-2-400: #ca9bc5;
+  --color-accent-2-500: #ab78a5;
+  --color-accent-2-600: #8d5b87;
+  --color-accent-2-700: #6d4368;
+  --color-accent-2-800: #4e2e4a;
+  --color-accent-2-900: #331d30;
+  --color-neutral-100: #f9f3f2;
+  --color-neutral-200: #eee1e2;
+  --color-neutral-300: #dcc9cb;
+  --color-neutral-400: #c0a8ab;
+  --color-neutral-500: #a1888c;
+  --color-neutral-600: #826a6e;
+  --color-neutral-700: #645053;
+  --color-neutral-800: #47373a;
+  --color-neutral-900: #2e2225;
+
+  --edge: clamp(20px, 5vw, 80px);
+  --spring: cubic-bezier(0.34, 1.4, 0.44, 1);
+  --soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --drop: cubic-bezier(0.3, 1.45, 0.42, 1); /* caída con rebote al acomodarse */
+  --ink-60: color-mix(in srgb, var(--color-text) 60%, transparent);
+  --ink-75: color-mix(in srgb, var(--color-text) 75%, transparent);
+}
+html { scroll-behavior: smooth; }
+body { margin: 0; text-wrap: pretty; overflow-x: clip;
+  background:
+    linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg) 40%,
+      color-mix(in srgb, var(--color-bg) 78%, var(--color-bg-warm)) 100%); }
+.wrap { max-width: 1360px; margin: 0 auto; padding: 0 var(--edge); position: relative; z-index: 1; }
+
+/* — capa de fondo: glows suaves + grano editorial, fija detrás de todo — */
+.bg-fx { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.bg-fx::before { content: ""; position: absolute; inset: -10%;
+  background:
+    radial-gradient(760px 560px at 10% -4%, color-mix(in srgb, var(--color-accent-300) 46%, transparent), transparent 60%),
+    radial-gradient(680px 520px at 98% 4%, color-mix(in srgb, var(--color-accent-2-300) 40%, transparent), transparent 58%),
+    radial-gradient(900px 700px at 50% 118%, color-mix(in srgb, var(--color-accent-200) 40%, transparent), transparent 60%); }
+.bg-fx::after { content: ""; position: absolute; inset: 0; opacity: 0.05; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+#progress { position: fixed; top: 0; left: 0; height: 3px; width: 0;
+  background: var(--color-accent); border-radius: 0 999px 999px 0; z-index: 99; }
+
+/* — nav — */
+.nav { position: sticky; top: 0; z-index: 50;
+  padding-inline: max(var(--edge), calc((100% - 1360px) / 2 + var(--edge)));
+  transition: background 0.3s ease, box-shadow 0.3s ease; }
+.nav.scrolled { background: color-mix(in srgb, var(--color-bg) 80%, transparent);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-sm); }
+.nav a { white-space: nowrap; position: relative; text-decoration: none; transition: color 0.2s ease; }
+.nav a::after { content: ""; position: absolute; left: 0; bottom: -5px;
+  width: 100%; height: 2px; border-radius: 999px; background: var(--color-accent);
+  transform: scaleX(0); transform-origin: left; transition: transform 0.28s var(--soft); }
+@media (hover: hover) { .nav a:hover::after { transform: scaleX(1); } }
+.nav a:active { color: var(--color-accent-700); }
+@media (max-width: 640px) { .nav a:not(.keep) { display: none; } }
+
+/* — kicker editorial — */
+.kicker { display: flex; align-items: center; gap: 14px;
+  font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+  color: var(--ink-60); margin: 0 0 clamp(28px, 4vw, 56px);
+  font-feature-settings: "tnum" 1; }
+.kicker em { font-style: normal; color: var(--color-accent-700); }
+.kicker::after { content: ""; height: 2px; flex: 0 0 clamp(40px, 6vw, 90px);
+  border-radius: 999px; background: var(--color-accent-300);
+  transform: scaleX(0); transform-origin: left; transition: transform 0.7s var(--soft) 0.15s; }
+.in.kicker::after, .in .kicker::after { transform: scaleX(1); }
+
+/* — hero (más compacto: menos aire arriba, el nombre sube) — */
+.hero { position: relative; padding: clamp(18px, 3vh, 40px) 0 clamp(28px, 4.5vh, 56px);
+  min-height: min(76svh, 700px); display: flex; flex-direction: column; justify-content: center; }
+.hero-top { display: flex; justify-content: space-between; gap: 16px;
+  font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
+  color: var(--ink-60); margin-bottom: clamp(16px, 3vh, 34px); }
+.hero-top .pin { display: inline-flex; align-items: center; gap: 8px; }
+.hero-top .pin::before { content: ""; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--color-accent); animation: pulse 2.4s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 45%, transparent); }
+  60% { box-shadow: 0 0 0 9px transparent; } }
+.name { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  text-transform: uppercase; font-size: clamp(50px, 12.6vw, 176px);
+  line-height: 0.98; letter-spacing: 0.005em; margin: 0 0 0 -0.028em; }
+.name .row-line { display: block; overflow: hidden; padding: 0.06em 0.06em 0.1em; margin: -0.06em -0.06em -0.1em; }
+/* caída armónica: cada letra cae desde arriba y se acomoda, suave y escalonada */
+.name .ch { display: inline-block; transform: translateY(-1.2em);
+  animation: chdrop 0.92s var(--drop) both;
+  animation-delay: calc(var(--b, 0s) + var(--i) * 0.05s); }
+@keyframes chdrop {
+  0%   { transform: translateY(-1.2em); }
+  100% { transform: translateY(0); } }
+.name .outline { color: transparent; -webkit-text-stroke: 2.5px var(--color-text);
+  transition: color 0.5s var(--soft), -webkit-text-stroke-color 0.5s var(--soft); }
+@media (hover: hover) { .name .row-line:hover .outline { color: var(--color-accent); -webkit-text-stroke-color: var(--color-accent); } }
+/* en touch (o al enfocar el hero) "Barone" se rellena de rosa al entrar en viewport */
+.is-touch .name.lit .outline { color: var(--color-accent); -webkit-text-stroke-color: var(--color-accent); }
+.hero-foot { display: flex; align-items: flex-end; justify-content: space-between;
+  gap: clamp(24px, 4vw, 64px); margin-top: clamp(20px, 4vh, 48px); }
+.hero-left { display: flex; align-items: center; gap: clamp(18px, 2.5vw, 32px); flex-wrap: wrap; }
+.portrait { flex: none; width: clamp(96px, 10vw, 136px); aspect-ratio: 1; border-radius: 50%;
+  overflow: hidden; box-shadow: 0 0 0 5px var(--color-bg), 0 0 0 7px var(--color-accent-300);
+  transition: transform 0.5s var(--spring), box-shadow 0.5s ease; will-change: translate; }
+@media (hover: hover) { .portrait:hover { transform: scale(1.07) rotate(-4deg);
+  box-shadow: 0 0 0 5px var(--color-bg), 0 0 0 8px var(--color-accent-500); } }
+.portrait:active { transform: scale(1.05) rotate(-3deg); }
+.portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hero-role { max-width: 46ch; }
+.hero-role .role { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+  font-weight: 700; color: var(--color-accent-700); margin: 0 0 12px; }
+.hero-role p { font-size: clamp(15.5px, 1.3vw, 17.5px); line-height: 1.65; margin: 0; color: var(--ink-75); }
+.rise { opacity: 0; transform: translateY(26px); filter: blur(5px);
+  animation: rise 0.9s var(--soft) forwards; animation-delay: var(--d, 0s); }
+@keyframes rise { to { opacity: 1; transform: none; filter: none; } }
+
+/* — insignia giratoria — */
+.badge { position: relative; width: clamp(110px, 12vw, 150px); aspect-ratio: 1; flex: none; will-change: translate; }
+.badge svg { position: absolute; inset: 0; width: 100%; height: 100%;
+  animation: spin 16s linear infinite; }
+.badge svg text { font-family: var(--font-body); font-weight: 700; font-size: 11.4px;
+  letter-spacing: 2.6px; text-transform: uppercase; fill: var(--ink-75); }
+.badge .core { position: absolute; inset: 0; display: grid; place-content: center; }
+.badge .core span { width: 46px; height: 46px; border-radius: 50%;
+  background: var(--color-accent); display: grid; place-content: center;
+  color: var(--color-bg); transition: transform 0.4s var(--spring); }
+@media (hover: hover) { .badge:hover .core span { transform: scale(1.15) rotate(45deg); } }
+.badge:active .core span { transform: scale(1.1) rotate(30deg); }
+@keyframes spin { to { transform: rotate(1turn); } }
+
+/* — marquee (posición vía JS: velocidad base + empuje del scroll) — */
+.marq { overflow: hidden; padding: clamp(20px, 3vh, 36px) 0; border-block: 2px solid
+  color-mix(in srgb, var(--color-text) 10%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.marq-track { display: flex; width: max-content; }
+.marq-set { display: flex; align-items: center; gap: clamp(28px, 3.5vw, 56px);
+  padding-right: clamp(28px, 3.5vw, 56px); }
+.marq-item { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(26px, 3.2vw, 44px); white-space: nowrap; }
+.marq-item:nth-child(4n+3) { color: transparent; -webkit-text-stroke: 1.8px var(--color-text); }
+.marq-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--color-accent); flex: none; }
+
+/* — títulos de sección con máscara — */
+.sect { padding: clamp(72px, 12vh, 140px) 0 0; }
+.mask { display: block; overflow: hidden; padding-bottom: 0.14em; margin-bottom: -0.14em; }
+.mask > span { display: block; transform: translateY(115%);
+  transition: transform 0.85s var(--soft); transition-delay: var(--d, 0s); }
+.in .mask > span { transform: none; }
+.h-sect { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(34px, 5.6vw, 76px); line-height: 1.04; margin: 0; }
+
+/* ——— EL SISTEMA DE CAÍDA: los elementos caen desde arriba, apenas
+   rotados, y se acomodan con un rebote (--drop). ——— */
+[data-reveal] { opacity: 0;
+  transform: translateY(calc(-1 * var(--fall, 46px))) rotate(var(--tilt, -2deg)) scale(0.985);
+  transition: transform 0.9s var(--drop), opacity 0.5s ease;
+  transition-delay: var(--d, 0s); }
+[data-reveal].in { opacity: 1; transform: translateY(0) rotate(var(--rest, 0deg)) scale(1); }
+[data-cascade] > * { opacity: 0;
+  transform: translateY(calc(-1 * var(--fall, 36px))) rotate(var(--tilt, -1.6deg));
+  transition: transform 0.85s var(--drop), opacity 0.45s ease;
+  transition-delay: var(--d, 0s); }
+[data-cascade].in > * { opacity: 1; transform: none; }
+[data-cascade] > *:nth-child(even) { --tilt: 1.6deg; }
+
+/* — proyectos: tarjetas escalonadas que caen y se expanden — */
+.plist { display: flex; flex-direction: column; gap: clamp(18px, 2.5vw, 30px);
+  will-change: transform; }
+.pcard { width: min(920px, 100%); box-sizing: border-box; position: relative;
+  border-radius: calc(2.5 * var(--radius-lg)); cursor: pointer;
+  padding: clamp(22px, 3vw, 38px) clamp(22px, 3.5vw, 46px);
+  --fall: 90px; --tilt: -3.5deg; --rest: -0.7deg;
+  transition: transform 0.95s var(--drop), opacity 0.5s ease, box-shadow 0.4s ease;
+  transition-delay: var(--d, 0s); }
+.pcard:nth-child(even) { --tilt: 3.5deg; --rest: 0.7deg; align-self: flex-end; }
+.pcard:nth-child(odd) { align-self: flex-start; }
+@media (min-width: 1024px) { .pcard:nth-child(even) { margin-top: -52px; } }
+/* desktop: hover expande y levanta */
+@media (hover: hover) {
+  .pcard.in:hover { transform: translateY(-6px) rotate(0deg) scale(1.012);
+    box-shadow: var(--shadow-md); z-index: 2; transition-delay: 0s; }
+  .pcard:hover .pc-body { grid-template-rows: 1fr; opacity: 1; margin-top: 16px; }
+  .pcard:hover .plus { transform: rotate(135deg); }
+  .pcard:hover .pc-link svg { transform: translate(3px, -3px); }
+}
+/* tap fija (open) — funciona en todos lados */
+.pcard.open { transform: translateY(-6px) rotate(0deg) scale(1.012);
+  box-shadow: var(--shadow-md); z-index: 2; transition-delay: 0s; }
+.pcard.open .pc-body { grid-template-rows: 1fr; opacity: 1; margin-top: 16px; }
+.pcard.open .plus { transform: rotate(135deg); }
+/* touch: la tarjeta centrada en pantalla se auto-realza (foco por scroll) */
+.is-touch .pcard.in.focus { transform: translateY(-6px) rotate(0deg) scale(1.012);
+  box-shadow: var(--shadow-md); z-index: 2; transition-delay: 0s; }
+.is-touch .pcard.focus .pc-body { grid-template-rows: 1fr; opacity: 1; margin-top: 16px; }
+.is-touch .pcard.focus .plus { transform: rotate(135deg); }
+.pcard:active { transform: scale(0.992); }
+.pcard:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+.pc-top { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+.pc-kick { font-size: 12.5px; letter-spacing: 0.09em; text-transform: uppercase;
+  font-weight: 700; opacity: 0.7; margin: 0 0 10px; }
+.pc-title { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(26px, 3.8vw, 50px); line-height: 1.05; margin: 0; }
+.plus { flex: none; width: 46px; height: 46px; border-radius: 50%;
+  border: 2.5px solid currentColor; position: relative; opacity: 0.8;
+  transition: transform 0.45s var(--spring); }
+.plus::before, .plus::after { content: ""; position: absolute; left: 50%; top: 50%;
+  width: 18px; height: 2.5px; border-radius: 2px; background: currentColor;
+  translate: -50% -50%; }
+.plus::after { rotate: 90deg; }
+.pc-body { display: grid; grid-template-rows: 0fr; opacity: 0; margin-top: 0;
+  transition: grid-template-rows 0.55s var(--soft), opacity 0.4s ease 0.05s, margin-top 0.55s var(--soft); }
+.pc-body > div { overflow: hidden; min-height: 0; }
+.pc-copy { font-size: 15.5px; line-height: 1.65; margin: 0; max-width: 58ch; }
+.pc-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.pc-tags .tag { background: color-mix(in srgb, #fff 42%, transparent); color: inherit; }
+.pc-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px;
+  font-weight: 700; color: inherit; text-decoration: underline; text-underline-offset: 4px; }
+.pc-link svg { transition: transform 0.3s var(--spring); }
+.pc-link:active svg { transform: translate(3px, -3px); }
+.pc-hint { font-size: 12px; font-weight: 600; opacity: 0.55; margin: 10px 0 0; }
+@media (hover: hover) { .pc-hint { display: none; } }
+
+/* — contadores / estadísticas: entrada con línea que se dibuja + interacción — */
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 48px); padding-top: clamp(48px, 8vh, 88px); }
+.stat { position: relative; border-top: 2px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+  padding-top: 18px; transition: border-color 0.3s ease; }
+.stat::after { content: ""; position: absolute; top: -2px; left: 0; height: 2px; width: 100%;
+  background: var(--color-accent); transform: scaleX(0); transform-origin: left;
+  transition: transform 0.7s var(--soft); transition-delay: var(--d, 0s); }
+.stats.in .stat::after { transform: scaleX(1); }
+.stat-num { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(40px, 5vw, 72px); line-height: 1; margin: 0;
+  font-feature-settings: "tnum" 1; transition: transform 0.4s var(--spring), color 0.3s ease; }
+.stat-num sup { font-size: 0.45em; color: var(--color-accent-600); margin-left: 2px; }
+.stat-label { font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase;
+  font-weight: 600; color: var(--ink-60); margin: 10px 0 0; }
+@media (hover: hover) { .stat:hover { border-color: var(--color-accent); }
+  .stat:hover .stat-num { transform: scale(1.06); color: var(--color-accent-700); } }
+.is-touch .stat.focus { border-color: var(--color-accent); }
+.is-touch .stat.focus .stat-num { transform: scale(1.06); color: var(--color-accent-700); }
+@media (max-width: 720px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* — sobre mí — */
+.about { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+  gap: clamp(32px, 5vw, 96px); align-items: start; padding-top: clamp(40px, 6vh, 72px); }
+.about .bio { font-size: clamp(17px, 1.5vw, 21px); line-height: 1.7; margin: 0; color: var(--ink-75); }
+.about .bio b { color: var(--color-text); font-weight: 600; }
+.about .bio + .bio { margin-top: 1em; }
+.cred { margin: clamp(28px, 4vh, 44px) 0 0; padding: 0; list-style: none; display: grid; gap: 16px; }
+.cred li { display: flex; gap: 14px; align-items: baseline; font-size: 15.5px; line-height: 1.55; }
+.cred li::before { content: ""; width: 11px; height: 11px; border-radius: 50%;
+  background: var(--color-accent); flex: none; transform: translateY(-1px); }
+.cred li:nth-child(even)::before { background: var(--color-accent-2-500); }
+.cred b { font-weight: 600; }
+.about-side { position: sticky; top: 96px; display: grid; gap: 20px; justify-items: start;
+  --fall: 70px; --tilt: -5deg; --rest: -1.5deg; }
+.about-side .frame { position: relative; width: min(300px, 100%); border-radius: calc(2 * var(--radius-lg));
+  overflow: hidden; transition: transform 0.5s var(--spring), box-shadow 0.5s ease; }
+/* barrido de luz al aparecer con el scroll */
+.about-side .frame::after { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: linear-gradient(115deg, transparent 30%, color-mix(in srgb, #fff 55%, transparent) 48%, transparent 62%);
+  transform: translateX(-130%); }
+.about-side.in .frame::after { animation: sheen 1.5s var(--soft) 0.35s 1; }
+@keyframes sheen { to { transform: translateX(130%); } }
+@media (hover: hover) { .about-side .frame:hover { transform: rotate(1.5deg) scale(1.03); box-shadow: var(--shadow-md); } }
+.about-side .frame:active { transform: rotate(1deg) scale(1.02); }
+.about-side .frame img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block;
+  scale: 1.14; will-change: translate; }
+.about-side .side-note { font-size: 13px; color: var(--ink-60); margin: 0; }
+@media (max-width: 880px) {
+  .about { grid-template-columns: 1fr; }
+  .about-side { position: static; }
+}
+
+/* — contacto — */
+.close { padding: clamp(72px, 12vh, 140px) 0 clamp(20px, 3vh, 32px); }
+.patch { position: relative; overflow: hidden; background: var(--color-accent-900);
+  color: var(--color-bg); border-radius: calc(2.5 * var(--radius-lg));
+  padding: clamp(48px, 8vw, 110px) clamp(24px, 6vw, 96px);
+  --fall: 80px; --tilt: -1.8deg; }
+.patch::before { content: ""; position: absolute; right: -120px; top: -140px;
+  width: 380px; height: 380px; border-radius: 50%; background: var(--color-accent-800);
+  transform: translateY(calc(var(--pc, 0) * 0.04px)); will-change: transform; }
+.patch::after { content: ""; position: absolute; left: -80px; bottom: -120px;
+  width: 260px; height: 260px; border-radius: 50%; background: var(--color-accent-2-800);
+  transform: translateY(calc(var(--pc, 0) * -0.035px)); will-change: transform; }
+.patch > * { position: relative; z-index: 1; }
+.patch .kicker { color: color-mix(in srgb, var(--color-bg) 65%, transparent); }
+.patch .kicker em { color: var(--color-accent-300); }
+.patch .kicker::after { background: var(--color-accent-700); }
+.patch .h-sect { font-size: clamp(40px, 7vw, 104px); }
+.patch .h-sect .thin { color: transparent; -webkit-text-stroke: 2px var(--color-bg); }
+.biglink { display: inline-flex; align-items: center; gap: 16px;
+  margin-top: clamp(32px, 5vh, 56px);
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(19px, 2.6vw, 38px); color: var(--color-bg); text-decoration: none;
+  border-bottom: 3px solid var(--color-accent-500); padding-bottom: 10px;
+  transition: color 0.3s ease, border-color 0.3s ease; overflow-wrap: anywhere; }
+.biglink svg { flex: none; transition: transform 0.35s var(--spring); }
+@media (hover: hover) { .biglink:hover { color: var(--color-accent-300); border-color: var(--color-accent-300); }
+  .biglink:hover svg { transform: translate(6px, -6px) rotate(8deg); } }
+.biglink:active { color: var(--color-accent-300); border-color: var(--color-accent-300); }
+.biglink:active svg { transform: translate(4px, -4px) rotate(6deg); }
+.patch .links { display: flex; flex-wrap: wrap; gap: 12px 28px; margin-top: clamp(28px, 4vh, 44px); }
+.patch .links a { color: color-mix(in srgb, var(--color-bg) 75%, transparent);
+  font-weight: 600; font-size: 14.5px; text-decoration: none; position: relative;
+  white-space: nowrap; transition: color 0.2s ease; }
+.patch .links a::after { content: ""; position: absolute; left: 0; bottom: -4px; height: 2px;
+  width: 100%; border-radius: 999px; background: var(--color-accent-400);
+  transform: scaleX(0); transform-origin: left; transition: transform 0.28s var(--soft); }
+@media (hover: hover) { .patch .links a:hover { color: var(--color-bg); }
+  .patch .links a:hover::after { transform: scaleX(1); } }
+.patch .links a:active { color: var(--color-bg); }
+.patch .links a:active::after { transform: scaleX(1); }
+.patch .meta { margin: clamp(28px, 4vh, 44px) 0 0; font-size: 13px;
+  color: color-mix(in srgb, var(--color-bg) 60%, transparent); }
+footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  padding: clamp(24px, 4vh, 40px) 0; font-size: 13px; color: var(--ink-60); }
+footer a { color: var(--ink-75); font-weight: 600; text-decoration: none; transition: color 0.2s ease; }
+footer a:hover, footer a:active { color: var(--color-accent-700); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .name .ch, .rise, .badge svg, .hero-top .pin::before,
+  .about-side .frame::after { animation: none; }
+  .name .ch, .rise { opacity: 1; transform: none; filter: none; }
+  .mask > span { transform: none; transition: none; }
+  [data-reveal], [data-cascade] > * { opacity: 1; transform: none; transition: none; }
+  .about-side .frame img { scale: 1; }
+  .stat::after { transform: scaleX(1); }
+}
+</style>
+</head>
+<body>
+<div class="bg-fx" aria-hidden="true"></div>
+<div id="progress"></div>
+<nav class="nav">
+  <span class="nav-brand">AB<span style="color: var(--color-accent)">.</span></span>
+  <a href="#proyectos">Proyectos</a>
+  <a href="#sobre-mi">Sobre mí</a>
+  <a class="keep" href="#contacto">Contacto</a>
+</nav>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="hero-top rise" style="--d: 0.5s">
+      <span class="pin">Disponible para proyectos</span>
+      <span>Buenos Aires, AR — Portfolio 2026</span>
+    </div>
+    <h1 class="name">
+      <span class="row-line split-letters" style="--b: 0.1s">Antonella</span>
+      <span class="row-line split-letters outline-line" style="--b: 0.34s">Barone</span>
+    </h1>
+    <div class="hero-foot">
+      <div class="hero-left rise" style="--d: 0.62s">
+        <span class="portrait washed" data-par="0.045"><img src="assets/antonella.png" alt="Antonella Barone" /></span>
+        <div class="hero-role">
+          <p class="role">Investigación social · Gestión de proyectos · UX</p>
+          <p>Entiendo a las personas con técnicas cuali y cuanti, y construyo la respuesta con plataformas agénticas y low-code. De la pregunta al producto.</p>
+        </div>
+      </div>
+      <a class="badge rise" href="#proyectos" style="--d: 0.75s" data-par="-0.06" aria-label="Bajar a proyectos">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <defs><path id="circ" d="M 50 50 m -38 0 a 38 38 0 1 1 76 0 a 38 38 0 1 1 -76 0"></path></defs>
+          <text><textPath href="#circ">ux research · low-code · datos · </textPath></text>
+        </svg>
+        <span class="core"><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></span></span>
+      </a>
+    </div>
+  </header>
+
+  <div class="marq" aria-hidden="true">
+    <div class="marq-track">
+      <div class="marq-set">
+        <span class="marq-item">UX Research</span><span class="marq-dot"></span>
+        <span class="marq-item">Cuestionarios</span><span class="marq-dot"></span>
+        <span class="marq-item">Cuali + cuanti</span><span class="marq-dot"></span>
+        <span class="marq-item">CRM y datos</span><span class="marq-dot"></span>
+        <span class="marq-item">Low-code e IA</span><span class="marq-dot"></span>
+        <span class="marq-item">Python</span><span class="marq-dot"></span>
+      </div>
+      <div class="marq-set">
+        <span class="marq-item">UX Research</span><span class="marq-dot"></span>
+        <span class="marq-item">Cuestionarios</span><span class="marq-dot"></span>
+        <span class="marq-item">Cuali + cuanti</span><span class="marq-dot"></span>
+        <span class="marq-item">CRM y datos</span><span class="marq-dot"></span>
+        <span class="marq-item">Low-code e IA</span><span class="marq-dot"></span>
+        <span class="marq-item">Python</span><span class="marq-dot"></span>
+      </div>
+    </div>
+  </div>
+
+  <section class="sect projects" id="proyectos" data-watch>
+    <p class="kicker" data-reveal><em>01</em> Proyectos seleccionados</p>
+    <h2 class="h-sect" style="margin-bottom: clamp(28px, 4vw, 56px)">
+      <span class="mask"><span>Trabajo que ya</span></span>
+      <span class="mask"><span style="--d: 0.12s">está en el mundo.</span></span>
+    </h2>
+    <div class="plist" id="plist">
+      <article class="pcard" tabindex="0" data-reveal style="background: var(--color-accent-200); color: var(--color-accent-900)">
+        <div class="pc-top">
+          <div>
+            <p class="pc-kick">01 · Web internacional · HS Brands Latam</p>
+            <h3 class="pc-title">Oportunidades HS Brands</h3>
+          </div>
+          <span class="plus" aria-hidden="true"></span>
+        </div>
+        <div class="pc-body"><div>
+          <p class="pc-copy">Diseño y publicación de una web de uso internacional con plataformas agénticas, bases de datos y lógica de automatización — de la arquitectura del contenido al sitio en producción.</p>
+          <div class="pc-tags"><span class="tag">Low-code</span><span class="tag">IA agéntica</span><span class="tag">Bases de datos</span></div>
+          <a class="pc-link" href="https://oportunidadeshsbrands.com" target="_blank" rel="noopener">Ver el sitio en vivo <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+        </div></div>
+        <p class="pc-hint">Tocá para ver más</p>
+      </article>
+      <article class="pcard" tabindex="0" data-reveal style="background: var(--color-accent-2-200); color: var(--color-accent-2-900)">
+        <div class="pc-top">
+          <div>
+            <p class="pc-kick">02 · CRM interno · HS Brands Latam</p>
+            <h3 class="pc-title">Cuestionarios que se entienden</h3>
+          </div>
+          <span class="plus" aria-hidden="true"></span>
+        </div>
+        <div class="pc-body"><div>
+          <p class="pc-copy">Diseño de cuestionarios y formularios en el CRM interno, adaptando contenido y estructura al objetivo de cada cliente, con instructivos claros para distintos perfiles de usuario.</p>
+          <div class="pc-tags"><span class="tag">Formularios</span><span class="tag">UX writing</span><span class="tag">Flujos de trabajo</span></div>
+        </div></div>
+        <p class="pc-hint">Tocá para ver más</p>
+      </article>
+      <article class="pcard" tabindex="0" data-reveal style="background: var(--color-surface); color: var(--color-text)">
+        <div class="pc-top">
+          <div>
+            <p class="pc-kick">03 · Research · HS Brands Latam</p>
+            <h3 class="pc-title">Investigación de usuarios</h3>
+          </div>
+          <span class="plus" aria-hidden="true"></span>
+        </div>
+        <div class="pc-body"><div>
+          <p class="pc-copy">Entrevistas, encuestas y análisis de datos para entender a los usuarios; coordinación y capacitación de evaluadores, y presentación de resultados e insights a clientes.</p>
+          <div class="pc-tags"><span class="tag">UX Research</span><span class="tag">Cuali + cuanti</span><span class="tag">Insights</span></div>
+        </div></div>
+        <p class="pc-hint">Tocá para ver más</p>
+      </article>
+      <article class="pcard" tabindex="0" data-reveal style="background: var(--color-accent-100); color: var(--color-accent-800)">
+        <div class="pc-top">
+          <div>
+            <p class="pc-kick">04 · Diseño instruccional · Efe Idiomas · 2018–2025</p>
+            <h3 class="pc-title">Contenido que enseña</h3>
+          </div>
+          <span class="plus" aria-hidden="true"></span>
+        </div>
+        <div class="pc-body"><div>
+          <p class="pc-copy">Siete años creando cursos y materiales adaptados por edad y nivel, midiendo el aprendizaje para ajustar contenidos y traduciendo lo complejo en informes simples y accionables.</p>
+          <div class="pc-tags"><span class="tag">Diseño instruccional</span><span class="tag">Métricas</span><span class="tag">Comunicación</span></div>
+        </div></div>
+        <p class="pc-hint">Tocá para ver más</p>
+      </article>
+    </div>
+
+    <div class="stats" data-cascade>
+      <div class="stat"><p class="stat-num"><span data-count="7">0</span><sup>+</sup></p><p class="stat-label">Años enseñando y comunicando</p></div>
+      <div class="stat"><p class="stat-num"><span data-count="1">0</span></p><p class="stat-label">Web internacional lanzada</p></div>
+      <div class="stat"><p class="stat-num"><span data-count="2">0</span></p><p class="stat-label">Idiomas de trabajo</p></div>
+      <div class="stat"><p class="stat-num"><span data-count="2026">0</span></p><p class="stat-label">Socióloga (UBA) en camino</p></div>
+    </div>
+  </section>
+
+  <section class="sect" id="sobre-mi" data-watch>
+    <p class="kicker" data-reveal><em>02</em> Sobre mí</p>
+    <div class="about">
+      <div>
+        <h2 class="h-sect" style="margin-bottom: clamp(24px, 4vw, 48px)">
+          <span class="mask"><span>Miro procesos y encuentro</span></span>
+          <span class="mask"><span style="--d: 0.12s">cómo hacerlos más simples.</span></span>
+        </h2>
+        <p class="bio" data-reveal style="--fall: 30px; --tilt: 0deg">Estudiante avanzada de <b>Sociología (UBA)</b> orientándome al área de <b>UX</b>. Analizo procesos y encuentro formas de hacerlos más eficientes combinando investigación cualitativa y cuantitativa con plataformas de desarrollo agénticas.</p>
+        <p class="bio" data-reveal style="--fall: 30px; --tilt: 0deg; --d: 0.1s">Aprendí a estructurar procesos de trabajo, coordinar equipos y resolver problemas con autonomía. Busco un espacio desafiante donde aportar mi <b>mirada analítica</b> y seguir sumando herramientas técnicas.</p>
+        <ul class="cred" data-cascade>
+          <li><span><b>Licenciatura en Sociología</b> — UBA · 2022–2026</span></li>
+          <li><span><b>Lovable L1, Desarrollo con IA</b> — apps, automatización y low-code</span></li>
+          <li><span><b>Programación con Python</b> — Agencia de Habilidades para el Futuro · 2024</span></li>
+          <li><span><b>Español nativo · Inglés B2</b> — FCE</span></li>
+        </ul>
+      </div>
+      <div class="about-side" data-reveal style="--d: 0.15s">
+        <div class="frame washed">
+          <img src="assets/antonella.png" alt="Foto de Antonella Barone" data-par="0.05" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="close" id="contacto">
+    <div class="patch" data-reveal>
+      <p class="kicker"><em>03</em> Contacto</p>
+      <h2 class="h-sect">
+        <span class="mask"><span>¿Trabajamos</span></span>
+        <span class="mask"><span class="thin" style="--d: 0.12s">juntos?</span></span>
+      </h2>
+      <a class="biglink" href="mailto:antonella.m.barone@gmail.com">antonella.m.barone@gmail.com
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+      <div class="links">
+        <a href="https://www.linkedin.com/in/antonella-barone2003" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a href="https://oportunidadeshsbrands.com" target="_blank" rel="noopener">Último proyecto ↗</a>
+      </div>
+      <p class="meta">Vicente López, Buenos Aires · Respondo rápido y pregunto mucho.</p>
+    </div>
+    <footer>
+      <span>© 2026 Antonella Barone</span>
+      <a href="#top" onclick="scrollTo({top:0,behavior:'smooth'}); return false;">Volver arriba ↑</a>
+    </footer>
+  </section>
+
+</div>
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const touch = matchMedia('(hover: none), (pointer: coarse)').matches;
+  document.documentElement.classList.toggle('is-touch', touch);
+
+  // nombre letra por letra
+  document.querySelectorAll('.split-letters').forEach((line) => {
+    const text = line.textContent.trim(); line.textContent = '';
+    const outline = line.classList.contains('outline-line');
+    [...text].forEach((c, i) => {
+      const s = document.createElement('span');
+      s.className = 'ch' + (outline ? ' outline' : ''); s.style.setProperty('--i', i);
+      s.textContent = c; line.appendChild(s);
+    });
+  });
+
+  // cascadas: cada hijo cae con un pelín más de delay
+  document.querySelectorAll('[data-cascade]').forEach((group) => {
+    [...group.children].forEach((el, i) => el.style.setProperty('--d', (i * 0.09).toFixed(2) + 's'));
+  });
+
+  // contadores
+  const ease = (t) => 1 - Math.pow(1 - t, 3);
+  const count = (el) => {
+    const end = +el.dataset.count, t0 = performance.now(), dur = 1500;
+    const tick = (t) => { const p = Math.min(1, (t - t0) / dur);
+      el.textContent = Math.round(end * ease(p));
+      if (p < 1) requestAnimationFrame(tick); };
+    if (reduce) { el.textContent = end; } else requestAnimationFrame(tick);
+  };
+
+  // observador: caídas, máscaras y contadores
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) if (e.isIntersecting) {
+      e.target.classList.add('in');
+      e.target.querySelectorAll('[data-count]').forEach(count);
+      io.unobserve(e.target);
+    }
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('[data-reveal], [data-watch], [data-cascade]').forEach((el) => io.observe(el));
+
+  // "Barone" se rellena de rosa cuando el hero está a la vista (útil en touch)
+  const heroEl = document.querySelector('.hero');
+  const nameEl = document.querySelector('.name');
+  if (heroEl && nameEl) {
+    new IntersectionObserver((es) => es.forEach((e) => nameEl.classList.toggle('lit', e.isIntersecting)),
+      { threshold: 0.25 }).observe(heroEl);
+  }
+
+  // tarjetas expandibles (hover expande en desktop; tap/click o Enter fija)
+  document.querySelectorAll('.pcard').forEach((card) => {
+    const toggle = () => card.classList.toggle('open');
+    card.addEventListener('click', (e) => { if (e.target.closest('a')) return; toggle(); });
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+    });
+  });
+
+  // — scroll: progreso, nav, velocidad y foco-por-scroll en touch —
+  const bar = document.getElementById('progress');
+  const nav = document.querySelector('.nav');
+  const cards = touch ? [...document.querySelectorAll('.pcard')] : [];
+  const stats = touch ? [...document.querySelectorAll('.stat')] : [];
+  let lastY = scrollY, vel = 0;
+
+  const nearest = (els, band) => {
+    let best = null, bd = Infinity;
+    for (const el of els) {
+      const r = el.getBoundingClientRect();
+      const d = Math.abs((r.top + r.height / 2) - innerHeight / 2);
+      if (d < bd) { bd = d; best = el; }
+    }
+    for (const el of els) el.classList.toggle('focus', el === best && bd < innerHeight * band);
+  };
+
+  let ticking = false;
+  const onScroll = () => {
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(() => {
+      const y = scrollY;
+      const max = document.documentElement.scrollHeight - innerHeight;
+      bar.style.width = (max > 0 ? (y / max) * 100 : 0) + '%';
+      nav.classList.toggle('scrolled', y > 8);
+      vel = y - lastY; lastY = y;
+      if (touch && !reduce) { nearest(cards, 0.42); nearest(stats, 0.45); }
+      ticking = false;
+    });
+  };
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // — bucle continuo: marquee (velocidad base + empuje del scroll), parallax e inercia —
+  const marq = document.querySelector('.marq-track');
+  const parEls = [...document.querySelectorAll('[data-par]')];
+  const plist = document.getElementById('plist');
+  const patch = document.querySelector('.patch');
+  let halfW = marq ? marq.scrollWidth / 2 : 0;
+  addEventListener('resize', () => { halfW = marq ? marq.scrollWidth / 2 : 0; });
+  let mx = 0, skew = 0;
+
+  const loop = () => {
+    if (!reduce) {
+      // marquee
+      if (marq && halfW) {
+        mx -= (0.6 + Math.min(3.2, Math.abs(vel) * 0.05));
+        if (-mx >= halfW) mx += halfW;
+        marq.style.transform = `translateX(${mx.toFixed(2)}px)`;
+      }
+      // parallax (usa la propiedad translate para no pisar transforms de hover)
+      for (const el of parEls) {
+        const r = el.getBoundingClientRect();
+        const c = (r.top + r.height / 2) - innerHeight / 2;
+        el.style.translate = `0 ${(c * +el.dataset.par).toFixed(1)}px`;
+      }
+      // los círculos del bloque de contacto derivan suave con el scroll
+      if (patch) {
+        const r = patch.getBoundingClientRect();
+        patch.style.setProperty('--pc', ((r.top + r.height / 2) - innerHeight / 2).toFixed(1));
+      }
+      // inercia: la pila de proyectos se ladea con la velocidad del scroll
+      if (plist) {
+        skew = (skew + vel * 0.05) * 0.86;
+        skew = Math.max(-2.2, Math.min(2.2, skew));
+        plist.style.transform = Math.abs(skew) > 0.03 ? `skewY(${skew.toFixed(3)}deg)` : '';
+      }
+    }
+    vel *= 0.9;
+    requestAnimationFrame(loop);
+  };
+  if (!reduce) requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
