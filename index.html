@@ -133,12 +133,13 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
   line-height: 0.98; letter-spacing: 0.005em; margin: 0 0 0 -0.028em; }
 .name .row-line { display: block; overflow: hidden; padding: 0.06em 0.06em 0.1em; margin: -0.06em -0.06em -0.1em; }
 /* caída armónica: cada letra cae desde arriba y se acomoda, suave y escalonada */
-.name .ch { display: inline-block; transform: translateY(-1.2em);
+.name .ch { display: inline-block; opacity: 0; transform: translateY(-1.2em);
   animation: chdrop 0.92s var(--drop) both;
   animation-delay: calc(var(--b, 0s) + var(--i) * 0.05s); }
 @keyframes chdrop {
-  0%   { transform: translateY(-1.2em); }
-  100% { transform: translateY(0); } }
+  0%   { opacity: 0; transform: translateY(-1.2em); }
+  55%  { opacity: 1; }
+  100% { opacity: 1; transform: translateY(0); } }
 .name .outline { color: transparent; -webkit-text-stroke: 2.5px var(--color-text);
   transition: color 0.5s var(--soft), -webkit-text-stroke-color 0.5s var(--soft); }
 @media (hover: hover) { .name .row-line:hover .outline { color: var(--color-accent); -webkit-text-stroke-color: var(--color-accent); } }
@@ -584,21 +585,26 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     [...group.children].forEach((el, i) => el.style.setProperty('--d', (i * 0.09).toFixed(2) + 's'));
   });
 
-  // contadores
+  // contadores (arrancan escalonados, en sintonía con la línea que se dibuja)
   const ease = (t) => 1 - Math.pow(1 - t, 3);
-  const count = (el) => {
-    const end = +el.dataset.count, t0 = performance.now(), dur = 1500;
-    const tick = (t) => { const p = Math.min(1, (t - t0) / dur);
-      el.textContent = Math.round(end * ease(p));
-      if (p < 1) requestAnimationFrame(tick); };
-    if (reduce) { el.textContent = end; } else requestAnimationFrame(tick);
+  const count = (el, delay = 0) => {
+    const end = +el.dataset.count, dur = 1500;
+    if (reduce) { el.textContent = end; return; }
+    const run = () => {
+      const t0 = performance.now();
+      const tick = (t) => { const p = Math.min(1, (t - t0) / dur);
+        el.textContent = Math.round(end * ease(p));
+        if (p < 1) requestAnimationFrame(tick); };
+      requestAnimationFrame(tick);
+    };
+    delay > 0 ? setTimeout(run, delay) : run();
   };
 
   // observador: caídas, máscaras y contadores
   const io = new IntersectionObserver((entries) => {
     for (const e of entries) if (e.isIntersecting) {
       e.target.classList.add('in');
-      e.target.querySelectorAll('[data-count]').forEach(count);
+      e.target.querySelectorAll('[data-count]').forEach((el, i) => count(el, i * 150));
       io.unobserve(e.target);
     }
   }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
