@@ -377,16 +377,9 @@ footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wr
 footer a { color: var(--ink-75); font-weight: 600; text-decoration: none; transition: color 0.2s ease; }
 footer a:hover, footer a:active { color: var(--color-accent-700); }
 
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .name .ch, .rise, .badge svg, .hero-top .pin::before,
-  .about-side .frame::after { animation: none; }
-  .name .ch, .rise { opacity: 1; transform: none; filter: none; }
-  .mask > span { transform: none; transition: none; }
-  [data-reveal], [data-cascade] > * { opacity: 1; transform: none; transition: none; }
-  .about-side .frame img { scale: 1; }
-  .stat::after { transform: scaleX(1); }
-}
+/* Animaciones forzadas: por pedido, el portfolio muestra TODOS los efectos
+   siempre, sin honrar prefers-reduced-motion, para que se luzcan en cualquier
+   equipo aunque tenga activado "reducir movimiento". */
 </style>
 </head>
 <body>
@@ -572,7 +565,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
 </div>
 <script>
 (() => {
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduce = false; // forzado: animaciones siempre activas, aunque el equipo tenga "reducir movimiento"
   const touch = matchMedia('(hover: none), (pointer: coarse)').matches;
   document.documentElement.classList.toggle('is-touch', touch);
 
