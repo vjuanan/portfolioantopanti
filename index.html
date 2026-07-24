@@ -32,28 +32,28 @@
 :root {
   --color-bg: #f7f0ea;
   --color-bg-warm: #f3e8e0;
-  --color-surface: #f2e2e0;
+  --color-surface: #f8dde3;
   --color-text: #231c1e;
-  --color-accent: #c75d80;
-  --color-accent-2: #97728f;
-  --color-accent-100: #fdf0f4;
-  --color-accent-200: #fcdde7;
-  --color-accent-300: #f8bfd2;
-  --color-accent-400: #ee93b1;
-  --color-accent-500: #d97192;
-  --color-accent-600: #b55473;
-  --color-accent-700: #8f3e58;
-  --color-accent-800: #662a3e;
-  --color-accent-900: #421a28;
-  --color-accent-2-100: #faf0f8;
-  --color-accent-2-200: #f1dcef;
-  --color-accent-2-300: #e3c0e0;
-  --color-accent-2-400: #ca9bc5;
-  --color-accent-2-500: #ab78a5;
-  --color-accent-2-600: #8d5b87;
-  --color-accent-2-700: #6d4368;
-  --color-accent-2-800: #4e2e4a;
-  --color-accent-2-900: #331d30;
+  --color-accent: #e8437d;
+  --color-accent-2: #a94fa0;
+  --color-accent-100: #fff0f5;
+  --color-accent-200: #ffd6e6;
+  --color-accent-300: #ffb0cf;
+  --color-accent-400: #fb84ad;
+  --color-accent-500: #f2588f;
+  --color-accent-600: #db3670;
+  --color-accent-700: #b52458;
+  --color-accent-800: #7d1a3d;
+  --color-accent-900: #4a0f24;
+  --color-accent-2-100: #faeef9;
+  --color-accent-2-200: #f2d4ef;
+  --color-accent-2-300: #e3aede;
+  --color-accent-2-400: #cf82c8;
+  --color-accent-2-500: #b658ab;
+  --color-accent-2-600: #9a3f8f;
+  --color-accent-2-700: #782f6e;
+  --color-accent-2-800: #522049;
+  --color-accent-2-900: #331830;
   --color-neutral-100: #f9f3f2;
   --color-neutral-200: #eee1e2;
   --color-neutral-300: #dcc9cb;
@@ -82,9 +82,10 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
 .bg-fx { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
 .bg-fx::before { content: ""; position: absolute; inset: -10%;
   background:
-    radial-gradient(760px 560px at 10% -4%, color-mix(in srgb, var(--color-accent-300) 46%, transparent), transparent 60%),
-    radial-gradient(680px 520px at 98% 4%, color-mix(in srgb, var(--color-accent-2-300) 40%, transparent), transparent 58%),
-    radial-gradient(900px 700px at 50% 118%, color-mix(in srgb, var(--color-accent-200) 40%, transparent), transparent 60%); }
+    radial-gradient(820px 600px at 8% -6%, color-mix(in srgb, var(--color-accent-300) 72%, transparent), transparent 62%),
+    radial-gradient(720px 560px at 100% 2%, color-mix(in srgb, var(--color-accent-2-300) 66%, transparent), transparent 60%),
+    radial-gradient(560px 460px at 92% 82%, color-mix(in srgb, var(--color-accent-400) 42%, transparent), transparent 62%),
+    radial-gradient(960px 760px at 50% 120%, color-mix(in srgb, var(--color-accent-200) 62%, transparent), transparent 62%); }
 .bg-fx::after { content: ""; position: absolute; inset: 0; opacity: 0.05; mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
 
@@ -634,14 +635,32 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
   const stats = touch ? [...document.querySelectorAll('.stat')] : [];
   let lastY = scrollY, vel = 0;
 
-  const nearest = (els, band) => {
+  // foco-por-scroll con anclaje estable + histéresis: se mide la distancia al
+  // HEADER de la tarjeta (no cambia de sitio al expandirse), y una tarjeta ya
+  // enfocada se mantiene hasta que otra esté claramente más centrada. Así abrir
+  // una tarjeta no mueve la geometría de forma que dispare un bucle abrir/cerrar.
+  let cardFocus = null, statFocus = null;
+  const anchorDist = (el, sel) => {
+    const a = el.querySelector(sel) || el;
+    const r = a.getBoundingClientRect();
+    return Math.abs(r.top + r.height / 2 - innerHeight / 2);
+  };
+  const focusNearest = (els, current, sel, gain, keep) => {
+    if (!els.length) return current;
     let best = null, bd = Infinity;
-    for (const el of els) {
-      const r = el.getBoundingClientRect();
-      const d = Math.abs((r.top + r.height / 2) - innerHeight / 2);
-      if (d < bd) { bd = d; best = el; }
+    for (const el of els) { const d = anchorDist(el, sel); if (d < bd) { bd = d; best = el; } }
+    let next = els.includes(current) ? current : null;
+    if (next) {
+      const cd = anchorDist(next, sel);
+      if (cd > innerHeight * keep) next = null;                        // se alejó del centro: soltar
+      else if (best !== next && bd < cd - innerHeight * 0.14) next = best; // otra claramente más centrada
     }
-    for (const el of els) el.classList.toggle('focus', el === best && bd < innerHeight * band);
+    if (!next && best && bd < innerHeight * gain) next = best;         // adquirir sólo si está bien centrada
+    if (next !== current) {
+      if (current) current.classList.remove('focus');
+      if (next) next.classList.add('focus');
+    }
+    return next;
   };
 
   let ticking = false;
@@ -653,7 +672,10 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
       bar.style.width = (max > 0 ? (y / max) * 100 : 0) + '%';
       nav.classList.toggle('scrolled', y > 8);
       vel = y - lastY; lastY = y;
-      if (touch && !reduce) { nearest(cards, 0.42); nearest(stats, 0.45); }
+      if (touch && !reduce) {
+        cardFocus = focusNearest(cards, cardFocus, '.pc-top', 0.22, 0.5);
+        statFocus = focusNearest(stats, statFocus, '.stat-num', 0.24, 0.5);
+      }
       ticking = false;
     });
   };
