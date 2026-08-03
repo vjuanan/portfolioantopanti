@@ -15,3 +15,9 @@ npm-debug.log*
 # Editores
 .vscode/
 .idea/
+
+# Material personal y de referencia (no va al repo publico)
+Diploma_TT.pdf
+StatementOfResult.pdf
+assets/anto.jpeg
+capturas-en-vivo/
