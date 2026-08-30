@@ -4,14 +4,40 @@ Guía para cualquier agente que trabaje en este repo. Leerla completa antes de t
 
 ## Qué es
 
-Portfolio personal de **Antonella Barone** (investigación social, gestión de proyectos y UX).
-Sitio de una sola página, en español (`lang="es"`), público y en producción.
+Portfolio personal de **Antonella Barone** (investigación social, UX research y gestión de
+proyectos). Sitio de una sola página, en español (`lang="es"`), público y en producción.
 
 - **En vivo:** https://portfolioantopanti.vercel.app
 - **Repo:** https://github.com/vjuanan/portfolioantopanti (público, rama por defecto `main`)
 - **Deploy:** Vercel, proyecto `juanans-projects-d939887f/portfolioantopanti`, conectado por
   integración de GitHub. **Todo push a `main` publica automáticamente en producción.**
   No hay comando de build ni variables de entorno: es un sitio estático puro.
+
+## El PDF fuente — leer esto antes de cambiar el diseño
+
+Todo el lenguaje visual del sitio (paleta, tipografía, formas, fotos) está **calcado de
+`Antonella Barone portfolio.pdf`**, la presentación que armó ella en Canva. El PDF no está en
+el repo; lo tiene Antonella. Si hay que rehacer o extender una lámina y no lo tenés, pedíselo.
+
+De ahí salieron, medidos del propio archivo:
+
+| Cosa | Valor exacto del PDF |
+|---|---|
+| Fondo de las láminas / color de marca | `#b99175` (camel) |
+| Crema | `#f2f1eb` |
+| Tinta (todo el texto) | `#312727` |
+| Tipografía | **Glacial Indifference** Regular + Bold |
+| Manuscrita (firma y anotaciones) | **Brittany Signature** |
+
+**Ninguna de las dos fuentes está en Google Fonts.** Se sustituyeron por las más parecidas
+que sí están, y quedaron declaradas *después* de la original en el stack, así que si algún día
+se auto-hospedan las reales entran solas sin tocar CSS:
+
+- `Glacial Indifference` → **Jost** (revival de Futura, mismas proporciones geométricas).
+- `Brittany Signature` → **Sacramento** (script monolineal).
+
+La firma "Anto Barone" **no** usa fuente: es `assets/firma-anto.png`, la firma real recortada
+del PDF con transparencia. Es más fiel que cualquier sustituto.
 
 ## Stack y estructura
 
@@ -22,22 +48,36 @@ HTML, CSS y JavaScript vanilla. **Sin build step, sin dependencias, sin `package
 ├── index.html      # Página completa: markup + <style> del portfolio + <script> de interacciones
 ├── styles.css      # Sistema de diseño base "Organic": tokens, fuentes y componentes
 ├── assets/
-│   ├── anto-avatar.jpg    # Foto circular del hero
-│   └── anto-portrait.jpg  # Retrato 4:5 (sección "Sobre mí" + imagen de Open Graph, 900×1125)
+│   ├── anto-avatar.jpg      # Foto circular del hero
+│   ├── anto-portrait.jpg    # Retrato 4:5 — hoy sólo se usa como imagen de Open Graph (900×1125)
+│   ├── anto-pdf-retrato.jpg # Retrato del PDF; es el que va en el polaroid de "Sobre mí"
+│   ├── firma-anto.png       # Firma "Anto Barone" recortada del PDF, con transparencia
+│   ├── logo-emprendeya.png  # Logo del cliente del Proyecto 1 (círculo, fondo transparente)
+│   ├── logo-hsbrands.png    # Logo de HS Brands Global (transparente)
+│   ├── p1-reunion.jpg       # Proyecto 1 · paso 1 — captura de la reunión virtual
+│   ├── p1-carnet.jpg        # Proyecto 1 · paso 3 — carnet de investigadora sobre una encuesta
+│   ├── p1-fundadora.jpg     # Proyecto 1 · paso 3 — foto con la fundadora en el lanzamiento
+│   ├── p1-resultados.png    # Proyecto 1 · paso 5 — lámina de resultados (gráfico de dificultad)
+│   └── p1-insights.png      # Proyecto 1 · paso 5 — lámina de insights
+├── .claude/launch.json  # Config del preview del navegador (python -m http.server 8123)
 ├── vercel.json     # cleanUrls + cache inmutable de un año para /assets/*
 ├── CLAUDE.md       # Este archivo
 └── README.md
 ```
 
+**Ojo con el cache inmutable de `/assets/*`:** si cambiás el CONTENIDO de una imagen sin
+cambiarle el nombre, quien ya la tenga cacheada sigue viendo la vieja durante un año. Para
+reemplazar una foto, usá un nombre nuevo.
+
 **Orden de cascada (importante):** `styles.css` se enlaza *primero* y define los tokens del
-sistema base (paleta crema + terracota + oliva). El `<style>` embebido en `index.html` se
-carga *después* y **sobrescribe** `:root` con la variante del portfolio: crema + tinta con
-rosa/malva de acento. Si un color no cambia cuando lo tocás, revisá cuál de los dos manda.
+sistema base. El `<style>` embebido en `index.html` se carga *después* y **sobrescribe**
+`:root` con la paleta del portfolio (camel + crema + tinta). Si un color no cambia cuando lo
+tocás, revisá cuál de los dos manda.
 
 ### Desarrollo local
 
 ```bash
-python3 -m http.server 8000
+python -m http.server 8000
 ```
 
 Y abrir http://localhost:8000. Cualquier servidor estático sirve (`npx serve .` también).
@@ -46,21 +86,63 @@ comportamientos se ven raros. Usá el servidor.
 
 ## Sistema de diseño
 
-- **Paleta:** fondo crema `#f7f0ea`, tinta `#231c1e`, acento rosa `#e8437d`, acento
-  secundario malva `#a94fa0`. Las rampas (`--color-accent-100` … `-900` y las de malva y
-  neutros) están generadas en OKLCH sobre una misma escala de luminosidad: el paso `-400`
-  de rosa pesa visualmente igual que el `-400` de malva. **Si agregás un color, agregalo
-  como rampa completa respetando esa escala**, no como hex suelto.
-- **Tipografía:** `Caprasimo` para títulos, `Figtree` para texto. Se importan desde Google
-  Fonts en la primera línea de `styles.css`.
+- **Paleta:** crema `#f2f1eb`, tinta `#312727`, camel `#b99175` como acento principal y
+  magenta `#e6197f` (el de Emprende Ya) reservado **sólo** para ese proyecto. Las rampas
+  (`--color-accent-100` … `-900` y las de magenta y neutros) están generadas en OKLCH sobre
+  una misma escala de luminosidad: el paso `-400` de camel pesa visualmente igual que el `-400`
+  de magenta. **Si agregás un color, agregalo como rampa completa respetando esa escala**, no
+  como hex suelto.
+- **Tipografía:** ver la tabla de arriba. Se importan desde Google Fonts en la primera línea
+  de `styles.css`. `--font-script` es la manuscrita.
 - **Curvas de animación:** `--spring` (rebote corto), `--soft` (salida suave),
   `--drop` (la caída con rebote al acomodarse — es la firma del sitio).
 - **`--edge`:** margen lateral fluido, `clamp(20px, 5vw, 80px)`. Usalo en vez de paddings fijos.
 
+## Lenguaje gráfico del PDF (las cuatro piezas que se repiten)
+
+Las láminas se apoyan siempre en los mismos cuatro recursos. Están implementados como
+utilidades y conviene reusarlos antes que inventar otros:
+
+1. **`.wavy`** — panel de borde ondulado (el "bloque de texto" de casi todas las láminas).
+   Variantes de relleno: `.tan`, `.paper`, `.cream`. Markup:
+   ```html
+   <div class="wavy tan">
+     <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
+     <div class="wavy-in"> …contenido… </div>
+   </div>
+   ```
+2. **`.stamp`** — marco festoneado de las fotos (el borde oscuro de bollitos redondos).
+   `<span class="stamp tilt-r" data-blob="scallop"><img …></span>`. Las clases `.tilt-l` /
+   `.tilt-r` le dan la inclinación de collage.
+3. **`.spark`** — estrellita de cuatro puntas: `<svg class="spark" style="…"><use href="#spark4"/></svg>`.
+   El símbolo está definido una sola vez en un `<svg>` de `defs` al principio del `<body>`.
+4. **`.doodle`** — garabato de línea fina. Se **dibuja solo** al entrar en viewport: el JS mide
+   `getTotalLength()` de cada `path` y lo pone en `--len` para animar el `stroke-dashoffset`.
+
+Además: `.polaroid` (marco crema + filete camel + la firma abajo) y `.hand` (texto manuscrito).
+
+### Cómo se generan las formas orgánicas — `blobPath()`
+
+Tanto la onda como el festoneado salen de **una sola función** en el `<script>`. Recorre el
+perímetro de un rectángulo redondeado, desplaza cada punto sobre su normal siguiendo una onda,
+y suaviza con Catmull-Rom convertido a cúbicas de Bézier:
+
+- El número de ondas es **entero**, así la curva cierra sin costura.
+- Modo `wave` usa `cos` (la onda entra y sale); modo `scallop` usa `abs(cos)` (todos los
+  bollos hacia afuera, como el marco de una foto).
+- **Se dibuja a la medida real del elemento**, no se estira un SVG fijo. Eso es deliberado: con
+  `preserveAspectRatio` la onda quedaría chata y larga en desktop y apretada en mobile, y
+  perdería el aire de "hecho a mano". Por eso hay que redibujar cuando cambia el tamaño —
+  `drawShapes()` se llama en `load`, en `resize` (con debounce), cuando termina de cargar cada
+  imagen de un `.stamp`, cuando resuelve `document.fonts.ready` y al cambiar de filtro.
+
+Si agregás un panel ondulado o un marco festoneado nuevo, alcanza con poner el markup de
+arriba: `drawShapes()` los toma por `[data-blob]`.
+
 ## Sistema de animación de "caída"
 
-Es la identidad visual del sitio: **todo entra desde arriba, apenas rotado, y se acomoda con
-un rebote.** No lo reemplaces por fades genéricos.
+Es la identidad de movimiento del sitio: **todo entra desde arriba, apenas rotado, y se
+acomoda con un rebote.** No lo reemplaces por fades genéricos.
 
 - `[data-reveal]` — un elemento que cae. Se configura con variables inline:
   `--fall` (distancia), `--tilt` (rotación de entrada), `--rest` (rotación final), `--d` (delay).
@@ -72,7 +154,11 @@ un rebote.** No lo reemplaces por fades genéricos.
 - `.mask > span` — títulos que suben desde detrás de una máscara al entrar en viewport.
 - `.name .ch` — el nombre del hero se parte letra por letra desde JS (`.split-letters`) y cada
   letra cae con `--i * 0.05s` de retraso. "Barone" va en `outline` (contorno) y se rellena de
-  rosa al hover en desktop o al entrar en viewport en touch (`.name.lit`).
+  camel al hover en desktop o al entrar en viewport en touch (`.name.lit`).
+
+**Al probar:** si saltás con `scrollTo` de golpe, los elementos que te salteás nunca
+intersectan y quedan en `opacity: 0`. No es un bug — scrolleá de a poco, o forzá `.in` a mano
+mientras revisás maquetación.
 
 ### Decisión deliberada: `prefers-reduced-motion` se ignora
 
@@ -84,6 +170,31 @@ preguntar.** Si algún día se revierte, alcanza con volver a
 `const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;` — el resto del código
 ya respeta esa bandera.
 
+## Secciones
+
+En orden: **hero** (la tapa del PDF: "Research & Insights" + el nombre) → marquee →
+**01 Mis proyectos** → **02 Experiencia** → **03 Sobre mí** (con **04 Formación & Habilidades**
+como banda camel al final) → **05 Contacto**.
+
+### Mis proyectos y el filtro
+
+La sección arranca con una fila de chips (`.chip[data-filter]`): `Todos`, `Proyecto 1`,
+`HS Brands`, `Educación`. Cada bloque filtrable lleva `data-cat`; el que no matchea recibe
+`.is-hidden`.
+
+Dos detalles que ya costaron una vuelta:
+
+- **El zigzag de las tarjetas lo asigna el JS (`restripe()`), no `:nth-child`.** Con
+  `:nth-child(even)` las tarjetas ocultas seguían contando y al filtrar el zigzag se rompía.
+- Lo que aparece al filtrar recibe `.in` a mano: si no, un bloque que nunca intersectó
+  quedaría invisible al mostrarlo.
+
+**Proyecto 1 (`#p1case`)** no es una tarjeta compacta sino el caso completo, lámina por lámina:
+cabecera con el logo de Emprende Ya, panel "Contexto & Objetivo general", las cifras del
+estudio y los cinco pasos con sus fotos. Va **fuera** de `#plist` a propósito: `#plist` recibe
+un `skewY` continuo por inercia de scroll, y sobre un bloque tan alto ese cizallamiento se ve
+mal.
+
 ## Capa táctil (mobile) — lección aprendida
 
 En desktop las tarjetas de proyecto se expanden con `:hover`. En touch no hay hover, así que:
@@ -94,9 +205,11 @@ En desktop las tarjetas de proyecto se expanden con `:hover`. En touch no hay ho
   una tarjeta cambia de alto y mueve la geometría, lo que hacía que el cálculo de "cuál está
   más centrada" saltara entre dos tarjetas en loop. La solución vigente en `focusNearest()`:
   1. se mide la distancia al **header** de la tarjeta (`.pc-top`), que no se mueve al expandirse,
-     no al elemento completo; y
+     no al elemento completo;
   2. hay **histéresis** — una tarjeta ya enfocada se mantiene hasta que otra esté claramente más
-     centrada (`bd < cd - innerHeight * 0.14`), y solo se adquiere el foco si está bien centrada.
+     centrada (`bd < cd - innerHeight * 0.14`), y solo se adquiere el foco si está bien centrada; y
+  3. se descartan las tarjetas ocultas por el filtro (`.is-hidden` / sin `offsetParent`), si no
+     el foco podía quedarse pegado a una tarjeta que ya no se ve.
   Si tocás esa función, **probá en mobile real o en el emulador con scroll lento**, es donde
   reaparece el problema.
 - Además del foco por scroll, tap o Enter fijan la tarjeta abierta con la clase `.open`
@@ -118,26 +231,47 @@ vez de crear otro listener:
 El handler de `scroll` está separado, con `passive: true` y throttle por `rAF`; maneja la barra
 de progreso, la clase `.scrolled` del nav y el foco táctil.
 
+## Trampa de composición: nada de `backdrop-filter` sobre `.bg-fx`
+
+`.bg-fx` es la capa `position: fixed` con los brillos y el grano. Dos cosas la sostienen y las
+dos están comentadas en el CSS:
+
+- Lleva `transform: translateZ(0)` para forzar su propia capa de composición.
+- **El nav NO usa `backdrop-filter`.** Con el blur puesto, Chromium tomaba esa capa fija como
+  *backdrop root* al hacer scroll y **pintaba media página (o la página entera) de negro**.
+  Costó un rato encontrarlo porque el DOM se veía perfecto: el contenido estaba, sólo que no se
+  pintaba. Hoy `.nav.scrolled` usa un fondo crema casi opaco, que se ve igual y no tiene ese
+  riesgo. **No vuelvas a poner `backdrop-filter` ahí.**
+
 ## Contenido
 
-Los datos del sitio son **reales, de su CV**. No inventes proyectos, cifras ni credenciales.
+Los datos del sitio son **reales**: salen del PDF y de su CV. No inventes proyectos, cifras ni
+credenciales.
 
-- Cuatro tarjetas de proyecto: web internacional de HS Brands Latam (única con link externo,
+- **Proyecto 1 — Emprende Ya** (caso completo, del PDF): app fundada por Nancy Mendoza, mapa
+  social de emprendedores de barrio. Investigación exploratoria **mixta** durante el evento de
+  lanzamiento: **55 encuestas** en papel y **5 entrevistas** semiestructuradas. Cifras de la
+  lámina de resultados: **91 %** con perfil de emprendedor completo, **70,1 %** calificó la app
+  como "muy fácil". Los cinco pasos son: reunión con stakeholders → enfoque metodológico e
+  instrumentos → trabajo de campo → digitalización y análisis → presentación de resultados.
+- **Otros proyectos:** web internacional de HS Brands Latam (única con link externo,
   https://oportunidadeshsbrands.com), cuestionarios en el CRM interno, investigación de
   usuarios, y diseño instruccional en Efe Idiomas (2018–2025).
-- Estadísticas animadas vía `data-count` (7+ años, 1 web lanzada, 2 idiomas, 2026 socióloga UBA).
-- Formación: Sociología UBA 2022–2026, Lovable L1, Python (Agencia de Habilidades para el
-  Futuro, 2024), inglés B2 (FCE).
-- Contacto: antonella.m.barone@gmail.com · LinkedIn `antonella-barone2003` · Vicente López, BA.
+- **Experiencia:** Project Assistant en HS Brands Global (agencia global de investigación de
+  mercado), **abril 2025 – junio 2026**, con los cuatro bullets de la lámina "Experiencia".
+  Debajo, Efe Idiomas 2018–2025 como experiencia previa.
+- **Formación:** Sociología UBA 2022–2026, Curso Inicial de programación con Python (Agencia de
+  Habilidades para el Futuro, 2024), Inglés B2 (FCE), Curso Inicial de Diseño UX/UI, Lovable L1.
+- **Contacto:** antonella.m.barone@gmail.com · LinkedIn `antonella-barone2003` · Vicente López, BA.
 
 ## Meta tags y compartir
 
 Las URLs de `og:image` / `twitter:image` **tienen que ser absolutas**
 (`https://portfolioantopanti.vercel.app/assets/...`), con `og:image:width` y `og:image:height`
 declarados. Con rutas relativas WhatsApp/LinkedIn no levantan la portada — ya pasó y se corrigió
-en el commit `4901db0`. Si cambiás la foto del retrato, actualizá también esas dimensiones.
+en el commit `4901db0`. Si cambiás la foto de la portada, actualizá también esas dimensiones.
 
-El favicon es un SVG embebido como data-URI en el `<link rel="icon">`: una "A" con un punto rosa.
+El favicon es un SVG embebido como data-URI en el `<link rel="icon">`: una "A" crema sobre camel.
 
 ## Convenciones de trabajo
 
@@ -162,13 +296,19 @@ para alguna sección (por ejemplo, publicar el diploma), hay que pedirlos aparte
 
 Ninguna es urgente; el sitio está terminado y en producción. Son las líneas abiertas:
 
-- [ ] Las tarjetas 02, 03 y 04 no tienen link externo — solo la 01. Si aparecen materiales
-      (capturas, documentos, casos), sumarles enlace o galería.
+- [ ] Sólo el Proyecto 1 tiene caso completo. Los otros tres siguen siendo tarjetas: si
+      aparecen materiales (capturas, documentos), se pueden desarrollar con la misma estructura
+      de `#p1case` y sumarles su chip de filtro.
+- [ ] Auto-hospedar **Glacial Indifference** y **Brittany Signature** para calcar el PDF al 100 %.
+      Ya están declaradas primeras en `--font-heading` / `--font-script`: alcanza con agregar los
+      `@font-face`.
+- [ ] Las láminas de resultados e insights del paso 5 se leen chicas. Estaría bueno un lightbox
+      para verlas en grande.
 - [ ] No hay CV descargable en PDF. Sería el complemento natural del bloque de contacto.
 - [ ] Dominio propio en vez del subdominio `.vercel.app` (se configura en Vercel + DNS).
 - [ ] Sin analítica. Vercel Analytics se activa desde el panel del proyecto, sin tocar código.
+- [ ] La imagen de Open Graph sigue siendo `anto-portrait.jpg` (la foto anterior). Si se quiere
+      alinear con la identidad nueva, hay que generar una portada 1200×630 y actualizar las
+      dimensiones en los meta tags.
 - [ ] El sitio ignora `prefers-reduced-motion` a propósito (ver arriba). Si alguna vez se busca
-      cumplir accesibilidad estricta, ese es el primer punto a revisar, junto con el contraste
-      de los textos en `--ink-60` sobre crema.
-- [ ] `assets/antonella.png` (la foto vieja) se eliminó por no usarse. Si hace falta, está en el
-      historial de git.
+      cumplir accesibilidad estricta, ese es el primer punto a revisar.

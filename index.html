@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Antonella Barone — Portfolio</title>
-<meta name="description" content="Portfolio de Antonella Barone — Investigación social, gestión de proyectos y UX. De la pregunta al producto, combinando técnicas cuali y cuanti con plataformas agénticas y low-code." />
+<title>Antonella Barone — Research &amp; Insights</title>
+<meta name="description" content="Portfolio de Antonella M. Barone — Research &amp; Insights. Estudiante avanzada de Sociología (UBA) orientándose a UX: investigación cualitativa y cuantitativa, del diseño del estudio al insight accionable." />
 <meta name="author" content="Antonella Barone" />
-<meta name="theme-color" content="#f7f0ea" />
+<meta name="theme-color" content="#f2f1eb" />
 
 <!-- Open Graph / social -->
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Antonella Barone — Portfolio" />
-<meta property="og:description" content="Investigación social · Gestión de proyectos · UX. De la pregunta al producto." />
+<meta property="og:title" content="Antonella Barone — Research &amp; Insights" />
+<meta property="og:description" content="Portfolio de investigación y UX. De la pregunta al insight: cuali + cuanti, trabajo de campo y resultados que cambian el producto." />
 <meta property="og:locale" content="es_AR" />
 <meta property="og:url" content="https://portfolioantopanti.vercel.app/" />
 <meta property="og:image" content="https://portfolioantopanti.vercel.app/assets/anto-portrait.jpg" />
@@ -21,54 +21,66 @@
 <meta property="og:image:height" content="1125" />
 <meta property="og:image:alt" content="Antonella Barone" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Antonella Barone — Portfolio" />
-<meta name="twitter:description" content="Investigación social · Gestión de proyectos · UX. De la pregunta al producto." />
+<meta name="twitter:title" content="Antonella Barone — Research &amp; Insights" />
+<meta name="twitter:description" content="Portfolio de investigación y UX. De la pregunta al insight: cuali + cuanti, trabajo de campo y resultados que cambian el producto." />
 <meta name="twitter:image" content="https://portfolioantopanti.vercel.app/assets/anto-portrait.jpg" />
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='14'%20fill='%23f7f0ea'/%3E%3Ctext%20x='32'%20y='45'%20font-family='Georgia,serif'%20font-size='38'%20font-weight='700'%20text-anchor='middle'%20fill='%23231c1e'%3EA%3Ctspan%20fill='%23c75d80'%3E.%3C/tspan%3E%3C/text%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='14'%20fill='%23b99175'/%3E%3Ctext%20x='32'%20y='46'%20font-family='Futura,Jost,Avenir,sans-serif'%20font-size='40'%20font-weight='700'%20text-anchor='middle'%20fill='%23f2f1eb'%3EA%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
 <!-- Sistema de diseño base (Organic): tokens, fuentes y componentes. Se carga
-     primero para que los overrides del portfolio (crema + rosa) ganen la cascada. -->
+     primero para que los overrides del portfolio ganen la cascada. -->
 <link rel="stylesheet" href="styles.css" />
 <style>
-/* ——— Portfolio editorial sobre la base Organic: crema + tinta, rosa como
-   acento. Rampas en los mismos pasos OKLCH que el sistema, matices rosa/malva. ——— */
+/* ——— Identidad tomada del portfolio en PDF: camel + crema + tinta cálida.
+   Las rampas se generaron en OKLCH sobre la MISMA escala de luminosidad que el
+   sistema base, así el paso -400 de camel pesa igual que el -400 de magenta. ——— */
 :root {
-  --color-bg: #f7f0ea;
-  --color-bg-warm: #f3e8e0;
-  --color-surface: #f8dde3;
-  --color-text: #231c1e;
-  --color-accent: #e8437d;
-  --color-accent-2: #a94fa0;
-  --color-accent-100: #fff0f5;
-  --color-accent-200: #ffd6e6;
-  --color-accent-300: #ffb0cf;
-  --color-accent-400: #fb84ad;
-  --color-accent-500: #f2588f;
-  --color-accent-600: #db3670;
-  --color-accent-700: #b52458;
-  --color-accent-800: #7d1a3d;
-  --color-accent-900: #4a0f24;
-  --color-accent-2-100: #faeef9;
-  --color-accent-2-200: #f2d4ef;
-  --color-accent-2-300: #e3aede;
-  --color-accent-2-400: #cf82c8;
-  --color-accent-2-500: #b658ab;
-  --color-accent-2-600: #9a3f8f;
-  --color-accent-2-700: #782f6e;
-  --color-accent-2-800: #522049;
-  --color-accent-2-900: #331830;
-  --color-neutral-100: #f9f3f2;
-  --color-neutral-200: #eee1e2;
-  --color-neutral-300: #dcc9cb;
-  --color-neutral-400: #c0a8ab;
-  --color-neutral-500: #a1888c;
-  --color-neutral-600: #826a6e;
-  --color-neutral-700: #645053;
-  --color-neutral-800: #47373a;
-  --color-neutral-900: #2e2225;
+  --color-bg: #f2f1eb;          /* crema del PDF */
+  --color-bg-warm: #e9e6dd;
+  --color-surface: #ffffff;
+  --color-text: #312727;        /* tinta cálida del PDF */
+  --color-accent: #b99175;      /* camel: el color de marca de las láminas */
+  --color-accent-2: #e6197f;    /* magenta de Emprende Ya, sólo para ese proyecto */
+
+  --color-accent-100: #faf3ee;
+  --color-accent-200: #f4e5db;
+  --color-accent-300: #e8cfbe;
+  --color-accent-400: #d2b098;
+  --color-accent-500: #b78f73;
+  --color-accent-600: #977157;
+  --color-accent-700: #75563f;
+  --color-accent-800: #543d2d;
+  --color-accent-900: #36281e;
+
+  --color-accent-2-100: #ffeff4;
+  --color-accent-2-200: #ffdce7;
+  --color-accent-2-300: #ffbed3;
+  --color-accent-2-400: #ff8eb5;
+  --color-accent-2-500: #ff3e95;
+  --color-accent-2-600: #db0b77;
+  --color-accent-2-700: #a9065b;
+  --color-accent-2-800: #7d0041;
+  --color-accent-2-900: #500a2a;
+
+  --color-neutral-100: #f6f4f4;
+  --color-neutral-200: #ebe7e6;
+  --color-neutral-300: #dad2d2;
+  --color-neutral-400: #bfb4b4;
+  --color-neutral-500: #a19595;
+  --color-neutral-600: #837777;
+  --color-neutral-700: #645a5a;
+  --color-neutral-800: #484141;
+  --color-neutral-900: #2f2a2a;
+
+  /* Glacial Indifference es la fuente del PDF y no está en Google Fonts, así que
+     Jost (revival de Futura, mismas proporciones geométricas) ocupa su lugar.
+     Queda declarada primera: si algún día se auto-hospeda la real, entra sola. */
+  --font-heading: "Glacial Indifference", "Jost", system-ui, sans-serif;
+  --font-heading-weight: 700;
+  --font-body: "Glacial Indifference", "Jost", system-ui, sans-serif;
+  --font-script: "Sacramento", "Brittany Signature", cursive;
 
   --edge: clamp(20px, 5vw, 80px);
   --spring: cubic-bezier(0.34, 1.4, 0.44, 1);
@@ -79,19 +91,24 @@
 }
 html { scroll-behavior: smooth; }
 body { margin: 0; text-wrap: pretty; overflow-x: clip;
+  font-family: var(--font-body); color: var(--color-text);
   background:
     linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg) 40%,
       color-mix(in srgb, var(--color-bg) 78%, var(--color-bg-warm)) 100%); }
 .wrap { max-width: 1360px; margin: 0 auto; padding: 0 var(--edge); position: relative; z-index: 1; }
 
-/* — capa de fondo: glows suaves + grano editorial, fija detrás de todo — */
-.bg-fx { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+/* — capa de fondo: brillos camel muy lavados + grano, fijos detrás de todo — */
+/* El translateZ fuerza su propia capa de composición. Sin eso, el
+   backdrop-filter del nav al hacer scroll toma esta capa fija como backdrop
+   root y pinta TODA la página de negro en Chromium. Ya pasó: no lo saques. */
+.bg-fx { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+  transform: translateZ(0); will-change: transform; }
 .bg-fx::before { content: ""; position: absolute; inset: -10%;
   background:
-    radial-gradient(820px 600px at 8% -6%, color-mix(in srgb, var(--color-accent-300) 72%, transparent), transparent 62%),
-    radial-gradient(720px 560px at 100% 2%, color-mix(in srgb, var(--color-accent-2-300) 66%, transparent), transparent 60%),
-    radial-gradient(560px 460px at 92% 82%, color-mix(in srgb, var(--color-accent-400) 42%, transparent), transparent 62%),
-    radial-gradient(960px 760px at 50% 120%, color-mix(in srgb, var(--color-accent-200) 62%, transparent), transparent 62%); }
+    radial-gradient(820px 600px at 8% -6%, color-mix(in srgb, var(--color-accent-300) 62%, transparent), transparent 62%),
+    radial-gradient(720px 560px at 100% 2%, color-mix(in srgb, var(--color-accent-200) 80%, transparent), transparent 60%),
+    radial-gradient(560px 460px at 92% 82%, color-mix(in srgb, var(--color-accent-400) 34%, transparent), transparent 62%),
+    radial-gradient(960px 760px at 50% 120%, color-mix(in srgb, var(--color-accent-300) 48%, transparent), transparent 62%); }
 .bg-fx::after { content: ""; position: absolute; inset: 0; opacity: 0.05; mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
 
@@ -100,18 +117,25 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
 
 /* — nav — */
 .nav { position: sticky; top: 0; z-index: 50;
-  padding-inline: max(var(--edge), calc((100% - 1360px) / 2 + var(--edge)));
+  display: flex; align-items: center; gap: clamp(14px, 2.4vw, 30px);
+  padding: 18px max(var(--edge), calc((100% - 1360px) / 2 + var(--edge)));
+  font-size: 14.5px; font-weight: 500;
   transition: background 0.3s ease, box-shadow 0.3s ease; }
-.nav.scrolled { background: color-mix(in srgb, var(--color-bg) 80%, transparent);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+.nav-brand { font-family: var(--font-heading); font-weight: 700; font-size: 19px;
+  letter-spacing: 0.01em; margin-right: auto; }
+/* Sin backdrop-filter a propósito: combinado con la capa fija .bg-fx, Chromium
+   toma el nav como backdrop root y pinta media página de negro al hacer scroll.
+   Un fondo crema casi opaco da el mismo resultado visual sin ese riesgo. */
+.nav.scrolled { background: color-mix(in srgb, var(--color-bg) 93%, transparent);
   box-shadow: var(--shadow-sm); }
-.nav a { white-space: nowrap; position: relative; text-decoration: none; transition: color 0.2s ease; }
+.nav a { white-space: nowrap; position: relative; text-decoration: none;
+  color: inherit; transition: color 0.2s ease; }
 .nav a::after { content: ""; position: absolute; left: 0; bottom: -5px;
   width: 100%; height: 2px; border-radius: 999px; background: var(--color-accent);
   transform: scaleX(0); transform-origin: left; transition: transform 0.28s var(--soft); }
 @media (hover: hover) { .nav a:hover::after { transform: scaleX(1); } }
 .nav a:active { color: var(--color-accent-700); }
-@media (max-width: 640px) { .nav a:not(.keep) { display: none; } }
+@media (max-width: 780px) { .nav a:not(.keep) { display: none; } }
 
 /* — kicker editorial — */
 .kicker { display: flex; align-items: center; gap: 14px;
@@ -124,9 +148,56 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
   transform: scaleX(0); transform-origin: left; transition: transform 0.7s var(--soft) 0.15s; }
 .in.kicker::after, .in .kicker::after { transform: scaleX(1); }
 
-/* — hero (más compacto: menos aire arriba, el nombre sube) — */
+/* ———————————————————————————————————————————————————————————————
+   LENGUAJE GRÁFICO DEL PDF
+   Cuatro piezas se repiten en todas las láminas y son las que le dan
+   carácter: el panel de borde ondulado, el marco festoneado de las fotos,
+   las estrellitas de cuatro puntas y los garabatos de línea fina.
+   ——————————————————————————————————————————————————————————————— */
+
+/* Panel ondulado. El path lo dibuja JS a la medida real del bloque (ver makeBlob
+   en el script): un SVG fijo estirado deformaría la onda distinto en desktop y
+   en mobile, y la onda pareja es justamente lo que se lee como "hecho a mano". */
+.wavy { position: relative; isolation: isolate; }
+.wavy > .wavy-bg { position: absolute; inset: 0; z-index: -1; display: block;
+  width: 100%; height: 100%; }
+.wavy > .wavy-bg path { fill: var(--wavy-fill, var(--color-surface)); }
+.wavy > .wavy-in { position: relative;
+  padding: clamp(30px, 4.4vw, 62px) clamp(28px, 4.6vw, 70px); }
+.wavy.tan { --wavy-fill: var(--color-accent); }
+.wavy.paper { --wavy-fill: var(--color-surface); }
+.wavy.cream { --wavy-fill: var(--color-bg); }
+
+/* Marco festoneado: el borde de bollitos redondos de las fotos del PDF.
+   Misma función generadora, en modo "scallop" (bollos siempre hacia afuera). */
+.stamp { position: relative; display: block; padding: var(--stamp-pad, 12px);
+  background: var(--color-text);
+  -webkit-mask-image: var(--stamp-mask); mask-image: var(--stamp-mask);
+  -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  transition: transform 0.55s var(--spring); }
+.stamp img { display: block; width: 100%; height: auto; }
+@media (hover: hover) { .stamp:hover { transform: rotate(0deg) scale(1.035); z-index: 3; } }
+
+/* Estrellitas de cuatro puntas y garabatos: decoración, nunca contenido. */
+.spark { position: absolute; width: var(--w, 26px); height: var(--w, 26px);
+  color: var(--color-text); opacity: var(--o, 0.85); pointer-events: none; z-index: 2; }
+.doodle { position: absolute; pointer-events: none; z-index: 0;
+  color: var(--color-text); opacity: 0.5; }
+.doodle path { fill: none; stroke: currentColor; stroke-width: 1.5;
+  stroke-linecap: round; stroke-linejoin: round; }
+/* el garabato se dibuja solo al entrar en viewport (JS mide la longitud) */
+.doodle path { stroke-dasharray: var(--len, 1600); stroke-dashoffset: var(--len, 1600);
+  transition: stroke-dashoffset 2.4s var(--soft) 0.2s; }
+.in .doodle path { stroke-dashoffset: 0; }
+
+/* Anotación manuscrita (en el PDF, Brittany Signature). */
+.hand { font-family: var(--font-script); font-size: clamp(23px, 2.4vw, 34px);
+  line-height: 1.1; color: var(--color-text); }
+
+/* — hero — */
 .hero { position: relative; padding: clamp(18px, 3vh, 40px) 0 clamp(28px, 4.5vh, 56px);
-  min-height: min(76svh, 700px); display: flex; flex-direction: column; justify-content: center; }
+  min-height: min(78svh, 720px); display: flex; flex-direction: column; justify-content: center; }
 .hero-top { display: flex; justify-content: space-between; gap: 16px;
   font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
   color: var(--ink-60); margin-bottom: clamp(16px, 3vh, 34px); }
@@ -135,10 +206,14 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
   background: var(--color-accent); animation: pulse 2.4s ease-in-out infinite; }
 @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 45%, transparent); }
   60% { box-shadow: 0 0 0 9px transparent; } }
+/* la tapa del PDF: "Research & Insights" grande, el nombre debajo */
+.hero-eyebrow { font-family: var(--font-heading); font-weight: 700;
+  font-size: clamp(29px, 6.2vw, 88px); line-height: 1; margin: 0 0 clamp(8px, 1.4vh, 18px);
+  color: var(--color-accent); letter-spacing: -0.018em; }
 .name { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
-  text-transform: uppercase; font-size: clamp(50px, 12.6vw, 176px);
-  line-height: 0.98; letter-spacing: 0.005em; margin: 0 0 0 -0.028em; }
-.name .row-line { display: block; overflow: hidden; padding: 0.06em 0.06em 0.1em; margin: -0.06em -0.06em -0.1em; }
+  text-transform: none; font-size: clamp(46px, 11.6vw, 164px);
+  line-height: 0.96; letter-spacing: -0.024em; margin: 0 0 0 -0.03em; }
+.name .row-line { display: block; overflow: hidden; padding: 0.06em 0.06em 0.13em; margin: -0.06em -0.06em -0.13em; }
 /* caída armónica: cada letra cae desde arriba y se acomoda, suave y escalonada */
 .name .ch { display: inline-block; opacity: 0; transform: translateY(-1.2em);
   animation: chdrop 0.92s var(--drop) both;
@@ -150,19 +225,19 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
 .name .outline { color: transparent; -webkit-text-stroke: 2.5px var(--color-text);
   transition: color 0.5s var(--soft), -webkit-text-stroke-color 0.5s var(--soft); }
 @media (hover: hover) { .name .row-line:hover .outline { color: var(--color-accent); -webkit-text-stroke-color: var(--color-accent); } }
-/* en touch (o al enfocar el hero) "Barone" se rellena de rosa al entrar en viewport */
+/* en touch "Barone" se rellena de camel al entrar en viewport */
 .is-touch .name.lit .outline { color: var(--color-accent); -webkit-text-stroke-color: var(--color-accent); }
 .hero-foot { display: flex; align-items: flex-end; justify-content: space-between;
   gap: clamp(24px, 4vw, 64px); margin-top: clamp(20px, 4vh, 48px); }
 .hero-left { display: flex; align-items: center; gap: clamp(18px, 2.5vw, 32px); flex-wrap: wrap; }
 .portrait { flex: none; width: clamp(96px, 10vw, 136px); aspect-ratio: 1; border-radius: 50%;
-  overflow: hidden; box-shadow: 0 0 0 5px var(--color-bg), 0 0 0 7px var(--color-accent-300);
+  overflow: hidden; box-shadow: 0 0 0 5px var(--color-bg), 0 0 0 7px var(--color-accent-400);
   transition: transform 0.5s var(--spring), box-shadow 0.5s ease; will-change: translate; }
 @media (hover: hover) { .portrait:hover { transform: scale(1.07) rotate(-4deg);
-  box-shadow: 0 0 0 5px var(--color-bg), 0 0 0 8px var(--color-accent-500); } }
+  box-shadow: 0 0 0 5px var(--color-bg), 0 0 0 8px var(--color-accent-600); } }
 .portrait:active { transform: scale(1.05) rotate(-3deg); }
 .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.hero-role { max-width: 46ch; }
+.hero-role { max-width: 48ch; }
 .hero-role .role { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
   font-weight: 700; color: var(--color-accent-700); margin: 0 0 12px; }
 .hero-role p { font-size: clamp(15.5px, 1.3vw, 17.5px); line-height: 1.65; margin: 0; color: var(--ink-75); }
@@ -172,10 +247,10 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
 
 /* — insignia giratoria — */
 .badge { position: relative; width: clamp(110px, 12vw, 150px); aspect-ratio: 1; flex: none; will-change: translate; }
-.badge svg { position: absolute; inset: 0; width: 100%; height: 100%;
+.badge > svg { position: absolute; inset: 0; width: 100%; height: 100%;
   animation: spin 16s linear infinite; }
-.badge svg text { font-family: var(--font-body); font-weight: 700; font-size: 11.4px;
-  letter-spacing: 2.6px; text-transform: uppercase; fill: var(--ink-75); }
+.badge svg text { font-family: var(--font-body); font-weight: 600; font-size: 11.2px;
+  letter-spacing: 2.4px; text-transform: uppercase; fill: var(--ink-75); }
 .badge .core { position: absolute; inset: 0; display: grid; place-content: center; }
 .badge .core span { width: 46px; height: 46px; border-radius: 50%;
   background: var(--color-accent); display: grid; place-content: center;
@@ -193,18 +268,19 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
 .marq-set { display: flex; align-items: center; gap: clamp(28px, 3.5vw, 56px);
   padding-right: clamp(28px, 3.5vw, 56px); }
 .marq-item { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
-  font-size: clamp(26px, 3.2vw, 44px); white-space: nowrap; }
+  font-size: clamp(26px, 3.2vw, 44px); white-space: nowrap; letter-spacing: -0.018em; }
 .marq-item:nth-child(4n+3) { color: transparent; -webkit-text-stroke: 1.8px var(--color-text); }
 .marq-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--color-accent); flex: none; }
 
 /* — títulos de sección con máscara — */
-.sect { padding: clamp(72px, 12vh, 140px) 0 0; }
+.sect { padding: clamp(72px, 12vh, 140px) 0 0; position: relative; }
 .mask { display: block; overflow: hidden; padding-bottom: 0.14em; margin-bottom: -0.14em; }
 .mask > span { display: block; transform: translateY(115%);
   transition: transform 0.85s var(--soft); transition-delay: var(--d, 0s); }
 .in .mask > span { transform: none; }
 .h-sect { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
-  font-size: clamp(34px, 5.6vw, 76px); line-height: 1.04; margin: 0; }
+  font-size: clamp(34px, 5.8vw, 82px); line-height: 1.02; margin: 0; letter-spacing: -0.024em; }
+.h-sect .tan { color: var(--color-accent); }
 
 /* ——— EL SISTEMA DE CAÍDA: los elementos caen desde arriba, apenas
    rotados, y se acomodan con un rebote (--drop). ——— */
@@ -220,19 +296,35 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
 [data-cascade].in > * { opacity: 1; transform: none; }
 [data-cascade] > *:nth-child(even) { --tilt: 1.6deg; }
 
+/* — filtros de proyectos — */
+.filters { display: flex; flex-wrap: wrap; gap: 10px;
+  margin: 0 0 clamp(30px, 4.5vw, 60px); }
+.chip { font: inherit; font-weight: 600; font-size: 14px; cursor: pointer;
+  padding: 11px 22px; border-radius: 999px; line-height: 1;
+  border: 2px solid color-mix(in srgb, var(--color-text) 18%, transparent);
+  background: transparent; color: var(--color-text);
+  transition: background 0.28s var(--soft), color 0.28s var(--soft),
+    border-color 0.28s var(--soft), transform 0.35s var(--spring); }
+@media (hover: hover) { .chip:hover { border-color: var(--color-accent); transform: translateY(-2px); } }
+.chip:active { transform: scale(0.96); }
+.chip[aria-pressed="true"] { background: var(--color-accent); border-color: var(--color-accent);
+  color: var(--color-bg); }
+.chip:focus-visible { outline: 2px solid var(--color-accent-700); outline-offset: 3px; }
+.is-hidden { display: none !important; }
+
 /* — proyectos: tarjetas escalonadas que caen y se expanden — */
 .plist { display: flex; flex-direction: column; gap: clamp(18px, 2.5vw, 30px);
   will-change: transform; }
 .pcard { width: min(920px, 100%); box-sizing: border-box; position: relative;
-  border-radius: calc(2.5 * var(--radius-lg)); cursor: pointer;
+  border-radius: calc(2.5 * var(--radius-lg)); cursor: pointer; align-self: flex-start;
   padding: clamp(22px, 3vw, 38px) clamp(22px, 3.5vw, 46px);
   --fall: 90px; --tilt: -3.5deg; --rest: -0.7deg;
   transition: transform 0.95s var(--drop), opacity 0.5s ease, box-shadow 0.4s ease;
   transition-delay: var(--d, 0s); }
-.pcard:nth-child(even) { --tilt: 3.5deg; --rest: 0.7deg; align-self: flex-end; }
-.pcard:nth-child(odd) { align-self: flex-start; }
-@media (min-width: 1024px) { .pcard:nth-child(even) { margin-top: -52px; } }
-/* desktop: hover expande y levanta */
+/* el zigzag lo marca JS con .alt sobre las tarjetas VISIBLES, no :nth-child:
+   al filtrar, nth-child sigue contando las ocultas y el zigzag se rompe. */
+.pcard.alt { --tilt: 3.5deg; --rest: 0.7deg; align-self: flex-end; }
+@media (min-width: 1024px) { .pcard.alt { margin-top: -52px; } }
 @media (hover: hover) {
   .pcard.in:hover { transform: translateY(-6px) rotate(0deg) scale(1.012);
     box-shadow: var(--shadow-md); z-index: 2; transition-delay: 0s; }
@@ -251,12 +343,12 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
 .is-touch .pcard.focus .pc-body { grid-template-rows: 1fr; opacity: 1; margin-top: 16px; }
 .is-touch .pcard.focus .plus { transform: rotate(135deg); }
 .pcard:active { transform: scale(0.992); }
-.pcard:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+.pcard:focus-visible { outline: 2px solid var(--color-accent-700); outline-offset: 3px; }
 .pc-top { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
 .pc-kick { font-size: 12.5px; letter-spacing: 0.09em; text-transform: uppercase;
-  font-weight: 700; opacity: 0.7; margin: 0 0 10px; }
+  font-weight: 700; opacity: 0.72; margin: 0 0 10px; }
 .pc-title { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
-  font-size: clamp(26px, 3.8vw, 50px); line-height: 1.05; margin: 0; }
+  font-size: clamp(25px, 3.6vw, 46px); line-height: 1.04; margin: 0; letter-spacing: -0.02em; }
 .plus { flex: none; width: 46px; height: 46px; border-radius: 50%;
   border: 2.5px solid currentColor; position: relative; opacity: 0.8;
   transition: transform 0.45s var(--spring); }
@@ -269,7 +361,7 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
 .pc-body > div { overflow: hidden; min-height: 0; }
 .pc-copy { font-size: 15.5px; line-height: 1.65; margin: 0; max-width: 58ch; }
 .pc-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-.pc-tags .tag { background: color-mix(in srgb, #fff 42%, transparent); color: inherit; }
+.pc-tags .tag { background: color-mix(in srgb, #fff 46%, transparent); color: inherit; }
 .pc-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px;
   font-weight: 700; color: inherit; text-decoration: underline; text-underline-offset: 4px; }
 .pc-link svg { transition: transform 0.3s var(--spring); }
@@ -277,7 +369,78 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
 .pc-hint { font-size: 12px; font-weight: 600; opacity: 0.55; margin: 10px 0 0; }
 @media (hover: hover) { .pc-hint { display: none; } }
 
-/* — contadores / estadísticas: entrada con línea que se dibuja + interacción — */
+/* ——— PROYECTO 1: el caso completo, lámina por lámina ——— */
+.case { position: relative; margin-bottom: clamp(48px, 8vw, 104px);
+  --fall: 70px; --tilt: -1.6deg; }
+.case-head { display: flex; align-items: center; gap: clamp(18px, 3vw, 40px);
+  flex-wrap: wrap; margin-bottom: clamp(26px, 4vw, 48px); }
+.case-logo { flex: none; width: clamp(84px, 10vw, 128px); aspect-ratio: 1;
+  border-radius: 50%; background: #fff; padding: 0; overflow: hidden;
+  box-shadow: 0 8px 26px color-mix(in srgb, var(--color-text) 16%, transparent);
+  transition: transform 0.6s var(--spring); }
+.case-logo img { width: 100%; height: 100%; object-fit: contain; display: block; }
+@media (hover: hover) { .case-logo:hover { transform: rotate(-8deg) scale(1.06); } }
+.case-titles { min-width: 0; }
+.case-kick { font-size: 12.5px; letter-spacing: 0.1em; text-transform: uppercase;
+  font-weight: 700; color: var(--color-accent-700); margin: 0 0 8px; }
+.case-title { font-family: var(--font-heading); font-weight: 700; margin: 0;
+  font-size: clamp(34px, 5.4vw, 74px); line-height: 1; letter-spacing: -0.026em; }
+.case-sub { margin: 12px 0 0; font-size: clamp(15px, 1.4vw, 18px); color: var(--ink-75);
+  max-width: 54ch; line-height: 1.6; }
+
+/* Contexto: etiqueta en bold-itálica a la izquierda, como en la lámina. */
+.ctx { display: grid; grid-template-columns: minmax(150px, 210px) minmax(0, 1fr);
+  gap: clamp(18px, 3vw, 44px); align-items: start; }
+.ctx-label { font-family: var(--font-heading); font-weight: 700; font-style: italic;
+  font-size: clamp(20px, 2.3vw, 32px); line-height: 1.1; margin: 0;
+  letter-spacing: -0.01em; padding-top: clamp(24px, 4vw, 56px); }
+.ctx-label span { color: var(--color-accent); }
+.ctx p { margin: 0 0 1.05em; font-size: clamp(15.5px, 1.35vw, 18px); line-height: 1.7; }
+.ctx p:last-child { margin-bottom: 0; }
+@media (max-width: 860px) { .ctx { grid-template-columns: 1fr; }
+  .ctx-label { padding-top: 0; } }
+
+/* Cifras del estudio */
+.p1-stats { padding-top: clamp(36px, 6vh, 64px); }
+
+/* Los cinco pasos */
+.steps { display: grid; gap: clamp(52px, 8vw, 108px);
+  padding-top: clamp(48px, 8vh, 92px); }
+.step { position: relative; }
+.step-t { font-family: var(--font-heading); font-weight: 700; font-style: italic;
+  font-size: clamp(21px, 2.9vw, 40px); line-height: 1.12; margin: 0 0 clamp(18px, 2.6vw, 32px);
+  letter-spacing: -0.018em; }
+.step-t span { color: var(--color-accent); }
+.step:nth-child(even) .step-t { text-align: right; }
+.step:nth-child(even) .step-t span { color: var(--color-accent-700); }
+.step-grid { display: grid; gap: clamp(22px, 3.4vw, 48px); align-items: center;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); }
+.step:nth-child(even) .step-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr); }
+.step:nth-child(even) .step-panel { order: 2; }
+.step:nth-child(even) .step-media { order: 1; }
+.step-panel p { margin: 0 0 1.05em; font-size: clamp(15px, 1.3vw, 17.5px); line-height: 1.72; }
+.step-panel p:last-child { margin-bottom: 0; }
+.step-panel b { font-weight: 700; }
+/* pasos sin foto: el panel ocupa todo el ancho. Va DESPUÉS de la regla de los
+   pares, si no un paso solo en posición par heredaba las dos columnas. */
+.step.step-solo .step-grid,
+.step.step-solo:nth-child(even) .step-grid { grid-template-columns: minmax(0, 1fr); }
+.step.step-solo .step-panel { max-width: min(100%, 1000px); margin-inline: auto; }
+.step-media { display: grid; gap: clamp(18px, 2.6vw, 34px); justify-items: center; }
+.step-media figure { margin: 0; display: grid; gap: 10px; justify-items: center; width: 100%; }
+.step-media .stamp { width: min(100%, 420px); }
+.step-media figcaption { font-family: var(--font-script);
+  font-size: clamp(20px, 2vw, 28px); line-height: 1.1; color: var(--ink-75);
+  text-align: center; transform: rotate(-4deg); }
+.tilt-l { rotate: -3.4deg; } .tilt-r { rotate: 3deg; }
+@media (max-width: 820px) {
+  .step-grid, .step:nth-child(even) .step-grid { grid-template-columns: minmax(0, 1fr); }
+  .step:nth-child(even) .step-panel { order: 0; }
+  .step:nth-child(even) .step-media { order: 0; }
+  .step:nth-child(even) .step-t { text-align: left; }
+}
+
+/* — contadores / estadísticas — */
 .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: clamp(20px, 3vw, 48px); padding-top: clamp(48px, 8vh, 88px); }
 .stat { position: relative; border-top: 2px solid color-mix(in srgb, var(--color-text) 12%, transparent);
@@ -287,48 +450,121 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
   transition: transform 0.7s var(--soft); transition-delay: var(--d, 0s); }
 .stats.in .stat::after { transform: scaleX(1); }
 .stat-num { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
-  font-size: clamp(40px, 5vw, 72px); line-height: 1; margin: 0;
+  font-size: clamp(38px, 4.8vw, 68px); line-height: 1; margin: 0; letter-spacing: -0.03em;
   font-feature-settings: "tnum" 1; transition: transform 0.4s var(--spring), color 0.3s ease; }
-.stat-num sup { font-size: 0.45em; color: var(--color-accent-600); margin-left: 2px; }
-.stat-label { font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase;
-  font-weight: 600; color: var(--ink-60); margin: 10px 0 0; }
+.stat-num sup { font-size: 0.45em; color: var(--color-accent-600); margin-left: 2px;
+  vertical-align: super; }
+.stat-label { font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase;
+  font-weight: 600; color: var(--ink-60); margin: 10px 0 0; line-height: 1.45; }
 @media (hover: hover) { .stat:hover { border-color: var(--color-accent); }
   .stat:hover .stat-num { transform: scale(1.06); color: var(--color-accent-700); } }
 .is-touch .stat.focus { border-color: var(--color-accent); }
 .is-touch .stat.focus .stat-num { transform: scale(1.06); color: var(--color-accent-700); }
 @media (max-width: 720px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
+/* ——— EXPERIENCIA ——— */
+.exp { display: grid; gap: clamp(28px, 4.5vw, 64px);
+  grid-template-columns: minmax(190px, 260px) minmax(0, 1fr); align-items: start;
+  padding-top: clamp(16px, 3vh, 32px); }
+.exp-brand { display: grid; justify-items: center; gap: 16px; position: relative;
+  --fall: 60px; --tilt: -4deg; }
+/* el logo dentro del círculo dibujado a mano, como en la lámina */
+.exp-ring { position: relative; width: min(210px, 62vw); aspect-ratio: 1;
+  display: grid; place-items: center; }
+.exp-ring .ring { position: absolute; inset: -6%; width: 112%; height: 112%;
+  color: var(--color-text); opacity: 0.85; }
+.exp-ring .ring path { fill: none; stroke: currentColor; stroke-width: 1.7;
+  stroke-linecap: round; }
+.exp-ring .disc { position: absolute; inset: 6%; border-radius: 50%; background: #fff;
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--color-text) 14%, transparent); }
+.exp-ring img { position: relative; width: 62%; height: auto; display: block; }
+.exp-org { margin: 0; font-size: 15px; line-height: 1.5; text-align: center;
+  color: var(--ink-75); max-width: 20ch; }
+.exp-card { position: relative; }
+.exp-role { font-family: var(--font-heading); font-weight: 700; margin: 0 0 clamp(18px, 2.4vw, 28px);
+  font-size: clamp(22px, 2.9vw, 38px); letter-spacing: 0.01em; text-transform: uppercase;
+  line-height: 1.05; }
+.exp-list { margin: 0; padding: 0; list-style: none; display: grid; gap: clamp(16px, 2.2vw, 26px); }
+.exp-list li { display: flex; gap: 14px; align-items: baseline;
+  font-size: clamp(15px, 1.32vw, 17.5px); line-height: 1.65; }
+.exp-list li::before { content: ""; flex: none; width: 9px; height: 9px; border-radius: 50%;
+  background: var(--color-text); transform: translateY(-2px); }
+.exp-date { position: absolute; z-index: 3; top: -22px; right: 8px;
+  rotate: -14deg; text-align: center; max-width: 8em; }
+@media (max-width: 900px) {
+  .exp { grid-template-columns: 1fr; justify-items: center; }
+  .exp-card { width: 100%; }
+  .exp-date { position: static; rotate: -4deg; max-width: none; margin: 0 0 10px; text-align: left; }
+}
+/* segunda experiencia, más compacta */
+.exp-prev { display: grid; grid-template-columns: minmax(190px, 260px) minmax(0, 1fr);
+  gap: clamp(28px, 4.5vw, 64px); align-items: center;
+  margin-top: clamp(44px, 7vw, 88px); }
+.exp-prev .exp-mark { font-family: var(--font-heading); font-weight: 700;
+  font-size: clamp(30px, 3.6vw, 50px); line-height: 1; text-align: center;
+  color: var(--color-accent); letter-spacing: -0.02em; }
+.exp-prev .exp-mark small { display: block; font-size: 13px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-60); margin-top: 10px; font-weight: 600; }
+@media (max-width: 900px) { .exp-prev { grid-template-columns: 1fr; } }
+
 /* — sobre mí — */
 .about { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
   gap: clamp(32px, 5vw, 96px); align-items: start; padding-top: clamp(40px, 6vh, 72px); }
-.about .bio { font-size: clamp(17px, 1.5vw, 21px); line-height: 1.7; margin: 0; color: var(--ink-75); }
-.about .bio b { color: var(--color-text); font-weight: 600; }
-.about .bio + .bio { margin-top: 1em; }
-.cred { margin: clamp(28px, 4vh, 44px) 0 0; padding: 0; list-style: none; display: grid; gap: 16px; }
-.cred li { display: flex; gap: 14px; align-items: baseline; font-size: 15.5px; line-height: 1.55; }
-.cred li::before { content: ""; width: 11px; height: 11px; border-radius: 50%;
-  background: var(--color-accent); flex: none; transform: translateY(-1px); }
-.cred li:nth-child(even)::before { background: var(--color-accent-2-500); }
-.cred b { font-weight: 600; }
-.about-side { position: sticky; top: 96px; display: grid; gap: 20px; justify-items: start;
-  --fall: 70px; --tilt: -5deg; --rest: -1.5deg; }
-.about-side .frame { position: relative; width: min(300px, 100%); border-radius: calc(2 * var(--radius-lg));
-  overflow: hidden; transition: transform 0.5s var(--spring), box-shadow 0.5s ease; }
+.about .bio { font-size: clamp(16.5px, 1.45vw, 20px); line-height: 1.72; margin: 0; color: var(--ink-75); }
+.about .bio b { color: var(--color-text); font-weight: 700; }
+.about .bio + .bio { margin-top: 1.1em; }
+.about-side { position: sticky; top: 96px; display: grid; gap: 20px; justify-items: center;
+  --fall: 70px; --tilt: -5deg; --rest: -2.2deg; }
+/* polaroid: marco crema, filete camel y la firma abajo, como en la lámina */
+.polaroid { position: relative; width: min(330px, 100%); box-sizing: border-box;
+  background: var(--color-bg); padding: 16px 16px 8px;
+  box-shadow: 0 16px 44px color-mix(in srgb, var(--color-text) 20%, transparent);
+  transition: transform 0.55s var(--spring), box-shadow 0.5s ease; }
+@media (hover: hover) { .polaroid:hover { transform: rotate(1.6deg) scale(1.035);
+  box-shadow: 0 22px 60px color-mix(in srgb, var(--color-text) 26%, transparent); } }
+.polaroid .shot { position: relative; overflow: hidden; border: 2px solid var(--color-accent); }
+/* sólo la FOTO va recortada en cuadrado: si el selector es .polaroid img, la
+   firma de abajo también se vuelve cuadrada y se recorta. */
+.polaroid .shot img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block;
+  scale: 1.08; will-change: translate; }
 /* barrido de luz al aparecer con el scroll */
-.about-side .frame::after { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+.polaroid .shot::after { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
   background: linear-gradient(115deg, transparent 30%, color-mix(in srgb, #fff 55%, transparent) 48%, transparent 62%);
   transform: translateX(-130%); }
-.about-side.in .frame::after { animation: sheen 1.5s var(--soft) 0.35s 1; }
+.about-side.in .polaroid .shot::after { animation: sheen 1.5s var(--soft) 0.35s 1; }
 @keyframes sheen { to { transform: translateX(130%); } }
-@media (hover: hover) { .about-side .frame:hover { transform: rotate(1.5deg) scale(1.03); box-shadow: var(--shadow-md); } }
-.about-side .frame:active { transform: rotate(1deg) scale(1.02); }
-.about-side .frame img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block;
-  scale: 1.14; will-change: translate; }
-.about-side .side-note { font-size: 13px; color: var(--ink-60); margin: 0; }
+.polaroid .firma { display: block; width: 74%; margin: 14px auto 8px; opacity: 0.9; }
 @media (max-width: 880px) {
   .about { grid-template-columns: 1fr; }
   .about-side { position: static; }
 }
+
+/* ——— FORMACIÓN & HABILIDADES: tarjetas de contorno con su chapita de ícono ——— */
+.band { position: relative; margin-top: clamp(56px, 9vw, 110px);
+  background: var(--color-accent); color: var(--color-text);
+  border-radius: calc(2.2 * var(--radius-lg)); overflow: hidden;
+  padding: clamp(44px, 7vw, 92px) clamp(24px, 5vw, 76px);
+  --fall: 60px; --tilt: -1.4deg; }
+.band .h-sect { color: #fff; }
+.band .kicker { color: color-mix(in srgb, #fff 72%, transparent); }
+.band .kicker em { color: #fff; }
+.band .kicker::after { background: color-mix(in srgb, #fff 45%, transparent); }
+.skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: clamp(20px, 3vw, 40px) clamp(28px, 4vw, 64px);
+  margin-top: clamp(34px, 5vw, 64px); }
+.skill { position: relative; display: flex; align-items: center; gap: 16px; }
+.skill .ico { flex: none; width: 62px; height: 62px; border-radius: 18px; background: #fff;
+  display: grid; place-items: center; color: var(--color-text);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--color-accent-900) 18%, transparent);
+  transition: transform 0.45s var(--spring); }
+.skill .box { flex: 1; min-width: 0; border: 2px solid var(--color-text);
+  border-radius: 22px; padding: 18px 22px; text-align: center;
+  transition: background 0.35s var(--soft), transform 0.45s var(--spring); }
+.skill .box b { display: block; font-weight: 700; font-size: clamp(15px, 1.3vw, 17px); line-height: 1.4; }
+.skill .box small { display: block; margin-top: 5px; font-size: 13.5px;
+  color: color-mix(in srgb, var(--color-text) 72%, transparent); }
+@media (hover: hover) { .skill:hover .ico { transform: rotate(-8deg) scale(1.08); }
+  .skill:hover .box { background: color-mix(in srgb, #fff 26%, transparent); transform: translateX(4px); } }
 
 /* — contacto — */
 .close { padding: clamp(72px, 12vh, 140px) 0 clamp(20px, 3vh, 32px); }
@@ -340,19 +576,20 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
   width: 380px; height: 380px; border-radius: 50%; background: var(--color-accent-800);
   transform: translateY(calc(var(--pc, 0) * 0.04px)); will-change: transform; }
 .patch::after { content: ""; position: absolute; left: -80px; bottom: -120px;
-  width: 260px; height: 260px; border-radius: 50%; background: var(--color-accent-2-800);
+  width: 260px; height: 260px; border-radius: 50%; background: var(--color-accent-700);
   transform: translateY(calc(var(--pc, 0) * -0.035px)); will-change: transform; }
 .patch > * { position: relative; z-index: 1; }
 .patch .kicker { color: color-mix(in srgb, var(--color-bg) 65%, transparent); }
 .patch .kicker em { color: var(--color-accent-300); }
 .patch .kicker::after { background: var(--color-accent-700); }
-.patch .h-sect { font-size: clamp(40px, 7vw, 104px); }
+.patch .h-sect { font-size: clamp(40px, 7vw, 100px); }
 .patch .h-sect .thin { color: transparent; -webkit-text-stroke: 2px var(--color-bg); }
 .biglink { display: inline-flex; align-items: center; gap: 16px;
   margin-top: clamp(32px, 5vh, 56px);
   font-family: var(--font-heading); font-weight: var(--font-heading-weight);
-  font-size: clamp(19px, 2.6vw, 38px); color: var(--color-bg); text-decoration: none;
+  font-size: clamp(19px, 2.5vw, 36px); color: var(--color-bg); text-decoration: none;
   border-bottom: 3px solid var(--color-accent-500); padding-bottom: 10px;
+  letter-spacing: -0.02em;
   transition: color 0.3s ease, border-color 0.3s ease; overflow-wrap: anywhere; }
 .biglink svg { flex: none; transition: transform 0.35s var(--spring); }
 @media (hover: hover) { .biglink:hover { color: var(--color-accent-300); border-color: var(--color-accent-300); }
@@ -385,9 +622,18 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
 <body>
 <div class="bg-fx" aria-hidden="true"></div>
 <div id="progress"></div>
+
+<!-- estrellita de cuatro puntas: el adorno que se repite en todas las láminas -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="spark4" viewBox="0 0 24 24">
+    <path d="M12 0c1.1 8.2 3.8 10.9 12 12-8.2 1.1-10.9 3.8-12 12-1.1-8.2-3.8-10.9-12-12C8.2 10.9 10.9 8.2 12 0Z" fill="currentColor"/>
+  </symbol>
+</defs></svg>
+
 <nav class="nav">
-  <span class="nav-brand">AB<span style="color: var(--color-accent)">.</span></span>
+  <span class="nav-brand">Anto Barone</span>
   <a href="#proyectos">Proyectos</a>
+  <a href="#experiencia">Experiencia</a>
   <a href="#sobre-mi">Sobre mí</a>
   <a class="keep" href="#contacto">Contacto</a>
 </nav>
@@ -398,22 +644,23 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
       <span class="pin">Disponible para proyectos</span>
       <span>Buenos Aires, AR — Portfolio 2026</span>
     </div>
+    <p class="hero-eyebrow rise" style="--d: 0.06s">Research &amp; Insights</p>
     <h1 class="name">
       <span class="row-line split-letters" style="--b: 0.1s">Antonella</span>
       <span class="row-line split-letters outline-line" style="--b: 0.34s">Barone</span>
     </h1>
     <div class="hero-foot">
       <div class="hero-left rise" style="--d: 0.62s">
-        <span class="portrait washed" data-par="0.045"><img src="assets/anto-avatar.jpg" alt="Antonella Barone" /></span>
+        <span class="portrait" data-par="0.045"><img src="assets/anto-avatar.jpg" alt="Antonella Barone" /></span>
         <div class="hero-role">
-          <p class="role">Investigación social · Gestión de proyectos · UX</p>
-          <p>Entiendo a las personas con técnicas cuali y cuanti, y construyo la respuesta con plataformas agénticas y low-code. De la pregunta al producto.</p>
+          <p class="role">Investigación cuali + cuanti · UX Research · Sociología</p>
+          <p>Estudiante avanzada de Sociología (UBA) dando mis primeros pasos hacia UX: entender a las personas y traducir esa comprensión en decisiones concretas.</p>
         </div>
       </div>
       <a class="badge rise" href="#proyectos" style="--d: 0.75s" data-par="-0.06" aria-label="Bajar a proyectos">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <defs><path id="circ" d="M 50 50 m -38 0 a 38 38 0 1 1 76 0 a 38 38 0 1 1 -76 0"></path></defs>
-          <text><textPath href="#circ">ux research · low-code · datos · </textPath></text>
+          <text><textPath href="#circ">research · insights · cuali + cuanti · </textPath></text>
         </svg>
         <span class="core"><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></span></span>
       </a>
@@ -424,34 +671,180 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     <div class="marq-track">
       <div class="marq-set">
         <span class="marq-item">UX Research</span><span class="marq-dot"></span>
-        <span class="marq-item">Cuestionarios</span><span class="marq-dot"></span>
         <span class="marq-item">Cuali + cuanti</span><span class="marq-dot"></span>
-        <span class="marq-item">CRM y datos</span><span class="marq-dot"></span>
-        <span class="marq-item">Low-code e IA</span><span class="marq-dot"></span>
-        <span class="marq-item">Python</span><span class="marq-dot"></span>
+        <span class="marq-item">Entrevistas</span><span class="marq-dot"></span>
+        <span class="marq-item">Encuestas</span><span class="marq-dot"></span>
+        <span class="marq-item">Insights</span><span class="marq-dot"></span>
+        <span class="marq-item">Sociología</span><span class="marq-dot"></span>
       </div>
       <div class="marq-set">
         <span class="marq-item">UX Research</span><span class="marq-dot"></span>
-        <span class="marq-item">Cuestionarios</span><span class="marq-dot"></span>
         <span class="marq-item">Cuali + cuanti</span><span class="marq-dot"></span>
-        <span class="marq-item">CRM y datos</span><span class="marq-dot"></span>
-        <span class="marq-item">Low-code e IA</span><span class="marq-dot"></span>
-        <span class="marq-item">Python</span><span class="marq-dot"></span>
+        <span class="marq-item">Entrevistas</span><span class="marq-dot"></span>
+        <span class="marq-item">Encuestas</span><span class="marq-dot"></span>
+        <span class="marq-item">Insights</span><span class="marq-dot"></span>
+        <span class="marq-item">Sociología</span><span class="marq-dot"></span>
       </div>
     </div>
   </div>
 
+  <!-- ——————————————————— MIS PROYECTOS ——————————————————— -->
   <section class="sect projects" id="proyectos" data-watch>
-    <p class="kicker" data-reveal><em>01</em> Proyectos seleccionados</p>
-    <h2 class="h-sect" style="margin-bottom: clamp(28px, 4vw, 56px)">
-      <span class="mask"><span>Trabajo que ya</span></span>
-      <span class="mask"><span style="--d: 0.12s">está en el mundo.</span></span>
+    <p class="kicker" data-reveal><em>01</em> Mis proyectos</p>
+    <h2 class="h-sect" style="margin-bottom: clamp(28px, 4vw, 52px)">
+      <span class="mask"><span>Investigación que</span></span>
+      <span class="mask"><span style="--d: 0.12s">cambió <span class="tan">el producto.</span></span></span>
     </h2>
+
+    <div class="filters" role="group" aria-label="Filtrar proyectos">
+      <button type="button" class="chip" data-filter="all" aria-pressed="true">Todos</button>
+      <button type="button" class="chip" data-filter="p1" aria-pressed="false">Proyecto 1</button>
+      <button type="button" class="chip" data-filter="hs" aria-pressed="false">HS Brands</button>
+      <button type="button" class="chip" data-filter="edu" aria-pressed="false">Educación</button>
+    </div>
+
+    <!-- Proyecto 1 — Emprende Ya: el caso entero, tal como está en el PDF -->
+    <article class="case" id="p1case" data-cat="p1" data-watch>
+      <svg class="doodle" style="top:-30px; right:-40px; width:280px; height:170px" viewBox="0 0 280 170" aria-hidden="true">
+        <path d="M6 120C40 40 96 6 140 34c34 22 8 72-24 66-30-6-24-58 22-70 40-10 92 10 136 60"/>
+      </svg>
+      <svg class="spark" style="top:14px; right:210px; --w:30px" aria-hidden="true"><use href="#spark4"/></svg>
+      <svg class="spark" style="top:78px; right:262px; --w:16px; --o:0.6" aria-hidden="true"><use href="#spark4"/></svg>
+
+      <div class="case-head" data-reveal>
+        <span class="case-logo"><img src="assets/logo-emprendeya.png" alt="Logo de Emprende Ya" /></span>
+        <div class="case-titles">
+          <p class="case-kick">Proyecto 1 · UX Research</p>
+          <h3 class="case-title">Emprende Ya</h3>
+          <p class="case-sub">Investigación exploratoria mixta con emprendedores usuarios de la app, hecha durante su evento de lanzamiento.</p>
+        </div>
+      </div>
+
+      <div class="ctx" data-reveal style="--d: 0.08s">
+        <p class="ctx-label">Contexto<br /><span>&amp;</span><br />Objetivo general</p>
+        <div class="wavy paper">
+          <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
+          <div class="wavy-in">
+            <p><b>Emprende Ya</b> es una app fundada por Nancy Mendoza que funciona como un mapa social de emprendedores de barrio: conecta a quienes producen o venden con personas de la zona que buscan sus productos o servicios, permitiendo descubrir, contactar y apoyar el comercio local desde el celular.</p>
+            <p>Cuando me sumé al proyecto, la app ya estaba en uso por parte de los usuarios, pero todavía no había tenido su lanzamiento oficial.</p>
+            <p>La investigación fue exploratoria y tuvo como objetivo conocer la experiencia de los usuarios emprendedores al usar la app: identificar qué tan intuitiva y fácil les resultaba, si tenían experiencia previa con aplicaciones similares, y relevar sugerencias de mejora.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats p1-stats" data-cascade>
+        <div class="stat"><p class="stat-num"><span data-count="55">0</span></p><p class="stat-label">Emprendedores encuestados</p></div>
+        <div class="stat"><p class="stat-num"><span data-count="5">0</span></p><p class="stat-label">Entrevistas en profundidad</p></div>
+        <div class="stat"><p class="stat-num"><span data-count="91">0</span><sup>%</sup></p><p class="stat-label">Con perfil de emprendedor completo</p></div>
+        <div class="stat"><p class="stat-num"><span data-count="70">0</span>,1<sup>%</sup></p><p class="stat-label">Calificó la app como muy fácil</p></div>
+      </div>
+
+      <div class="steps">
+        <!-- 1 -->
+        <div class="step" data-reveal>
+          <h4 class="step-t">Primer paso: <span>reunión con stakeholders</span></h4>
+          <div class="step-grid">
+            <div class="step-panel wavy tan">
+              <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
+              <div class="wavy-in">
+                <p>La investigación comenzó con una reunión virtual con la fundadora de la aplicación y su equipo, donde expuse el objetivo y el valor que tendría la investigación, y comenté el procedimiento y las metodologías a utilizar. Por su parte, ella me explicó en profundidad algunos detalles de la aplicación y me brindó la información con la que contaban hasta el momento sobre sus usuarios.</p>
+                <p>Además, me informó que tenía previsto un evento presencial para inaugurar oficialmente la app, por lo que acordamos que esa instancia sería una buena oportunidad para llevar a cabo el trabajo de campo.</p>
+              </div>
+            </div>
+            <div class="step-media">
+              <figure>
+                <span class="stamp tilt-r" data-blob="scallop"><img src="assets/p1-reunion.jpg" alt="Reunión virtual: presentación de la investigación a la fundadora de Emprende Ya" loading="lazy" /></span>
+                <figcaption>La presentación del plan</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 -->
+        <div class="step step-solo" data-reveal>
+          <h4 class="step-t">Segundo paso: <span>enfoque metodológico e instrumentos</span></h4>
+          <div class="step-grid">
+            <div class="step-panel wavy paper">
+              <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
+              <div class="wavy-in">
+                <p>La investigación fue mixta: se utilizaron técnicas de investigación cuantitativas y cualitativas. Las primeras me permitieron relevar de forma sistemática datos demográficos y detectar patrones y frecuencias en las respuestas, mientras que las segundas me aportaron profundidad, permitiendo comprender el porqué detrás de esas respuestas y, a su vez, dieron lugar a aspectos que no habían sido considerados previamente y surgieron espontáneamente por parte de los participantes.</p>
+                <p>Los instrumentos utilizados fueron: <b>encuestas en papel</b> y <b>entrevistas semiestructuradas.</b></p>
+              </div>
+              <svg class="spark" style="top:26px; right:44px; --w:26px" aria-hidden="true"><use href="#spark4"/></svg>
+              <svg class="spark" style="top:74px; right:96px; --w:14px; --o:0.55" aria-hidden="true"><use href="#spark4"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 -->
+        <div class="step" data-reveal>
+          <h4 class="step-t">Tercer paso: <span>trabajo de campo</span></h4>
+          <div class="step-grid">
+            <div class="step-panel wavy tan">
+              <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
+              <div class="wavy-in">
+                <p>El relevamiento se llevó a cabo de forma presencial durante el evento de lanzamiento de la aplicación.</p>
+                <p>En total, se encuestaron <b>55 emprendedores</b> usuarios de la app y se realizaron <b>5 entrevistas en profundidad</b>, lo que permitió combinar una mirada amplia de la población con un análisis más detallado de las experiencias individuales.</p>
+              </div>
+            </div>
+            <div class="step-media">
+              <figure>
+                <span class="stamp tilt-r" data-blob="scallop"><img src="assets/p1-carnet.jpg" alt="Carnet de investigadora sobre una de las encuestas en papel" loading="lazy" /></span>
+                <figcaption>Carnet de investigadora</figcaption>
+              </figure>
+              <figure>
+                <span class="stamp tilt-l" data-blob="scallop"><img src="assets/p1-fundadora.jpg" alt="Antonella junto a la fundadora de Emprende Ya en el evento de lanzamiento" loading="lazy" /></span>
+                <figcaption>Foto con la fundadora de la app</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 -->
+        <div class="step step-solo" data-reveal>
+          <h4 class="step-t">Cuarto paso: <span>digitalización y análisis de datos</span></h4>
+          <div class="step-grid">
+            <div class="step-panel wavy paper">
+              <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
+              <div class="wavy-in">
+                <p>Se digitalizaron los datos obtenidos en las encuestas físicas y se analizaron en profundidad las entrevistas realizadas, lo que permitió construir un perfil demográfico de los usuarios que complementó la información con la que ya contaba el equipo de Emprende Ya.</p>
+                <p>A su vez, el análisis dejó en evidencia una serie de puntos de mejora que no habían sido considerados en el desarrollo original de la app, tales como: la posibilidad de subir más de una foto y más de un producto por publicación, la necesidad de sumar categorías y filtros (por precio, promociones y destacados), cuestiones vinculadas al envío, y ajustes de diseño en funciones que los usuarios no lograban visualizar con facilidad por su tamaño.</p>
+              </div>
+              <svg class="spark" style="bottom:34px; right:52px; --w:24px" aria-hidden="true"><use href="#spark4"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5 -->
+        <div class="step" data-reveal>
+          <h4 class="step-t">Quinto paso: <span>presentación de resultados</span></h4>
+          <div class="step-grid">
+            <div class="step-panel wavy tan">
+              <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
+              <div class="wavy-in">
+                <p>Los hallazgos obtenidos fueron traducidos en insights y organizados en una presentación, que fue expuesta en una reunión con la fundadora de la aplicación. A partir de ese encuentro, las sugerencias de carácter técnico fueron derivadas al equipo de programadores para su posterior implementación, cerrando así el ciclo de la investigación con un impacto concreto en el desarrollo del producto.</p>
+              </div>
+            </div>
+            <div class="step-media">
+              <figure>
+                <span class="stamp tilt-l" data-blob="scallop"><img src="assets/p1-resultados.png" alt="Lámina de resultados: nivel de dificultad percibido y porcentajes de la encuesta" loading="lazy" /></span>
+                <figcaption>Resultados de la encuesta</figcaption>
+              </figure>
+              <figure>
+                <span class="stamp tilt-r" data-blob="scallop"><img src="assets/p1-insights.png" alt="Lámina de insights sobre los productos de la tienda" loading="lazy" /></span>
+                <figcaption>Insights entregados</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
     <div class="plist" id="plist">
-      <article class="pcard" tabindex="0" data-reveal style="background: var(--color-accent-200); color: var(--color-accent-900)">
+      <article class="pcard" tabindex="0" data-cat="hs" data-reveal style="background: var(--color-accent-200); color: var(--color-accent-900)">
         <div class="pc-top">
           <div>
-            <p class="pc-kick">01 · Web internacional · HS Brands Latam</p>
+            <p class="pc-kick">02 · Web internacional · HS Brands Latam</p>
             <h3 class="pc-title">Oportunidades HS Brands</h3>
           </div>
           <span class="plus" aria-hidden="true"></span>
@@ -463,10 +856,10 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
         </div></div>
         <p class="pc-hint">Tocá para ver más</p>
       </article>
-      <article class="pcard" tabindex="0" data-reveal style="background: var(--color-accent-2-200); color: var(--color-accent-2-900)">
+      <article class="pcard" tabindex="0" data-cat="hs" data-reveal style="background: var(--color-accent-300); color: var(--color-accent-900)">
         <div class="pc-top">
           <div>
-            <p class="pc-kick">02 · CRM interno · HS Brands Latam</p>
+            <p class="pc-kick">03 · CRM interno · HS Brands Latam</p>
             <h3 class="pc-title">Cuestionarios que se entienden</h3>
           </div>
           <span class="plus" aria-hidden="true"></span>
@@ -477,10 +870,10 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
         </div></div>
         <p class="pc-hint">Tocá para ver más</p>
       </article>
-      <article class="pcard" tabindex="0" data-reveal style="background: var(--color-surface); color: var(--color-text)">
+      <article class="pcard" tabindex="0" data-cat="hs" data-reveal style="background: var(--color-surface); color: var(--color-text)">
         <div class="pc-top">
           <div>
-            <p class="pc-kick">03 · Research · HS Brands Latam</p>
+            <p class="pc-kick">04 · Research · HS Brands Latam</p>
             <h3 class="pc-title">Investigación de usuarios</h3>
           </div>
           <span class="plus" aria-hidden="true"></span>
@@ -491,10 +884,10 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
         </div></div>
         <p class="pc-hint">Tocá para ver más</p>
       </article>
-      <article class="pcard" tabindex="0" data-reveal style="background: var(--color-accent-100); color: var(--color-accent-800)">
+      <article class="pcard" tabindex="0" data-cat="edu" data-reveal style="background: var(--color-accent-100); color: var(--color-accent-800)">
         <div class="pc-top">
           <div>
-            <p class="pc-kick">04 · Diseño instruccional · Efe Idiomas · 2018–2025</p>
+            <p class="pc-kick">05 · Diseño instruccional · Efe Idiomas · 2018–2025</p>
             <h3 class="pc-title">Contenido que enseña</h3>
           </div>
           <span class="plus" aria-hidden="true"></span>
@@ -506,45 +899,128 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
         <p class="pc-hint">Tocá para ver más</p>
       </article>
     </div>
-
-    <div class="stats" data-cascade>
-      <div class="stat"><p class="stat-num"><span data-count="7">0</span><sup>+</sup></p><p class="stat-label">Años enseñando y comunicando</p></div>
-      <div class="stat"><p class="stat-num"><span data-count="1">0</span></p><p class="stat-label">Web internacional lanzada</p></div>
-      <div class="stat"><p class="stat-num"><span data-count="2">0</span></p><p class="stat-label">Idiomas de trabajo</p></div>
-      <div class="stat"><p class="stat-num"><span data-count="2026">0</span></p><p class="stat-label">Socióloga (UBA) en camino</p></div>
-    </div>
   </section>
 
-  <section class="sect" id="sobre-mi" data-watch>
-    <p class="kicker" data-reveal><em>02</em> Sobre mí</p>
-    <div class="about">
-      <div>
-        <h2 class="h-sect" style="margin-bottom: clamp(24px, 4vw, 48px)">
-          <span class="mask"><span>Miro procesos y encuentro</span></span>
-          <span class="mask"><span style="--d: 0.12s">cómo hacerlos más simples.</span></span>
-        </h2>
-        <p class="bio" data-reveal style="--fall: 30px; --tilt: 0deg">Estudiante avanzada de <b>Sociología (UBA)</b> orientándome al área de <b>UX</b>. Analizo procesos y encuentro formas de hacerlos más eficientes combinando investigación cualitativa y cuantitativa con plataformas de desarrollo agénticas.</p>
-        <p class="bio" data-reveal style="--fall: 30px; --tilt: 0deg; --d: 0.1s">Aprendí a estructurar procesos de trabajo, coordinar equipos y resolver problemas con autonomía. Busco un espacio desafiante donde aportar mi <b>mirada analítica</b> y seguir sumando herramientas técnicas.</p>
-        <ul class="cred" data-cascade>
-          <li><span><b>Licenciatura en Sociología</b> — UBA · 2022–2026</span></li>
-          <li><span><b>Lovable L1, Desarrollo con IA</b> — apps, automatización y low-code</span></li>
-          <li><span><b>Programación con Python</b> — Agencia de Habilidades para el Futuro · 2024</span></li>
-          <li><span><b>Español nativo · Inglés B2</b> — FCE</span></li>
-        </ul>
+  <!-- ——————————————————— EXPERIENCIA ——————————————————— -->
+  <section class="sect" id="experiencia" data-watch>
+    <p class="kicker" data-reveal><em>02</em> Experiencia</p>
+    <h2 class="h-sect" style="margin-bottom: clamp(28px, 4vw, 56px)">
+      <span class="mask"><span>Dónde aprendí</span></span>
+      <span class="mask"><span style="--d: 0.12s">a <span class="tan">investigar.</span></span></span>
+    </h2>
+
+    <svg class="spark" style="top:96px; right:6%; --w:30px" aria-hidden="true"><use href="#spark4"/></svg>
+    <svg class="spark" style="top:158px; right:11%; --w:17px; --o:0.6" aria-hidden="true"><use href="#spark4"/></svg>
+
+    <div class="exp">
+      <div class="exp-brand" data-reveal>
+        <span class="exp-ring">
+          <svg class="ring" viewBox="0 0 200 200" aria-hidden="true">
+            <path d="M100 6c54 0 94 42 94 94 0 52-42 94-94 94S6 152 6 100C6 47 47 6 100 6Z"/>
+            <path d="M104 14c50 2 88 40 86 92-2 50-42 86-92 84-48-2-84-40-84-90 0-46 34-82 80-86"/>
+          </svg>
+          <span class="disc"></span>
+          <img src="assets/logo-hsbrands.png" alt="HS Brands Global" />
+        </span>
+        <p class="exp-org">Agencia global de Investigación de Mercado</p>
       </div>
-      <div class="about-side" data-reveal style="--d: 0.15s">
-        <div class="frame washed">
-          <img src="assets/anto-portrait.jpg" alt="Foto de Antonella Barone" data-par="0.05" />
+
+      <div class="exp-card" data-reveal style="--d: 0.1s">
+        <p class="exp-date hand">abril 2025 — junio 2026</p>
+        <div class="wavy tan">
+          <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
+          <div class="wavy-in">
+            <h3 class="exp-role">Project Assistant</h3>
+            <ul class="exp-list">
+              <li>Implementación de técnicas cualitativas y cuantitativas de investigación.</li>
+              <li>Redacción de instructivos claros y estructurados para evaluadores, priorizando la simplicidad, el orden y la usabilidad del contenido para distintos perfiles de usuario.</li>
+              <li>Carga, gestión y actualización de datos en plataformas internas y herramientas de clientes.</li>
+              <li>Colaboración en la presentación de resultados de proyectos e insights a clientes.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-prev" data-reveal style="--d: 0.16s">
+      <p class="exp-mark">2018<br />2025<small>Efe Idiomas</small></p>
+      <div class="wavy cream">
+        <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
+        <div class="wavy-in">
+          <h3 class="exp-role" style="font-size: clamp(19px, 2.2vw, 28px)">Diseño instruccional</h3>
+          <ul class="exp-list">
+            <li>Siete años creando cursos y materiales adaptados por edad y nivel, midiendo el aprendizaje para ajustar los contenidos.</li>
+            <li>Traducción de temas complejos en informes simples y accionables para familias y equipo docente.</li>
+          </ul>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- ——————————————————— SOBRE MÍ ——————————————————— -->
+  <section class="sect" id="sobre-mi" data-watch>
+    <p class="kicker" data-reveal><em>03</em> Sobre mí</p>
+    <svg class="doodle" style="bottom:6%; left:-60px; width:260px; height:200px" viewBox="0 0 260 200" aria-hidden="true">
+      <path d="M254 10c-52 4-96 30-120 66-18 27-8 60 18 62 24 2 34-26 16-42-22-20-70-12-104 20C40 138 20 168 8 192"/>
+    </svg>
+    <div class="about">
+      <div>
+        <h2 class="h-sect" style="margin-bottom: clamp(24px, 4vw, 48px)">
+          <span class="mask"><span>Entender a las personas</span></span>
+          <span class="mask"><span style="--d: 0.12s">y traducirlo en <span class="tan">decisiones.</span></span></span>
+        </h2>
+        <p class="bio" data-reveal style="--fall: 30px; --tilt: 0deg">Soy estudiante avanzada de <b>Sociología (UBA)</b> y estoy dando mis primeros pasos hacia el mundo de <b>UX</b>, un área que combina todo lo que me gusta hacer: entender a las personas y traducir esa comprensión en decisiones concretas.</p>
+        <p class="bio" data-reveal style="--fall: 30px; --tilt: 0deg; --d: 0.1s">Cuento con experiencia en <b>investigación de mercado</b>, y mi especialización en Metodologías de la Investigación Cualitativa y Cuantitativa me dio las herramientas para estructurar procesos de investigación sólidos, desde el diseño hasta el análisis.</p>
+        <p class="bio" data-reveal style="--fall: 30px; --tilt: 0deg; --d: 0.2s">Soy una persona curiosa, con una <b>mirada analítica y creativa</b>. Estoy en constante aprendizaje, siempre buscando nuevas formas de investigar mejor.</p>
+      </div>
+      <div class="about-side" data-reveal style="--d: 0.15s">
+        <svg class="spark" style="top:-34px; left:-26px; --w:32px" aria-hidden="true"><use href="#spark4"/></svg>
+        <svg class="spark" style="top:8px; left:-58px; --w:18px; --o:0.6" aria-hidden="true"><use href="#spark4"/></svg>
+        <div class="polaroid">
+          <span class="shot"><img src="assets/anto-pdf-retrato.jpg" alt="Foto de Antonella Barone" data-par="0.04" /></span>
+          <img class="firma" src="assets/firma-anto.png" alt="Firma: Anto Barone" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Formación & Habilidades: la lámina camel con las tarjetas de contorno -->
+    <div class="band" data-reveal data-watch>
+      <p class="kicker"><em>04</em> Formación &amp; Habilidades</p>
+      <h2 class="h-sect">
+        <span class="mask"><span>Lo que estudié</span></span>
+        <span class="mask"><span style="--d: 0.12s">y lo que sigo estudiando.</span></span>
+      </h2>
+      <div class="skills" data-cascade>
+        <div class="skill">
+          <span class="ico" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 8l10 5 10-5-10-5Z"/><path d="M5 10v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/><path d="M21 9v5"/></svg></span>
+          <span class="box"><b>Licenciatura en Sociología</b><small>Universidad de Buenos Aires · 2022–2026</small></span>
+        </div>
+        <div class="skill">
+          <span class="ico" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 22h8"/><path d="m9 9-2 2 2 2"/><path d="m15 9 2 2-2 2"/></svg></span>
+          <span class="box"><b>Curso Inicial de programación con Python</b><small>Agencia de Habilidades para el Futuro · 2024</small></span>
+        </div>
+        <div class="skill">
+          <span class="ico" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="9"/><path d="M2 11h18"/><path d="M11 2a15 15 0 0 1 0 18a15 15 0 0 1 0-18Z"/></svg></span>
+          <span class="box"><b>Inglés B2</b><small>First Certificate (FCE)</small></span>
+        </div>
+        <div class="skill">
+          <span class="ico" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V18h8v-3.3A7 7 0 0 0 12 2Z"/></svg></span>
+          <span class="box"><b>Curso Inicial de Diseño UX/UI</b><small>Formación en curso</small></span>
+        </div>
+        <div class="skill">
+          <span class="ico" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3"/><path d="M12 18v3"/><path d="M4.9 4.9 7 7"/><path d="m17 17 2.1 2.1"/><path d="M3 12h3"/><path d="M18 12h3"/><path d="M4.9 19.1 7 17"/><path d="M17 7l2.1-2.1"/><circle cx="12" cy="12" r="3.2"/></svg></span>
+          <span class="box"><b>Lovable L1 — Desarrollo con IA</b><small>Apps, automatización y low-code</small></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ——————————————————— CONTACTO ——————————————————— -->
   <section class="close" id="contacto">
     <div class="patch" data-reveal>
-      <p class="kicker"><em>03</em> Contacto</p>
+      <p class="kicker"><em>05</em> Contacto</p>
       <h2 class="h-sect">
-        <span class="mask"><span>¿Trabajamos</span></span>
+        <span class="mask"><span>¿Investigamos</span></span>
         <span class="mask"><span class="thin" style="--d: 0.12s">juntos?</span></span>
       </h2>
       <a class="biglink" href="mailto:antonella.m.barone@gmail.com">antonella.m.barone@gmail.com
@@ -568,6 +1044,113 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
   const reduce = false; // forzado: animaciones siempre activas, aunque el equipo tenga "reducir movimiento"
   const touch = matchMedia('(hover: none), (pointer: coarse)').matches;
   document.documentElement.classList.toggle('is-touch', touch);
+
+  /* ——————————————————————————————————————————————————————————————
+     FORMAS ORGÁNICAS — el borde ondulado y el marco festoneado del PDF.
+     Se recorre el perímetro de un rectángulo redondeado y cada punto se
+     desplaza sobre su normal siguiendo una onda. Al usar un número ENTERO
+     de ondas, la curva cierra sin costura. Los puntos se suavizan con
+     Catmull-Rom convertido a cúbicas.
+     Se dibuja a la medida real del elemento (no se estira un SVG fijo):
+     así la onda tiene el mismo tamaño en desktop y en mobile.
+     —————————————————————————————————————————————————————————————— */
+  const blobPath = (w, h, { waves = 9, amp = 12, scallop = false } = {}) => {
+    const a = amp;
+    const iw = Math.max(1, w - 2 * a), ih = Math.max(1, h - 2 * a);
+    const r = Math.min(Math.min(iw, ih) * 0.28, 64);
+    const sw = Math.max(0, iw - 2 * r), sh = Math.max(0, ih - 2 * r);
+    const arc = Math.PI * r / 2;
+    const P = 2 * sw + 2 * sh + 4 * arc;
+    if (P <= 0) return '';
+    // punto + normal exterior a la distancia s del perímetro
+    const at = (s) => {
+      s = ((s % P) + P) % P;
+      const x0 = a, y0 = a;
+      let t = s;
+      if (t < sw) return [x0 + r + t, y0, 0, -1];
+      t -= sw;
+      if (t < arc) { const th = -Math.PI / 2 + t / r;
+        return [x0 + r + sw + Math.cos(th) * r, y0 + r + Math.sin(th) * r, Math.cos(th), Math.sin(th)]; }
+      t -= arc;
+      if (t < sh) return [x0 + iw, y0 + r + t, 1, 0];
+      t -= sh;
+      if (t < arc) { const th = t / r;
+        return [x0 + r + sw + Math.cos(th) * r, y0 + r + sh + Math.sin(th) * r, Math.cos(th), Math.sin(th)]; }
+      t -= arc;
+      if (t < sw) return [x0 + r + sw - t, y0 + ih, 0, 1];
+      t -= sw;
+      if (t < arc) { const th = Math.PI / 2 + t / r;
+        return [x0 + r + Math.cos(th) * r, y0 + r + sh + Math.sin(th) * r, Math.cos(th), Math.sin(th)]; }
+      t -= arc;
+      if (t < sh) return [x0, y0 + r + sh - t, -1, 0];
+      t -= sh;
+      const th = Math.PI + t / r;
+      return [x0 + r + Math.cos(th) * r, y0 + r + Math.sin(th) * r, Math.cos(th), Math.sin(th)];
+    };
+    const N = Math.max(72, waves * (scallop ? 14 : 18));
+    const pts = [];
+    for (let i = 0; i < N; i++) {
+      const [x, y, nx, ny] = at(P * i / N);
+      const ph = 2 * Math.PI * waves * i / N;
+      const d = scallop ? Math.abs(Math.cos(ph)) * a : Math.cos(ph) * a;
+      pts.push([x + nx * d, y + ny * d]);
+    }
+    // Catmull-Rom cerrado -> cúbicas de Bézier
+    const n = pts.length;
+    let out = `M${pts[0][0].toFixed(2)},${pts[0][1].toFixed(2)}`;
+    for (let i = 0; i < n; i++) {
+      const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
+      const c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
+      const c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
+      out += `C${c1x.toFixed(2)},${c1y.toFixed(2)} ${c2x.toFixed(2)},${c2y.toFixed(2)} ${p2[0].toFixed(2)},${p2[1].toFixed(2)}`;
+    }
+    return out + 'Z';
+  };
+
+  // paneles ondulados: se pinta el path dentro del <svg class="wavy-bg">
+  const waveEls = [...document.querySelectorAll('svg.wavy-bg[data-blob="wave"]')];
+  // marcos festoneados: el path va como mask-image (data-URI) del contenedor
+  const scallopEls = [...document.querySelectorAll('[data-blob="scallop"]')];
+
+  const drawWave = (svg) => {
+    const host = svg.parentElement;
+    const w = Math.round(host.offsetWidth), h = Math.round(host.offsetHeight);
+    if (!w || !h) return;
+    if (svg.dataset.w === String(w) && svg.dataset.h === String(h)) return;
+    svg.dataset.w = w; svg.dataset.h = h;
+    const amp = Math.max(7, Math.min(15, w / 68));
+    const waves = Math.max(7, Math.round((2 * (w + h)) / (amp * 13)));
+    svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    svg.setAttribute('preserveAspectRatio', 'none');
+    svg.innerHTML = `<path d="${blobPath(w, h, { waves, amp })}"/>`;
+  };
+  const drawScallop = (el) => {
+    const w = Math.round(el.offsetWidth), h = Math.round(el.offsetHeight);
+    if (!w || !h) return;
+    if (el.dataset.w === String(w) && el.dataset.h === String(h)) return;
+    el.dataset.w = w; el.dataset.h = h;
+    const amp = Math.max(5, Math.min(9, w / 52));
+    const waves = Math.max(10, Math.round((2 * (w + h)) / (amp * 8)));
+    const d = blobPath(w, h, { waves, amp, scallop: true });
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}"><path d="${d}" fill="#000"/></svg>`;
+    el.style.setProperty('--stamp-mask', `url("data:image/svg+xml,${encodeURIComponent(svg)}")`);
+  };
+  const drawShapes = () => { waveEls.forEach(drawWave); scallopEls.forEach(drawScallop); };
+  drawShapes();
+  // las imágenes cambian el alto del marco al cargar: recalcular al terminar
+  document.querySelectorAll('.stamp img').forEach((img) => {
+    if (!img.complete) img.addEventListener('load', drawShapes, { once: true });
+  });
+  addEventListener('load', drawShapes);
+  let shapeT;
+  addEventListener('resize', () => { clearTimeout(shapeT); shapeT = setTimeout(drawShapes, 120); });
+  if ('fonts' in document) document.fonts.ready.then(drawShapes);
+
+  // los garabatos se dibujan solos: hay que medir cada trazo
+  document.querySelectorAll('.doodle path').forEach((p) => {
+    const len = Math.ceil(p.getTotalLength());
+    p.style.setProperty('--len', len);
+  });
 
   // nombre letra por letra
   document.querySelectorAll('.split-letters').forEach((line) => {
@@ -610,7 +1193,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
   }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
   document.querySelectorAll('[data-reveal], [data-watch], [data-cascade]').forEach((el) => io.observe(el));
 
-  // "Barone" se rellena de rosa cuando el hero está a la vista (útil en touch)
+  // "Barone" se rellena de camel cuando el hero está a la vista (útil en touch)
   const heroEl = document.querySelector('.hero');
   const nameEl = document.querySelector('.name');
   if (heroEl && nameEl) {
@@ -627,10 +1210,38 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     });
   });
 
+  // — filtros de proyectos —
+  const chips = [...document.querySelectorAll('.chip')];
+  const filterables = [...document.querySelectorAll('[data-cat]')];
+  const pcards = [...document.querySelectorAll('.pcard')];
+  // el zigzag se recalcula sobre las visibles: con :nth-child, filtrar lo rompía
+  const restripe = () => {
+    let i = 0;
+    for (const c of pcards) {
+      if (c.classList.contains('is-hidden')) continue;
+      c.classList.toggle('alt', i % 2 === 1); i++;
+    }
+  };
+  const applyFilter = (want) => {
+    for (const el of filterables) {
+      const show = want === 'all' || el.dataset.cat === want;
+      el.classList.toggle('is-hidden', !show);
+      // lo que aparece ya está "caído": si no, quedaría invisible al filtrar
+      if (show) el.classList.add('in');
+    }
+    restripe();
+    requestAnimationFrame(drawShapes);
+  };
+  chips.forEach((chip) => chip.addEventListener('click', () => {
+    chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+    applyFilter(chip.dataset.filter);
+  }));
+  restripe();
+
   // — scroll: progreso, nav, velocidad y foco-por-scroll en touch —
   const bar = document.getElementById('progress');
   const nav = document.querySelector('.nav');
-  const cards = touch ? [...document.querySelectorAll('.pcard')] : [];
+  const cards = touch ? pcards : [];
   const stats = touch ? [...document.querySelectorAll('.stat')] : [];
   let lastY = scrollY, vel = 0;
 
@@ -645,10 +1256,11 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     return Math.abs(r.top + r.height / 2 - innerHeight / 2);
   };
   const focusNearest = (els, current, sel, gain, keep) => {
-    if (!els.length) return current;
+    const live = els.filter((el) => !el.classList.contains('is-hidden') && el.offsetParent !== null);
+    if (!live.length) { if (current) current.classList.remove('focus'); return null; }
     let best = null, bd = Infinity;
-    for (const el of els) { const d = anchorDist(el, sel); if (d < bd) { bd = d; best = el; } }
-    let next = els.includes(current) ? current : null;
+    for (const el of live) { const d = anchorDist(el, sel); if (d < bd) { bd = d; best = el; } }
+    let next = live.includes(current) ? current : null;
     if (next) {
       const cd = anchorDist(next, sel);
       if (cd > innerHeight * keep) next = null;                        // se alejó del centro: soltar
