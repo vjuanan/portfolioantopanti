@@ -375,6 +375,7 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
 .pc-tags .tag { background: color-mix(in srgb, #fff 46%, transparent); color: inherit; }
 .pc-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px;
   font-weight: 700; color: inherit; text-decoration: underline; text-underline-offset: 4px; }
+button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
 .pc-link svg { transition: transform 0.3s var(--spring); }
 .pc-link:active svg { transform: translate(3px, -3px); }
 .pc-hint { font-size: 12px; font-weight: 600; opacity: 0.55; margin: 10px 0 0; }
@@ -416,12 +417,21 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
   padding-top: clamp(48px, 8vh, 92px); }
 .step { position: relative; }
 /* Los títulos de paso entran con la misma máscara que los de sección (suben
-   desde atrás) y una regla camel se dibuja debajo al terminar. */
+   desde atrás), un marcador camel los barre de lado a lado y después se dibuja
+   la regla. Los tres tiempos van encadenados para que se lea como un gesto. */
 .step-t { font-family: var(--font-heading); font-weight: 700; font-style: italic;
   font-size: clamp(25px, 3.5vw, 50px); line-height: 1.08; margin: 0 0 clamp(20px, 2.8vw, 36px);
   letter-spacing: -0.02em; }
 .step-t .mask { padding-inline: 0.1em; margin-inline: -0.1em; }
-.step-t i { font-style: inherit; color: var(--color-accent); }
+.step-t i { font-style: inherit; color: var(--color-accent-700); }
+/* el marcador: una banda camel que crece detrás del texto, como resaltador */
+.step-t .hl { display: inline; padding: 0.06em 0.1em; margin: 0 -0.1em;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  background-image: linear-gradient(var(--color-accent-300), var(--color-accent-300));
+  background-repeat: no-repeat; background-position: 0 90%; background-size: 0% 52%;
+  transition: background-size 1s var(--soft) 0.45s; }
+.step.in .step-t .hl { background-size: 100% 52%; }
+.step:nth-child(even) .step-t .hl { background-position: 100% 90%; }
 .step-t::after { content: ""; display: block; height: 3px; border-radius: 999px;
   width: clamp(64px, 11vw, 150px); margin-top: clamp(12px, 1.7vw, 22px);
   background: var(--color-accent); transform: scaleX(0); transform-origin: left;
@@ -486,13 +496,9 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
   font-size: clamp(15px, 1.32vw, 17.5px); line-height: 1.65; }
 .exp-list li::before { content: ""; flex: none; width: 9px; height: 9px; border-radius: 50%;
   background: var(--color-text); transform: translateY(-2px); }
-/* en un solo renglón: si envuelve, "2026" cae solo y se lee mal */
-.exp-date { position: absolute; z-index: 3; top: -26px; right: 10px;
-  rotate: -9deg; white-space: nowrap; font-size: clamp(18px, 1.85vw, 26px); }
 @media (max-width: 900px) {
   .exp { grid-template-columns: 1fr; justify-items: center; }
   .exp-card { width: 100%; }
-  .exp-date { position: static; rotate: -3deg; margin: 0 0 12px; }
 }
 
 /* — sobre mí — */
@@ -558,7 +564,7 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
    Mismo lenguaje de píldora que las tarjetas de proyecto, pero como enlaces:
    quien entra lee "Sobre mí" y desde acá salta a la sección que quiera. */
 .index { display: grid; gap: clamp(14px, 1.8vw, 22px);
-  margin-top: clamp(30px, 4.5vw, 56px); }
+  margin-top: clamp(76px, 11vw, 140px); }
 .icard { display: flex; align-items: center; gap: clamp(16px, 2.4vw, 32px);
   text-decoration: none; color: inherit; box-sizing: border-box; position: relative;
   border-radius: calc(2.5 * var(--radius-lg));
@@ -713,9 +719,6 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
   <!-- ——————————————————— 01 · SOBRE MÍ ——————————————————— -->
   <section class="sect" id="sobre-mi" data-watch>
     <p class="kicker" data-reveal><em>01</em> Sobre mí</p>
-    <svg class="doodle" style="bottom:6%; left:-60px; width:260px; height:200px" viewBox="0 0 260 200" aria-hidden="true">
-      <path d="M254 10c-52 4-96 30-120 66-18 27-8 60 18 62 24 2 34-26 16-42-22-20-70-12-104 20C40 138 20 168 8 192"/>
-    </svg>
     <div class="about">
       <div>
         <h2 class="h-sect" style="margin-bottom: clamp(24px, 4vw, 48px)">
@@ -758,7 +761,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
         <span class="ic-num">04</span>
         <span class="ic-text">
           <span class="ic-title">Mis proyectos</span>
-          <span class="ic-sub">El caso de Emprende Ya y el trabajo en HS Brands Latam</span>
+          <span class="ic-sub">El caso completo de Emprende Ya, paso a paso</span>
         </span>
         <span class="ic-go" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
       </a>
@@ -810,8 +813,8 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
   <section class="sect" id="experiencia" data-watch>
     <p class="kicker" data-reveal><em>03</em> Mi experiencia</p>
     <h2 class="h-sect" style="margin-bottom: clamp(28px, 4vw, 56px)">
-      <span class="mask"><span>Dónde aprendí</span></span>
-      <span class="mask"><span style="--d: 0.12s">a <span class="tan">investigar.</span></span></span>
+      <span class="mask"><span>Un poco sobre</span></span>
+      <span class="mask"><span style="--d: 0.12s">mi <span class="tan">trayectoria.</span></span></span>
     </h2>
 
     <svg class="spark" style="top:96px; right:6%; --w:30px" aria-hidden="true"><use href="#spark4"/></svg>
@@ -831,7 +834,6 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
       </div>
 
       <div class="exp-card" data-reveal style="--d: 0.1s">
-        <p class="exp-date hand">abril 2025 — junio 2026</p>
         <div class="wavy tan">
           <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
           <div class="wavy-in">
@@ -859,12 +861,10 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     <div class="filters" role="group" aria-label="Filtrar proyectos">
       <button type="button" class="chip" data-filter="all" aria-pressed="true">Todos</button>
       <button type="button" class="chip" data-filter="p1" aria-pressed="false">Proyecto 1</button>
-      <button type="button" class="chip" data-filter="hs" aria-pressed="false">HS Brands</button>
-      <button type="button" class="chip" data-filter="edu" aria-pressed="false">Educación</button>
     </div>
 
     <!-- Proyecto 1 — Emprende Ya: el caso entero, tal como está en el PDF -->
-    <article class="case" id="p1case" data-cat="p1" data-watch>
+    <article class="case" id="p1case" data-cat="p1" data-only data-watch>
       <svg class="doodle" style="top:-30px; right:-40px; width:280px; height:170px" viewBox="0 0 280 170" aria-hidden="true">
         <path d="M6 120C40 40 96 6 140 34c34 22 8 72-24 66-30-6-24-58 22-70 40-10 92 10 136 60"/>
       </svg>
@@ -895,7 +895,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
       <div class="steps">
         <!-- 1 -->
         <div class="step" data-reveal>
-          <h4 class="step-t"><span class="mask"><span>Primer paso: <i>reunión con stakeholders</i></span></span></h4>
+          <h4 class="step-t"><span class="mask"><span class="hl">Primer paso: <i>reunión con stakeholders</i></span></span></h4>
           <div class="step-grid">
             <div class="step-panel wavy tan">
               <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
@@ -915,7 +915,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
 
         <!-- 2 -->
         <div class="step step-solo" data-reveal>
-          <h4 class="step-t"><span class="mask"><span>Segundo paso: <i>enfoque metodológico e instrumentos</i></span></span></h4>
+          <h4 class="step-t"><span class="mask"><span class="hl">Segundo paso: <i>enfoque metodológico e instrumentos</i></span></span></h4>
           <div class="step-grid">
             <div class="step-panel wavy paper">
               <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
@@ -931,7 +931,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
 
         <!-- 3 -->
         <div class="step" data-reveal>
-          <h4 class="step-t"><span class="mask"><span>Tercer paso: <i>trabajo de campo</i></span></span></h4>
+          <h4 class="step-t"><span class="mask"><span class="hl">Tercer paso: <i>trabajo de campo</i></span></span></h4>
           <div class="step-grid">
             <div class="step-panel wavy tan">
               <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
@@ -955,7 +955,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
 
         <!-- 4 -->
         <div class="step step-solo" data-reveal>
-          <h4 class="step-t"><span class="mask"><span>Cuarto paso: <i>digitalización y análisis de datos</i></span></span></h4>
+          <h4 class="step-t"><span class="mask"><span class="hl">Cuarto paso: <i>digitalización y análisis de datos</i></span></span></h4>
           <div class="step-grid">
             <div class="step-panel wavy paper">
               <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
@@ -970,7 +970,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
 
         <!-- 5 -->
         <div class="step" data-reveal>
-          <h4 class="step-t"><span class="mask"><span>Quinto paso: <i>presentación de resultados</i></span></span></h4>
+          <h4 class="step-t"><span class="mask"><span class="hl">Quinto paso: <i>presentación de resultados</i></span></span></h4>
           <div class="step-grid">
             <div class="step-panel wavy tan">
               <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
@@ -993,61 +993,21 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
       </div>
     </article>
 
+    <!-- En "Todos" se ve sólo esta tarjeta; el caso completo aparece al elegir
+         el filtro "Proyecto 1" (o tocando "Ver el caso completo"). -->
     <div class="plist" id="plist">
-      <article class="pcard" tabindex="0" data-cat="hs" data-reveal style="background: var(--color-accent-200); color: var(--color-accent-900)">
+      <article class="pcard" tabindex="0" data-cat="teaser" data-reveal style="background: var(--color-surface); color: var(--color-text)">
         <div class="pc-top">
           <div>
-            <p class="pc-kick">02 · Web internacional · HS Brands Latam</p>
-            <h3 class="pc-title">Oportunidades HS Brands</h3>
+            <p class="pc-kick">Proyecto 1 · UX Research · Emprende Ya</p>
+            <h3 class="pc-title">Emprende Ya</h3>
           </div>
           <span class="plus" aria-hidden="true"></span>
         </div>
         <div class="pc-body"><div>
-          <p class="pc-copy">Diseño y publicación de una web de uso internacional con plataformas agénticas, bases de datos y lógica de automatización — de la arquitectura del contenido al sitio en producción.</p>
-          <div class="pc-tags"><span class="tag">Low-code</span><span class="tag">IA agéntica</span><span class="tag">Bases de datos</span></div>
-          <a class="pc-link" href="https://oportunidadeshsbrands.com" target="_blank" rel="noopener">Ver el sitio en vivo <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-        </div></div>
-        <p class="pc-hint">Tocá para ver más</p>
-      </article>
-      <article class="pcard" tabindex="0" data-cat="hs" data-reveal style="background: var(--color-accent-300); color: var(--color-accent-900)">
-        <div class="pc-top">
-          <div>
-            <p class="pc-kick">03 · CRM interno · HS Brands Latam</p>
-            <h3 class="pc-title">Cuestionarios que se entienden</h3>
-          </div>
-          <span class="plus" aria-hidden="true"></span>
-        </div>
-        <div class="pc-body"><div>
-          <p class="pc-copy">Diseño de cuestionarios y formularios en el CRM interno, adaptando contenido y estructura al objetivo de cada cliente, con instructivos claros para distintos perfiles de usuario.</p>
-          <div class="pc-tags"><span class="tag">Formularios</span><span class="tag">UX writing</span><span class="tag">Flujos de trabajo</span></div>
-        </div></div>
-        <p class="pc-hint">Tocá para ver más</p>
-      </article>
-      <article class="pcard" tabindex="0" data-cat="hs" data-reveal style="background: var(--color-surface); color: var(--color-text)">
-        <div class="pc-top">
-          <div>
-            <p class="pc-kick">04 · Research · HS Brands Latam</p>
-            <h3 class="pc-title">Investigación de usuarios</h3>
-          </div>
-          <span class="plus" aria-hidden="true"></span>
-        </div>
-        <div class="pc-body"><div>
-          <p class="pc-copy">Entrevistas, encuestas y análisis de datos para entender a los usuarios; coordinación y capacitación de evaluadores, y presentación de resultados e insights a clientes.</p>
-          <div class="pc-tags"><span class="tag">UX Research</span><span class="tag">Cuali + cuanti</span><span class="tag">Insights</span></div>
-        </div></div>
-        <p class="pc-hint">Tocá para ver más</p>
-      </article>
-      <article class="pcard" tabindex="0" data-cat="edu" data-reveal style="background: var(--color-accent-100); color: var(--color-accent-800)">
-        <div class="pc-top">
-          <div>
-            <p class="pc-kick">05 · Diseño instruccional · Efe Idiomas · 2018–2025</p>
-            <h3 class="pc-title">Contenido que enseña</h3>
-          </div>
-          <span class="plus" aria-hidden="true"></span>
-        </div>
-        <div class="pc-body"><div>
-          <p class="pc-copy">Siete años creando cursos y materiales adaptados por edad y nivel, midiendo el aprendizaje para ajustar contenidos y traduciendo lo complejo en informes simples y accionables.</p>
-          <div class="pc-tags"><span class="tag">Diseño instruccional</span><span class="tag">Métricas</span><span class="tag">Comunicación</span></div>
+          <p class="pc-copy">Investigación exploratoria mixta con emprendedores usuarios de la app, hecha durante su evento de lanzamiento: 55 encuestas en papel y 5 entrevistas en profundidad, de la reunión con stakeholders a la presentación de insights.</p>
+          <div class="pc-tags"><span class="tag">UX Research</span><span class="tag">Cuali + cuanti</span><span class="tag">Trabajo de campo</span></div>
+          <button type="button" class="pc-link" data-goto="p1">Ver el caso completo <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
         </div></div>
         <p class="pc-hint">Tocá para ver más</p>
       </article>
@@ -1227,7 +1187,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
   // tarjetas expandibles (hover expande en desktop; tap/click o Enter fija)
   document.querySelectorAll('.pcard').forEach((card) => {
     const toggle = () => card.classList.toggle('open');
-    card.addEventListener('click', (e) => { if (e.target.closest('a')) return; toggle(); });
+    card.addEventListener('click', (e) => { if (e.target.closest('a, button')) return; toggle(); });
     card.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
     });
@@ -1247,7 +1207,9 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
   };
   const applyFilter = (want) => {
     for (const el of filterables) {
-      const show = want === 'all' || el.dataset.cat === want;
+      // [data-only] queda fuera de "Todos": el caso completo del Proyecto 1 sólo
+      // aparece cuando se elige su filtro, para no volcar todo de entrada.
+      const show = el.dataset.cat === want || (want === 'all' && !el.hasAttribute('data-only'));
       el.classList.toggle('is-hidden', !show);
       // lo que aparece ya está "caído": si no, quedaría invisible al filtrar
       if (show) el.classList.add('in');
@@ -1255,10 +1217,21 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     restripe();
     requestAnimationFrame(drawShapes);
   };
-  chips.forEach((chip) => chip.addEventListener('click', () => {
+  const pickFilter = (want) => {
+    const chip = chips.find((c) => c.dataset.filter === want);
+    if (!chip) return;
     chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
-    applyFilter(chip.dataset.filter);
-  }));
+    applyFilter(want);
+  };
+  chips.forEach((chip) => chip.addEventListener('click', () => pickFilter(chip.dataset.filter)));
+  // atajo desde la tarjeta: "Ver el caso completo" elige el filtro y baja al caso
+  document.querySelectorAll('[data-goto]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      pickFilter(btn.dataset.goto);
+      document.getElementById('proyectos').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+  applyFilter('all');
   restripe();
 
   // — scroll: progreso, nav, velocidad y foco-por-scroll en touch —

@@ -151,9 +151,12 @@ acomoda con un rebote.** No lo reemplaces por fades genéricos.
 - `[data-watch]` — solo marca una sección para que el observer le ponga la clase `.in`.
 - Un único `IntersectionObserver` (threshold 0.12) agrega `.in` y **deja de observar**
   (`unobserve`): las animaciones ocurren una sola vez, no se repiten al volver a scrollear.
-- `.mask > span` — títulos que suben desde detrás de una máscara al entrar en viewport. Los
-  títulos de los pasos del Proyecto 1 (`.step-t`) usan lo mismo y además se dibujan una regla
-  camel debajo con el `::after`.
+- `.mask > span` — títulos que suben desde detrás de una máscara al entrar en viewport.
+- Los títulos de los pasos del Proyecto 1 (`.step-t`) encadenan **tres tiempos**: suben tras la
+  máscara, un marcador camel (`.hl`, un `background-size` que va de `0%` a `100%`) los barre de
+  lado a lado, y después se dibuja la regla del `::after`. En los pasos pares el barrido entra
+  desde la derecha. El `.hl` usa `box-decoration-break: clone` para que en mobile, cuando el
+  título cae en dos renglones, la banda se dibuje en los dos.
 - `.name .ch` — el nombre del hero se parte letra por letra desde JS (`.split-letters`) y cada
   letra cae con `--i * 0.05s` de retraso. "Barone" va en `outline` (contorno) y se rellena de
   camel al hover en desktop o al entrar en viewport en touch (`.name.lit`).
@@ -193,22 +196,33 @@ el mismo lenguaje visual que las tarjetas de proyecto, pero son `<a>` a cada `#i
 
 ### Mis proyectos y el filtro
 
-La sección arranca con una fila de chips (`.chip[data-filter]`): `Todos`, `Proyecto 1`,
-`HS Brands`, `Educación`. Cada bloque filtrable lleva `data-cat`; el que no matchea recibe
-`.is-hidden`.
+Dos chips (`.chip[data-filter]`): **`Todos`** y **`Proyecto 1`**. Cada bloque filtrable lleva
+`data-cat`; el que no matchea recibe `.is-hidden`.
 
-Dos detalles que ya costaron una vuelta:
+La regla de visibilidad tiene una vuelta de tuerca — **`[data-only]`**:
+
+```js
+const show = el.dataset.cat === want || (want === 'all' && !el.hasAttribute('data-only'));
+```
+
+`#p1case` lleva `data-only`, así que **queda fuera de "Todos"**. En "Todos" se ve sólo una
+tarjeta resumen (`data-cat="teaser"`) y el caso entero aparece recién al elegir el filtro
+"Proyecto 1" — o al tocar "Ver el caso completo", un `<button data-goto="p1">` que elige el
+filtro y baja a la sección. Fue un pedido explícito: no volcar todo el caso de entrada.
+
+Tres detalles que ya costaron una vuelta:
 
 - **El zigzag de las tarjetas lo asigna el JS (`restripe()`), no `:nth-child`.** Con
   `:nth-child(even)` las tarjetas ocultas seguían contando y al filtrar el zigzag se rompía.
 - Lo que aparece al filtrar recibe `.in` a mano: si no, un bloque que nunca intersectó
   quedaría invisible al mostrarlo.
+- El click de la tarjeta ignora `a, button`, si no el botón "Ver el caso completo" abriría y
+  cerraría la tarjeta al mismo tiempo que cambia el filtro.
 
 **Proyecto 1 (`#p1case`)** no es una tarjeta compacta sino el caso completo, lámina por lámina:
-cabecera con el logo de Emprende Ya, panel "Contexto & Objetivo general", las cifras del
-estudio y los cinco pasos con sus fotos. Va **fuera** de `#plist` a propósito: `#plist` recibe
-un `skewY` continuo por inercia de scroll, y sobre un bloque tan alto ese cizallamiento se ve
-mal.
+cabecera con el logo de Emprende Ya, panel "Contexto & Objetivo general" y los cinco pasos con
+sus fotos. Va **fuera** de `#plist` a propósito: `#plist` recibe un `skewY` continuo por inercia
+de scroll, y sobre un bloque tan alto ese cizallamiento se ve mal.
 
 ## Capa táctil (mobile) — lección aprendida
 
@@ -299,13 +313,17 @@ credenciales.
   en la lámina de resultados del paso 5; **no** van como cifras sueltas — había una fila de
   contadores animados y Antonella pidió sacarla porque descolgaba del relato. Con eso quedó sin
   uso todo el sistema de contadores (`data-count`) y de `.stat`: se eliminó, está en el historial.
-- **Otros proyectos:** web internacional de HS Brands Latam (única con link externo,
-  https://oportunidadeshsbrands.com), cuestionarios en el CRM interno, investigación de
-  usuarios, y diseño instruccional en Efe Idiomas (2018–2025).
+- **Los otros proyectos ya no están en el sitio.** Había cuatro tarjetas más (web internacional
+  de HS Brands Latam, cuestionarios en el CRM interno, investigación de usuarios y diseño
+  instruccional en Efe Idiomas 2018–2025) y Antonella pidió sacarlas: el portfolio queda
+  enfocado en el caso de Emprende Ya, igual que el PDF. Los datos son reales y están en el
+  historial de git — si algún día vuelven, el markup de las `.pcard` sirve tal cual y hay que
+  devolverles su chip de filtro.
 - **Mi experiencia:** Project Assistant en HS Brands Global (agencia global de investigación
-  de mercado), **abril 2025 – junio 2026**, con los cuatro bullets de la lámina "Experiencia".
-  La fecha manuscrita va con `white-space: nowrap`: si envuelve, "2026" cae solo y se lee mal.
-  Efe Idiomas vive sólo como tarjeta de proyecto (05), no como experiencia aparte.
+  de mercado), con los cuatro bullets de la lámina "Experiencia". El período real es
+  **abril 2025 – junio 2026**, pero **hoy no se muestra**: la anotación manuscrita con la fecha
+  se sacó a pedido. Si vuelve, que sea con `white-space: nowrap` — al envolver, "2026" cae solo
+  y se lee mal.
 - **Formación:** Sociología UBA 2022–2026, Curso Inicial de programación con Python (Agencia de
   Habilidades para el Futuro, 2024), Inglés B2 (FCE), Curso Inicial de Diseño UX/UI, Lovable L1.
 - **Contacto:** antonella.m.barone@gmail.com · LinkedIn `antonella-barone2003` · Vicente López, BA.
