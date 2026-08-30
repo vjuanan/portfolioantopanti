@@ -444,17 +444,8 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
   background-repeat: no-repeat; background-position: 0 90%; background-size: 0% 52%;
   transition: background-size 1.05s var(--soft) var(--hld, 0.5s); }
 .in .step-t .hl, .step-t.in .hl { background-size: 100% 52%; }
-.step:nth-child(even) .step-t { text-align: right; }
-.step:nth-child(even) .step-t .hl { background-position: 100% 90%; }
-.step-t::after { content: ""; display: block; height: 3px; border-radius: 999px;
-  width: clamp(64px, 11vw, 150px); margin-top: clamp(12px, 1.7vw, 22px);
-  background: var(--color-accent); transform: scaleX(0); transform-origin: left;
-  transition: transform 0.85s var(--soft) 0.32s; }
-.step.in .step-t::after { transform: scaleX(1); }
-.step:nth-child(even) .step-t { text-align: right; }
-.step:nth-child(even) .step-t i { color: var(--color-accent-700); }
-.step:nth-child(even) .step-t::after { margin-left: auto; transform-origin: right;
-  background: var(--color-accent-700); }
+/* Todos a la izquierda: alternar la alineación se veía desprolijo cuando el
+   título envuelve y la segunda línea queda colgando a la derecha. */
 .step-grid { display: grid; gap: clamp(22px, 3.4vw, 48px); align-items: center;
   grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); }
 .step:nth-child(even) .step-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr); }
@@ -479,8 +470,6 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
   .step-grid, .step:nth-child(even) .step-grid { grid-template-columns: minmax(0, 1fr); }
   .step:nth-child(even) .step-panel { order: 0; }
   .step:nth-child(even) .step-media { order: 0; }
-  .step:nth-child(even) .step-t { text-align: left; }
-  .step:nth-child(even) .step-t .hl { background-position: 0 90%; }
 }
 
 /* ——— EXPERIENCIA ——— */
@@ -589,7 +578,7 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
       `grid-template-rows` sobre eso obliga a recalcular layout en cada frame: es
       justo lo que se sentía trabado. Se muestra de una y lo que anima es el
       contenido, que entra escalonado. */
-.acc { display: block; --acc-h: clamp(54px, 5.6vw, 64px);
+.acc { display: block; --acc-h: clamp(54px, 5.4vw, 66px);
   margin-top: clamp(76px, 11vw, 140px); }
 .acc-item { display: contents; }
 .acc-head {
@@ -597,26 +586,28 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
   z-index: calc(30 - var(--i));
   display: flex; align-items: center; gap: clamp(16px, 2.4vw, 32px); width: 100%;
   font: inherit; text-align: left; cursor: pointer; border: 0;
-  border-radius: calc(2.5 * var(--radius-lg));
-  padding: clamp(20px, 2.6vw, 32px) clamp(24px, 3.4vw, 44px);
+  border-radius: 999px;
+  /* ALTO FIJO, y `--acc-h` vale exactamente lo mismo. Es lo que garantiza que
+     los topes de apilado (`--i * --acc-h`) coincidan siempre con el alto real.
+     Antes el encabezado se compactaba al pegarse: mientras esa transición
+     corría — o si el observador de "pegado" no llegaba a tiempo — el alto no
+     coincidía con el tope y las píldoras se montaban una sobre otra. */
+  height: var(--acc-h); padding: 0 clamp(20px, 3vw, 38px);
   margin-bottom: clamp(14px, 1.8vw, 22px);
   background: var(--hb); color: var(--hf);
-  transition: padding 0.38s var(--soft), border-radius 0.38s var(--soft),
-              box-shadow 0.38s ease, transform 0.45s var(--spring); }
+  box-shadow: 0 4px 18px color-mix(in srgb, var(--color-text) 9%, transparent);
+  transition: box-shadow 0.38s ease, transform 0.45s var(--spring); }
 @media (hover: hover) { .acc-head:hover { transform: translateX(7px); } }
 .acc-head:focus-visible { outline: 2px solid var(--color-accent-700); outline-offset: 3px; }
-/* al quedar pegado se compacta, para que la pila no se coma la pantalla */
-.acc-head.stuck { min-height: var(--acc-h); padding-block: 0; border-radius: 20px;
-  box-shadow: 0 6px 22px color-mix(in srgb, var(--color-text) 16%, transparent); }
-.acc-head.stuck .a-sub { opacity: 0; height: 0; margin: 0; overflow: hidden; }
 .a-num { flex: none; font-family: var(--font-heading); font-weight: 700;
-  font-size: clamp(14px, 1.3vw, 17px); opacity: 0.55; font-feature-settings: "tnum" 1; }
-.a-txt { flex: 1; min-width: 0; }
-.a-title { display: block; font-family: var(--font-heading); font-weight: 700;
-  font-size: clamp(21px, 2.8vw, 36px); line-height: 1.06; letter-spacing: -0.022em; }
-.a-sub { display: block; margin-top: 7px; font-size: 14.5px; line-height: 1.5; opacity: 0.72;
-  transition: opacity 0.25s var(--soft); }
-.a-go { flex: none; width: 48px; height: 48px; border-radius: 50%;
+  font-size: clamp(13px, 1.2vw, 16px); opacity: 0.55; font-feature-settings: "tnum" 1; }
+.a-title { flex: 1; min-width: 0; font-family: var(--font-heading); font-weight: 700;
+  font-size: clamp(18px, 2.1vw, 27px); line-height: 1.06; letter-spacing: -0.022em;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* la bajada que antes iba en la píldora ahora abre el panel */
+.a-lead { margin: 0 0 clamp(22px, 3vw, 36px); font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.6; color: var(--ink-60); }
+.a-go { flex: none; width: 38px; height: 38px; border-radius: 50%;
   border: 2.5px solid currentColor; display: grid; place-items: center; opacity: 0.8;
   transition: transform 0.45s var(--spring); }
 .acc-item.open .a-go { transform: rotate(90deg); }
@@ -624,9 +615,9 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
 .acc-item.open .acc-panel { display: block; }
 .panel-in { padding: clamp(30px, 5vw, 68px) 0 clamp(30px, 5vw, 64px); }
 @media (max-width: 640px) {
-  .acc-head { gap: 14px; padding: 20px 22px; }
+  .acc-head { gap: 12px; padding: 0 18px; }
   .a-num { display: none; }
-  .a-go { width: 40px; height: 40px; }
+  .a-go { width: 34px; height: 34px; }
 }
 
 /* ——— EL CONTENIDO EMERGE ———
@@ -761,10 +752,10 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     </h1>
     <div class="hero-foot">
       <div class="hero-left rise" style="--d: 0.62s">
-        <span class="portrait" data-par="0.045"><img src="assets/anto-avatar.jpg" alt="Antonella Barone" /></span>
+        <span class="portrait" data-par="0.045"><img src="assets/anto-avatar-2026.jpg" alt="Antonella Barone" /></span>
         <div class="hero-role">
-          <p class="role">Investigación cuali + cuanti · UX Research · Sociología</p>
-          <p>Estudiante avanzada de Sociología (UBA) dando mis primeros pasos hacia UX: entender a las personas y traducir esa comprensión en decisiones concretas.</p>
+          <p class="role">Sociología · UX Research</p>
+          <p>Estudiante avanzada de Sociología (UBA) dando sus primeros pasos en UX.</p>
         </div>
       </div>
       <a class="badge rise" href="#sobre-mi" style="--d: 0.75s" data-par="-0.06" aria-label="Bajar a sobre mí">
@@ -839,10 +830,10 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     <section class="acc-item" id="formacion" style="--i: 0; --hb: var(--color-accent-200); --hf: var(--color-accent-900)">
       <button class="acc-head" type="button" aria-expanded="false" aria-controls="ap-formacion">
         <span class="a-num">02</span>
-        <span class="a-txt"><span class="a-title">Formación &amp; Habilidades</span><span class="a-sub">Lo que estudié y lo que sigo estudiando</span></span>
+        <span class="a-title">Formación &amp; Habilidades</span>
         <span class="a-go" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
       </button>
-      <div class="acc-panel" id="ap-formacion"><div class="panel-in"><div class="band" data-reveal data-watch>
+      <div class="acc-panel" id="ap-formacion"><div class="panel-in"><p class="a-lead">Lo que estudié y lo que sigo estudiando.</p><div class="band" data-reveal data-watch>
       <h2 class="h-sect">
         <span class="mask"><span>Lo que estudié</span></span>
         <span class="mask"><span style="--d: 0.12s">y lo que sigo estudiando.</span></span>
@@ -874,10 +865,10 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     <section class="acc-item" id="experiencia" style="--i: 1; --hb: var(--color-accent-300); --hf: var(--color-accent-900)">
       <button class="acc-head" type="button" aria-expanded="false" aria-controls="ap-experiencia">
         <span class="a-num">03</span>
-        <span class="a-txt"><span class="a-title">Mi experiencia</span><span class="a-sub">Project Assistant en investigación de mercado</span></span>
+        <span class="a-title">Mi experiencia</span>
         <span class="a-go" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
       </button>
-      <div class="acc-panel" id="ap-experiencia"><div class="panel-in"><h2 class="h-sect" style="margin-bottom: clamp(28px, 4vw, 56px)">
+      <div class="acc-panel" id="ap-experiencia"><div class="panel-in"><p class="a-lead">Project Assistant en investigación de mercado.</p><h2 class="h-sect" style="margin-bottom: clamp(28px, 4vw, 56px)">
       <span class="mask"><span>Un poco sobre</span></span>
       <span class="mask"><span style="--d: 0.12s">mi <span class="tan">trayectoria.</span></span></span>
     </h2>
@@ -917,10 +908,10 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     <section class="acc-item" id="proyectos" style="--i: 2; --hb: var(--color-surface); --hf: var(--color-text)">
       <button class="acc-head" type="button" aria-expanded="false" aria-controls="ap-proyectos">
         <span class="a-num">04</span>
-        <span class="a-txt"><span class="a-title">Mis proyectos</span><span class="a-sub">El caso completo de Emprende Ya, paso a paso</span></span>
+        <span class="a-title">Mis proyectos</span>
         <span class="a-go" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
       </button>
-      <div class="acc-panel" id="ap-proyectos"><div class="panel-in"><h2 class="h-sect" style="margin-bottom: clamp(28px, 4vw, 52px)">
+      <div class="acc-panel" id="ap-proyectos"><div class="panel-in"><p class="a-lead">El caso completo de Emprende Ya, paso a paso.</p><h2 class="h-sect" style="margin-bottom: clamp(28px, 4vw, 52px)">
       <span class="mask"><span>Investigación que</span></span>
       <span class="mask"><span style="--d: 0.12s">cambió <span class="tan">el producto.</span></span></span>
     </h2>
@@ -1083,10 +1074,10 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     <section class="acc-item" id="contacto" style="--i: 3; --hb: var(--color-accent-100); --hf: var(--color-accent-800)">
       <button class="acc-head" type="button" aria-expanded="false" aria-controls="ap-contacto">
         <span class="a-num">05</span>
-        <span class="a-txt"><span class="a-title">Contacto</span><span class="a-sub">Escribime y charlamos</span></span>
+        <span class="a-title">Contacto</span>
         <span class="a-go" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
       </button>
-      <div class="acc-panel" id="ap-contacto"><div class="panel-in"><div class="patch" data-reveal>
+      <div class="acc-panel" id="ap-contacto"><div class="panel-in"><p class="a-lead">Escribime y charlamos.</p><div class="patch" data-reveal>
       <h2 class="h-sect">
         <span class="mask"><span>¿Investigamos</span></span>
         <span class="mask"><span class="thin" style="--d: 0.12s">juntos?</span></span>
@@ -1356,7 +1347,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
   const acc = document.getElementById('acc');
   const heads = acc ? [...acc.querySelectorAll('.acc-head')] : [];
   const items = acc ? [...acc.querySelectorAll('.acc-item')] : [];
-  const REVEAL = '[data-reveal], [data-watch], [data-cascade], .emerge, .step-t, .mask';
+  const REVEAL = '[data-reveal], [data-watch], [data-cascade]';
 
   // el offset de pegado depende del alto real del nav
   const setNavH = () => document.documentElement.style.setProperty(
@@ -1367,9 +1358,19 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     item.classList.toggle('open', on);
     item.querySelector('.acc-head').setAttribute('aria-expanded', String(on));
     if (on) {
-      requestAnimationFrame(() => {
-        drawShapes();
-        item.querySelectorAll(REVEAL).forEach((el) => el.classList.add('in'));
+      // Sincrónico a propósito: leer offsetWidth fuerza el recálculo de estilos,
+      // así el panel ya mide y las ondas se dibujan con su ancho real. Dentro de
+      // un requestAnimationFrame esto queda a merced de que el navegador decida
+      // pintar, y si lo posterga el panel abre sin sus formas.
+      drawShapes();
+      // Lo que YA entra en pantalla se revela de una; el resto vuelve al
+      // observador y va apareciendo al scrollear. Si se les pone `.in` a todos
+      // de golpe, los cinco pasos del caso animan juntos al abrir y para cuando
+      // llegás scrolleando ya pasó todo: se ve estático.
+      item.querySelectorAll(REVEAL).forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.top < innerHeight && r.bottom > 0) el.classList.add('in');
+        else io.observe(el);
       });
     } else {
       // al cerrar se sueltan, así vuelven a emerger la próxima vez que se abra
@@ -1398,17 +1399,6 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     abrir(item, true);
   }));
 
-  // "pegado" = el encabezado ya no entra entero por encima de su línea de anclaje
-  let stickObs = [];
-  const setupStuck = () => {
-    stickObs.forEach((o) => o.disconnect());
-    stickObs = heads.map((head, i) => {
-      const o = new IntersectionObserver(([e]) => head.classList.toggle('stuck', e.intersectionRatio < 1),
-        { rootMargin: `-${stackTop(i) + 1}px 0px 0px 0px`, threshold: [1] });
-      o.observe(head); return o;
-    });
-  };
-
   // los enlaces del nav abren la sección en vez de saltar a un ancla vacía
   document.querySelectorAll('.nav a[href^="#"]').forEach((a) => {
     const item = document.querySelector(a.getAttribute('href'));
@@ -1417,8 +1407,8 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
   });
 
   if (acc) {
-    setNavH(); setupStuck();
-    addEventListener('resize', () => { setNavH(); setupStuck(); });
+    setNavH();
+    addEventListener('resize', setNavH);
     const desde = items.find((it) => it.id === location.hash.slice(1));
     abrir(desde || items[0], !!desde);
   }

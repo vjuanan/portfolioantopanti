@@ -157,9 +157,11 @@ acomoda con un rebote.** No lo reemplaces por fades genéricos.
   sólo los nodos de texto para no romper el `<i>` de adentro) y cada una sube desde atrás de la
   máscara con `--i * 0.06s`; cuando aterriza la última, un marcador camel (`.hl`, un
   `background-size` de `0%` a `100%`) barre el título entero. El retardo del marcador lo calcula
-  el JS según cuántas palabras haya (`--hld`). En los pasos pares el barrido entra desde la
-  derecha. El `.hl` usa `box-decoration-break: clone` para que en mobile, cuando el título cae en
-  dos renglones, la banda se dibuje en los dos.
+  el JS según cuántas palabras haya (`--hld`). El `.hl` usa `box-decoration-break: clone` para
+  que cuando el título cae en dos renglones la banda se dibuje en los dos. **Todos van alineados
+  a la izquierda:** hubo una versión donde los pasos pares iban a la derecha y se veía
+  desprolijo apenas el título envolvía, con la segunda línea colgando. La alternancia
+  izquierda/derecha sigue viva pero sólo en el `.step-grid` (panel y foto), que sí funciona.
 - `.name .ch` — el nombre del hero se parte letra por letra desde JS (`.split-letters`) y cada
   letra cae con `--i * 0.05s` de retraso. "Barone" va en `outline` (contorno) y se rellena de
   camel al hover en desktop o al entrar en viewport en touch (`.name.lit`).
@@ -209,11 +211,23 @@ Tres decisiones que lo sostienen y que no son evidentes leyendo el CSS:
 3. **El offset de pegado sale del alto real del nav.** El JS mide `nav.offsetHeight` y lo
    escribe en `--nav-h`; cada encabezado se pega en
    `calc(var(--nav-h) + var(--i) * var(--acc-h))`. Si tocás el nav, esto se reacomoda solo.
+4. **Los encabezados tienen ALTO FIJO (`height: var(--acc-h)`), y `--acc-h` vale exactamente
+   eso.** Es lo que garantiza que el tope de apilado coincida siempre con el alto real. Hubo una
+   versión donde el encabezado se compactaba al pegarse (escondía su bajada): mientras esa
+   transición corría — o si el observador de "pegado" no llegaba a tiempo — el alto no coincidía
+   con el tope y **las píldoras se montaban una sobre otra**. Por eso el encabezado es de una
+   sola línea y la bajada de cada sección vive dentro del panel (`.a-lead`). Si algún día le
+   agregás algo al encabezado, que no le cambie el alto.
 
-Al abrir, el JS le pone `.in` a todo lo revelable de adentro (el observer no alcanza: el panel
-estaba en `display: none` y nunca intersectó) y llama a `drawShapes()`, porque las ondas y los
-festoneados necesitan un ancho real para dibujarse. Al cerrar le saca `.in`, así la próxima vez
-vuelve a emerger.
+Al abrir, el JS:
+
+- llama a `drawShapes()` **de forma síncrona** (no dentro de un `requestAnimationFrame`): leer
+  `offsetWidth` fuerza el recálculo de estilos, así el panel ya mide y las ondas se dibujan con
+  su ancho real. Dentro de un rAF queda a merced de que el navegador decida pintar;
+- revela **sólo lo que ya entra en pantalla** y le devuelve el resto al `IntersectionObserver`.
+  Si se les pone `.in` a todos de golpe, los cinco pasos del caso animan juntos al abrir y para
+  cuando llegás scrolleando ya pasó todo: se ve estático, que es justo lo contrario de lo que se
+  busca. Al cerrar les saca `.in`, así la próxima vez vuelven a emerger.
 
 Los enlaces del `<nav>` que apuntan a una sección del acordeón **abren el item** en vez de saltar
 a un ancla; lo mismo con el `#hash` al cargar.
