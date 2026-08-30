@@ -365,10 +365,14 @@ credenciales.
 - **Formación:** Sociología UBA 2022–2026, Curso Inicial de programación con Python (Agencia de
   Habilidades para el Futuro, 2024), Inglés B2 (FCE), Curso Inicial de Diseño UX/UI, Lovable L1.
 - **Contacto:** antonella.m.barone@gmail.com · LinkedIn `antonella-barone2003` · Vicente López, BA.
-- **WhatsApp:** botón fijo abajo a la derecha (`.wa`), en camel para no romper la paleta.
-  Apunta a `wa.me/541164613463`. **Ojo:** el número está tal cual lo pasó Antonella
-  (+54 11 6461-3463). En Argentina los celulares suelen necesitar un **9** extra
-  (`5491164613463`) para que `wa.me` abra el chat. Falta confirmar con ella cuál anda.
+- **WhatsApp:** en dos lugares, los dos a `wa.me/5491164613463` — en pantalla se lee
+  **+54 11 6461 3463**. El **9** después del 54 no es un error: WhatsApp lo pide para los
+  celulares argentinos; sin él el link no abre el chat. Si tocás el número, mantenelo.
+  1. Botón fijo abajo a la derecha (`.wa`), en camel para no romper la paleta.
+  2. Segundo canal en el bloque de contacto, debajo del mail (`.bigs > .biglink.is-wa`).
+     Los dos canales se diferencian por **peso**, no por tono: el diseño original los
+     separaba con malva, pero ese malva hoy es el magenta de Emprende Ya y está reservado
+     para ese proyecto.
 
 ## Meta tags y compartir
 

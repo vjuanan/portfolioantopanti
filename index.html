@@ -669,6 +669,19 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
   .biglink:hover svg { transform: translate(6px, -6px) rotate(8deg); } }
 .biglink:active { color: var(--color-accent-300); border-color: var(--color-accent-300); }
 .biglink:active svg { transform: translate(4px, -4px) rotate(6deg); }
+
+/* El WhatsApp cae debajo del mail y pesa un poco menos: el orden de la pila es
+   el orden en que ella prefiere que la contacten. Se diferencian por peso y no
+   por tono — el malva del diseño original hoy es el magenta de Emprende Ya y
+   está reservado para ese proyecto. */
+.bigs { display: flex; flex-direction: column; align-items: flex-start;
+  gap: clamp(14px, 2.2vh, 22px); margin-top: clamp(32px, 5vh, 56px); }
+.bigs .biglink { margin-top: 0; max-width: 100%; }
+.biglink.is-wa { font-size: clamp(16px, 2vw, 27px); gap: 14px;
+  border-bottom-color: var(--color-accent-300); }
+@media (hover: hover) {
+  .biglink.is-wa:hover svg { transform: rotate(-9deg) scale(1.12); } }
+.biglink.is-wa:active svg { transform: rotate(-7deg) scale(1.08); }
 .patch .links { display: flex; flex-wrap: wrap; gap: 12px 28px; margin-top: clamp(28px, 4vh, 44px); }
 .patch .links a { color: color-mix(in srgb, var(--color-bg) 75%, transparent);
   font-weight: 600; font-size: 14.5px; text-decoration: none; position: relative;
@@ -1078,9 +1091,15 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
         <span class="mask"><span>¿Investigamos</span></span>
         <span class="mask"><span class="thin" style="--d: 0.12s">juntos?</span></span>
       </h2>
-      <a class="biglink" href="mailto:antonella.m.barone@gmail.com">antonella.m.barone@gmail.com
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-      </a>
+      <div class="bigs">
+        <a class="biglink" href="mailto:antonella.m.barone@gmail.com">antonella.m.barone@gmail.com
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+        </a>
+        <a class="biglink is-wa" href="https://wa.me/5491164613463" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp al +54 11 6461 3463">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.2 8.2 0 0 1 2.41 5.82c0 4.54-3.7 8.24-8.25 8.24a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24Zm-3.6 4.2c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.23.9 2.42 1.02 2.59.13.16 1.75 2.67 4.24 3.74.59.26 1.05.41 1.41.52.6.19 1.14.16 1.57.1.48-.07 1.48-.6 1.68-1.19.21-.58.21-1.08.15-1.19-.06-.1-.23-.16-.48-.29-.25-.12-1.48-.73-1.71-.81-.23-.09-.4-.13-.56.12-.17.25-.64.81-.79.97-.14.17-.29.19-.54.07-.25-.13-1.06-.39-2.01-1.24-.74-.66-1.24-1.48-1.39-1.73-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.44.13-.14.17-.25.25-.41.09-.17.04-.31-.02-.44-.06-.12-.55-1.36-.77-1.86-.2-.48-.41-.42-.56-.42h-.42Z"/></svg>
+          +54 11 6461 3463
+        </a>
+      </div>
       <div class="links">
         <a href="https://www.linkedin.com/in/antonella-barone2003" target="_blank" rel="noopener">LinkedIn ↗</a>
         <a href="https://oportunidadeshsbrands.com" target="_blank" rel="noopener">Último proyecto ↗</a>
@@ -1098,7 +1117,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
 
 </div>
 
-<a class="wa" href="https://wa.me/541164613463?text=Hola%20Anto%2C%20vi%20tu%20portfolio%20y%20quer%C3%ADa%20hacerte%20una%20consulta."
+<a class="wa" href="https://wa.me/5491164613463?text=Hola%20Anto%2C%20vi%20tu%20portfolio%20y%20quer%C3%ADa%20hacerte%20una%20consulta."
    target="_blank" rel="noopener" aria-label="Escribime por WhatsApp">
   <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
     <path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.01-1.04 2.47s1.06 2.86 1.21 3.06c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.75-.72 2-1.41.25-.69.25-1.28.17-1.41-.07-.13-.27-.2-.57-.35Z"/>
