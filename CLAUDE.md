@@ -152,11 +152,14 @@ acomoda con un rebote.** No lo reemplaces por fades genéricos.
 - Un único `IntersectionObserver` (threshold 0.12) agrega `.in` y **deja de observar**
   (`unobserve`): las animaciones ocurren una sola vez, no se repiten al volver a scrollear.
 - `.mask > span` — títulos que suben desde detrás de una máscara al entrar en viewport.
-- Los títulos de los pasos del Proyecto 1 (`.step-t`) encadenan **tres tiempos**: suben tras la
-  máscara, un marcador camel (`.hl`, un `background-size` que va de `0%` a `100%`) los barre de
-  lado a lado, y después se dibuja la regla del `::after`. En los pasos pares el barrido entra
-  desde la derecha. El `.hl` usa `box-decoration-break: clone` para que en mobile, cuando el
-  título cae en dos renglones, la banda se dibuje en los dos.
+- Los títulos de los pasos del Proyecto 1 (`.step-t`) van **grandes y sin regla debajo** (se
+  probó y quedó pobre). Encadenan dos tiempos: el JS los parte en palabras (`.w`, recorriendo
+  sólo los nodos de texto para no romper el `<i>` de adentro) y cada una sube desde atrás de la
+  máscara con `--i * 0.06s`; cuando aterriza la última, un marcador camel (`.hl`, un
+  `background-size` de `0%` a `100%`) barre el título entero. El retardo del marcador lo calcula
+  el JS según cuántas palabras haya (`--hld`). En los pasos pares el barrido entra desde la
+  derecha. El `.hl` usa `box-decoration-break: clone` para que en mobile, cuando el título cae en
+  dos renglones, la banda se dibuje en los dos.
 - `.name .ch` — el nombre del hero se parte letra por letra desde JS (`.split-letters`) y cada
   letra cae con `--i * 0.05s` de retraso. "Barone" va en `outline` (contorno) y se rellena de
   camel al hover en desktop o al entrar en viewport en touch (`.name.lit`).
@@ -185,14 +188,35 @@ El orden lo pidió Antonella: primero quién es, después qué sabe, dónde lo a
 **Si agregás una sección, actualizá tres lugares:** el `<nav>`, el numerito del `.kicker` y el
 índice.
 
-### El índice (`.index` / `.icard`)
+### El acordeón (`.acc` / `.acc-item` / `.acc-head`)
 
-Al final de "Sobre mí" hay una lista de píldoras — una por sección — que funciona como menú de
-entrada al sitio: quien llega lee quién es Antonella y salta directo a lo que le interese. Usa
-el mismo lenguaje visual que las tarjetas de proyecto, pero son `<a>` a cada `#id`.
+**"Sobre mí" es la única `<section>` suelta.** Las otras cuatro viven dentro del acordeón: cada
+una es una píldora que abre su contenido ahí mismo, sin mandarte a otro lado. Los encabezados
+quedan pegados arriba y se van **apilando**, así cualquier sección se puede elegir mientras se
+lee otra, sin volver para arriba.
 
-`.icard` lleva `position: relative` **a propósito**: sin eso, el garabato de la sección (que es
-`position: absolute; z-index: 0`) se pinta por encima de las tarjetas.
+Tres decisiones que lo sostienen y que no son evidentes leyendo el CSS:
+
+1. **`.acc-item` usa `display: contents`.** Si el encabezado viviera dentro de la caja de su
+   propio item, `position: sticky` lo soltaría apenas ese item sale de pantalla y la pila se
+   desarmaría. Sin caja, el bloque contenedor pasa a ser `.acc` y cada encabezado se queda
+   pegado hasta el final del acordeón. Las custom properties (`--i`, `--hb`, `--hf`) igual
+   heredan a través de `display: contents`.
+2. **El panel NO anima su altura.** El de proyectos mide miles de píxeles; animar
+   `grid-template-rows` sobre eso obliga a recalcular layout en cada frame y es justo lo que se
+   sentía trabado. Se muestra de una (`display`) y lo que anima es el contenido, que emerge
+   escalonado — y de paso tapa el salto de altura.
+3. **El offset de pegado sale del alto real del nav.** El JS mide `nav.offsetHeight` y lo
+   escribe en `--nav-h`; cada encabezado se pega en
+   `calc(var(--nav-h) + var(--i) * var(--acc-h))`. Si tocás el nav, esto se reacomoda solo.
+
+Al abrir, el JS le pone `.in` a todo lo revelable de adentro (el observer no alcanza: el panel
+estaba en `display: none` y nunca intersectó) y llama a `drawShapes()`, porque las ondas y los
+festoneados necesitan un ancho real para dibujarse. Al cerrar le saca `.in`, así la próxima vez
+vuelve a emerger.
+
+Los enlaces del `<nav>` que apuntan a una sección del acordeón **abren el item** en vez de saltar
+a un ancla; lo mismo con el `#hash` al cargar.
 
 ### Mis proyectos y el filtro
 
@@ -288,6 +312,20 @@ Tres consecuencias a tener en cuenta:
 Está aplicado en tres lugares: `.name .outline` ("Barone"), `.marq-item:nth-child(4n+3)` y
 `.patch .h-sect .thin` ("juntos?").
 
+## Movimiento: barato o nada
+
+El pedido fue que la información "emerja" en vez de estar quieta. Todo lo que se mueve de forma
+continua anima **sólo `opacity` y `transform`**, que van por GPU y no cuestan layout:
+
+- `.emerge > *` — los hijos de un panel entran escalonados (`--i` lo asigna el JS).
+- `.spark` — las estrellitas titilan.
+- `.wavy-bg` — la onda "respira" con un `scale`/`rotate` mínimo.
+
+**La onda respira con un transform, NO deformando el path.** Se probó morfear la `d` con
+`<animate>` de SMIL entre tres fases y hay que descartarlo: con **sólo dos paneles** el atributo
+`values` pesaba **63 KB** de datos de path que el navegador interpola en cada frame, y
+regenerarlos costaba ~150 ms. En el sitio hay ocho paneles. Se sentía trabado. No lo reintentes.
+
 ## Trampa de composición: nada de `backdrop-filter` sobre `.bg-fx`
 
 `.bg-fx` es la capa `position: fixed` con los brillos y el grano. Dos cosas la sostienen y las
@@ -327,6 +365,10 @@ credenciales.
 - **Formación:** Sociología UBA 2022–2026, Curso Inicial de programación con Python (Agencia de
   Habilidades para el Futuro, 2024), Inglés B2 (FCE), Curso Inicial de Diseño UX/UI, Lovable L1.
 - **Contacto:** antonella.m.barone@gmail.com · LinkedIn `antonella-barone2003` · Vicente López, BA.
+- **WhatsApp:** botón fijo abajo a la derecha (`.wa`), en camel para no romper la paleta.
+  Apunta a `wa.me/541164613463`. **Ojo:** el número está tal cual lo pasó Antonella
+  (+54 11 6461-3463). En Argentina los celulares suelen necesitar un **9** extra
+  (`5491164613463`) para que `wa.me` abra el chat. Falta confirmar con ella cuál anda.
 
 ## Meta tags y compartir
 

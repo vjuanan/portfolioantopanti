@@ -160,7 +160,12 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
    en mobile, y la onda pareja es justamente lo que se lee como "hecho a mano". */
 .wavy { position: relative; isolation: isolate; }
 .wavy > .wavy-bg { position: absolute; inset: 0; z-index: -1; display: block;
-  width: 100%; height: 100%; }
+  width: 100%; height: 100%; transform-origin: 50% 50%;
+  animation: respira 17s ease-in-out infinite; animation-delay: var(--wd, 0s); }
+/* Respira con un transform, NO deformando el path: morfear la `d` obliga al
+   navegador a interpolar miles de puntos por frame y el sitio se traba. */
+@keyframes respira { 0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.014) rotate(0.3deg); } }
 .wavy > .wavy-bg path { fill: var(--wavy-fill, var(--color-surface)); }
 .wavy > .wavy-in { position: relative;
   padding: clamp(30px, 4.4vw, 62px) clamp(28px, 4.6vw, 70px); }
@@ -181,7 +186,10 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
 
 /* Estrellitas de cuatro puntas y garabatos: decoración, nunca contenido. */
 .spark { position: absolute; width: var(--w, 26px); height: var(--w, 26px);
-  color: var(--color-text); opacity: var(--o, 0.85); pointer-events: none; z-index: 2; }
+  color: var(--color-text); opacity: var(--o, 0.85); pointer-events: none; z-index: 2;
+  animation: titila 5.2s ease-in-out infinite; animation-delay: var(--td, 0s); }
+@keyframes titila { 0%, 100% { opacity: var(--o, 0.85); transform: scale(1) rotate(0deg); }
+  50% { opacity: calc(var(--o, 0.85) * 0.4); transform: scale(0.8) rotate(20deg); } }
 .doodle { position: absolute; pointer-events: none; z-index: 0;
   color: var(--color-text); opacity: 0.5; }
 .doodle path { fill: none; stroke: currentColor; stroke-width: 1.5;
@@ -416,21 +424,27 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
 .steps { display: grid; gap: clamp(52px, 8vw, 108px);
   padding-top: clamp(48px, 8vh, 92px); }
 .step { position: relative; }
-/* Los títulos de paso entran con la misma máscara que los de sección (suben
-   desde atrás), un marcador camel los barre de lado a lado y después se dibuja
-   la regla. Los tres tiempos van encadenados para que se lea como un gesto. */
+/* ——— TÍTULOS DE PASO ———
+   Grandes, sin regla debajo, y con dos tiempos encadenados: las palabras suben
+   una tras otra desde atrás de la máscara y, cuando aterriza la última, un
+   marcador camel barre el título entero. El retardo del marcador lo calcula el
+   JS según cuántas palabras tenga (--hld). */
 .step-t { font-family: var(--font-heading); font-weight: 700; font-style: italic;
-  font-size: clamp(25px, 3.5vw, 50px); line-height: 1.08; margin: 0 0 clamp(20px, 2.8vw, 36px);
-  letter-spacing: -0.02em; }
-.step-t .mask { padding-inline: 0.1em; margin-inline: -0.1em; }
+  font-size: clamp(29px, 4.4vw, 62px); line-height: 1.04; margin: 0 0 clamp(22px, 3vw, 38px);
+  letter-spacing: -0.024em; }
+.step-t .mask { padding-inline: 0.12em; margin-inline: -0.12em; }
 .step-t i { font-style: inherit; color: var(--color-accent-700); }
-/* el marcador: una banda camel que crece detrás del texto, como resaltador */
+.step-t .w { display: inline-block; opacity: 0; transform: translateY(112%);
+  transition: transform 0.8s var(--drop), opacity 0.4s ease;
+  transition-delay: calc(var(--i) * 0.06s); }
+.in .step-t .w, .step-t.in .w { opacity: 1; transform: none; }
 .step-t .hl { display: inline; padding: 0.06em 0.1em; margin: 0 -0.1em;
   -webkit-box-decoration-break: clone; box-decoration-break: clone;
   background-image: linear-gradient(var(--color-accent-300), var(--color-accent-300));
   background-repeat: no-repeat; background-position: 0 90%; background-size: 0% 52%;
-  transition: background-size 1s var(--soft) 0.45s; }
-.step.in .step-t .hl { background-size: 100% 52%; }
+  transition: background-size 1.05s var(--soft) var(--hld, 0.5s); }
+.in .step-t .hl, .step-t.in .hl { background-size: 100% 52%; }
+.step:nth-child(even) .step-t { text-align: right; }
 .step:nth-child(even) .step-t .hl { background-position: 100% 90%; }
 .step-t::after { content: ""; display: block; height: 3px; border-radius: 999px;
   width: clamp(64px, 11vw, 150px); margin-top: clamp(12px, 1.7vw, 22px);
@@ -466,7 +480,7 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
   .step:nth-child(even) .step-panel { order: 0; }
   .step:nth-child(even) .step-media { order: 0; }
   .step:nth-child(even) .step-t { text-align: left; }
-  .step:nth-child(even) .step-t::after { margin-left: 0; transform-origin: left; }
+  .step:nth-child(even) .step-t .hl { background-position: 0 90%; }
 }
 
 /* ——— EXPERIENCIA ——— */
@@ -560,36 +574,68 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
 @media (hover: hover) { .skill:hover .ico { transform: rotate(-8deg) scale(1.08); }
   .skill:hover .box { background: color-mix(in srgb, #fff 26%, transparent); transform: translateX(4px); } }
 
-/* ——— ÍNDICE DE SECCIONES: la puerta de entrada al sitio ———
-   Mismo lenguaje de píldora que las tarjetas de proyecto, pero como enlaces:
-   quien entra lee "Sobre mí" y desde acá salta a la sección que quiera. */
-.index { display: grid; gap: clamp(14px, 1.8vw, 22px);
+/* ——— ACORDEÓN DE SECCIONES ———
+   Cada sección es una píldora que abre su contenido ahí mismo. Los encabezados
+   quedan pegados arriba y se van APILANDO, así cualquiera se puede elegir sin
+   volver para arriba.
+
+   Dos cosas que hacen que funcione y no se noten a simple vista:
+
+   1. `.acc-item` usa `display: contents`. Si el encabezado viviera dentro de la
+      caja de su propio item, `position: sticky` lo soltaría apenas ese item sale
+      de pantalla y la pila se desarmaría. Sin caja, el bloque contenedor pasa a
+      ser `.acc` y cada encabezado se queda pegado hasta el final del acordeón.
+   2. El panel NO anima su altura. El de proyectos mide miles de píxeles y animar
+      `grid-template-rows` sobre eso obliga a recalcular layout en cada frame: es
+      justo lo que se sentía trabado. Se muestra de una y lo que anima es el
+      contenido, que entra escalonado. */
+.acc { display: block; --acc-h: clamp(54px, 5.6vw, 64px);
   margin-top: clamp(76px, 11vw, 140px); }
-.icard { display: flex; align-items: center; gap: clamp(16px, 2.4vw, 32px);
-  text-decoration: none; color: inherit; box-sizing: border-box; position: relative;
+.acc-item { display: contents; }
+.acc-head {
+  position: sticky; top: calc(var(--nav-h, 64px) + var(--i) * var(--acc-h));
+  z-index: calc(30 - var(--i));
+  display: flex; align-items: center; gap: clamp(16px, 2.4vw, 32px); width: 100%;
+  font: inherit; text-align: left; cursor: pointer; border: 0;
   border-radius: calc(2.5 * var(--radius-lg));
   padding: clamp(20px, 2.6vw, 32px) clamp(24px, 3.4vw, 44px);
-  transition: transform 0.5s var(--spring), box-shadow 0.4s ease; }
-.ic-num { flex: none; font-family: var(--font-heading); font-weight: 700;
+  margin-bottom: clamp(14px, 1.8vw, 22px);
+  background: var(--hb); color: var(--hf);
+  transition: padding 0.38s var(--soft), border-radius 0.38s var(--soft),
+              box-shadow 0.38s ease, transform 0.45s var(--spring); }
+@media (hover: hover) { .acc-head:hover { transform: translateX(7px); } }
+.acc-head:focus-visible { outline: 2px solid var(--color-accent-700); outline-offset: 3px; }
+/* al quedar pegado se compacta, para que la pila no se coma la pantalla */
+.acc-head.stuck { min-height: var(--acc-h); padding-block: 0; border-radius: 20px;
+  box-shadow: 0 6px 22px color-mix(in srgb, var(--color-text) 16%, transparent); }
+.acc-head.stuck .a-sub { opacity: 0; height: 0; margin: 0; overflow: hidden; }
+.a-num { flex: none; font-family: var(--font-heading); font-weight: 700;
   font-size: clamp(14px, 1.3vw, 17px); opacity: 0.55; font-feature-settings: "tnum" 1; }
-.ic-text { flex: 1; min-width: 0; }
-.ic-title { display: block; font-family: var(--font-heading); font-weight: 700;
+.a-txt { flex: 1; min-width: 0; }
+.a-title { display: block; font-family: var(--font-heading); font-weight: 700;
   font-size: clamp(21px, 2.8vw, 36px); line-height: 1.06; letter-spacing: -0.022em; }
-.ic-sub { display: block; margin-top: 7px; font-size: 14.5px; line-height: 1.5; opacity: 0.72; }
-.ic-go { flex: none; width: 48px; height: 48px; border-radius: 50%;
+.a-sub { display: block; margin-top: 7px; font-size: 14.5px; line-height: 1.5; opacity: 0.72;
+  transition: opacity 0.25s var(--soft); }
+.a-go { flex: none; width: 48px; height: 48px; border-radius: 50%;
   border: 2.5px solid currentColor; display: grid; place-items: center; opacity: 0.8;
   transition: transform 0.45s var(--spring); }
-@media (hover: hover) {
-  .icard:hover { transform: translateX(8px); box-shadow: var(--shadow-md); }
-  .icard:hover .ic-go { transform: translateX(4px); }
-}
-.icard:active { transform: scale(0.99); }
-.icard:focus-visible { outline: 2px solid var(--color-accent-700); outline-offset: 3px; }
+.acc-item.open .a-go { transform: rotate(90deg); }
+.acc-panel { display: none; }
+.acc-item.open .acc-panel { display: block; }
+.panel-in { padding: clamp(30px, 5vw, 68px) 0 clamp(30px, 5vw, 64px); }
 @media (max-width: 640px) {
-  .icard { gap: 14px; padding: 20px 22px; }
-  .ic-num { display: none; }
-  .ic-go { width: 40px; height: 40px; }
+  .acc-head { gap: 14px; padding: 20px 22px; }
+  .a-num { display: none; }
+  .a-go { width: 40px; height: 40px; }
 }
+
+/* ——— EL CONTENIDO EMERGE ———
+   Los hijos de un `.emerge` entran escalonados en vez de aparecer todos juntos.
+   Se anima sólo `opacity` y `transform`, que van por GPU y no cuestan layout. */
+.emerge > * { opacity: 0; transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.85s var(--drop);
+  transition-delay: calc(var(--i, 0) * 0.085s + 0.1s); }
+.in .emerge > *, .emerge.in > * { opacity: 1; transform: none; }
 
 /* — contacto — */
 .close { padding: clamp(72px, 12vh, 140px) 0 clamp(20px, 3vh, 32px); }
@@ -636,6 +682,29 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
 .patch .links a:active::after { transform: scaleX(1); }
 .patch .meta { margin: clamp(28px, 4vh, 44px) 0 0; font-size: 13px;
   color: color-mix(in srgb, var(--color-bg) 60%, transparent); }
+/* ——— WHATSAPP ——— fijo abajo a la derecha, en camel para no romper la
+   paleta. La etiqueta se despliega al pasar el mouse; en touch queda el ícono. */
+.wa { position: fixed; right: clamp(14px, 3vw, 30px); bottom: clamp(14px, 3vw, 30px);
+  z-index: 80; display: inline-flex; align-items: center; gap: 0;
+  height: 60px; padding: 0 17px; border-radius: 999px;
+  background: var(--color-accent); color: var(--color-bg); text-decoration: none;
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--color-accent-900) 34%, transparent);
+  transition: transform 0.45s var(--spring), gap 0.4s var(--soft),
+              padding 0.4s var(--soft), background 0.3s ease; }
+.wa svg { flex: none; }
+.wa span { max-width: 0; overflow: hidden; white-space: nowrap;
+  font-weight: 700; font-size: 15px; transition: max-width 0.45s var(--soft); }
+@media (hover: hover) {
+  .wa:hover { gap: 10px; padding-right: 22px; background: var(--color-accent-600); transform: translateY(-3px); }
+  .wa:hover span { max-width: 190px; }
+}
+.wa:focus-visible { outline: 3px solid var(--color-accent-900); outline-offset: 3px; }
+/* halo que late, para que se note sin gritar */
+.wa::after { content: ""; position: absolute; inset: 0; border-radius: 999px;
+  border: 2px solid var(--color-accent); animation: halo 2.9s ease-out infinite; }
+@keyframes halo { 0% { transform: scale(1); opacity: 0.7; }
+  70%, 100% { transform: scale(1.45); opacity: 0; } }
+
 footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
   padding: clamp(24px, 4vh, 40px) 0; font-size: 13px; color: var(--ink-60); }
 footer a { color: var(--ink-75); font-weight: 600; text-decoration: none; transition: color 0.2s ease; }
@@ -739,47 +808,28 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
       </div>
     </div>
 
-    <!-- Índice: desde acá se entra a cada sección -->
-    <nav class="index" aria-label="Secciones del portfolio" data-cascade>
-      <a class="icard" href="#formacion" style="background: var(--color-accent-200); color: var(--color-accent-900)">
-        <span class="ic-num">02</span>
-        <span class="ic-text">
-          <span class="ic-title">Formación &amp; Habilidades</span>
-          <span class="ic-sub">Lo que estudié y lo que sigo estudiando</span>
-        </span>
-        <span class="ic-go" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
-      </a>
-      <a class="icard" href="#experiencia" style="background: var(--color-accent-300); color: var(--color-accent-900)">
-        <span class="ic-num">03</span>
-        <span class="ic-text">
-          <span class="ic-title">Mi experiencia</span>
-          <span class="ic-sub">Project Assistant en investigación de mercado</span>
-        </span>
-        <span class="ic-go" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
-      </a>
-      <a class="icard" href="#proyectos" style="background: var(--color-surface); color: var(--color-text)">
-        <span class="ic-num">04</span>
-        <span class="ic-text">
-          <span class="ic-title">Mis proyectos</span>
-          <span class="ic-sub">El caso completo de Emprende Ya, paso a paso</span>
-        </span>
-        <span class="ic-go" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
-      </a>
-      <a class="icard" href="#contacto" style="background: var(--color-accent-100); color: var(--color-accent-800)">
-        <span class="ic-num">05</span>
-        <span class="ic-text">
-          <span class="ic-title">Contacto</span>
-          <span class="ic-sub">Escribime y charlamos</span>
-        </span>
-        <span class="ic-go" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
-      </a>
-    </nav>
   </section>
 
   <!-- ——————————————————— 02 · FORMACIÓN & HABILIDADES ——————————————————— -->
-  <section class="sect" id="formacion" data-watch>
-    <div class="band" data-reveal data-watch>
-      <p class="kicker"><em>02</em> Formación &amp; Habilidades</p>
+  
+
+  <!-- ——————————————————— 03 · MI EXPERIENCIA ——————————————————— -->
+  
+
+  <!-- ——————————————————— 04 · MIS PROYECTOS ——————————————————— -->
+  
+
+  <!-- ——————————————————— 05 · CONTACTO ——————————————————— -->
+    <!-- ——— EL ACORDEÓN: cada sección abre su contenido acá mismo y su
+       encabezado queda pegado arriba, apilándose con los anteriores. ——— -->
+  <div class="acc" id="acc">
+    <section class="acc-item" id="formacion" style="--i: 0; --hb: var(--color-accent-200); --hf: var(--color-accent-900)">
+      <button class="acc-head" type="button" aria-expanded="false" aria-controls="ap-formacion">
+        <span class="a-num">02</span>
+        <span class="a-txt"><span class="a-title">Formación &amp; Habilidades</span><span class="a-sub">Lo que estudié y lo que sigo estudiando</span></span>
+        <span class="a-go" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+      </button>
+      <div class="acc-panel" id="ap-formacion"><div class="panel-in"><div class="band" data-reveal data-watch>
       <h2 class="h-sect">
         <span class="mask"><span>Lo que estudié</span></span>
         <span class="mask"><span style="--d: 0.12s">y lo que sigo estudiando.</span></span>
@@ -806,13 +856,15 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
           <span class="box"><b>Lovable L1 — Desarrollo con IA</b><small>Apps, automatización y low-code</small></span>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ——————————————————— 03 · MI EXPERIENCIA ——————————————————— -->
-  <section class="sect" id="experiencia" data-watch>
-    <p class="kicker" data-reveal><em>03</em> Mi experiencia</p>
-    <h2 class="h-sect" style="margin-bottom: clamp(28px, 4vw, 56px)">
+    </div></div></div>
+    </section>
+    <section class="acc-item" id="experiencia" style="--i: 1; --hb: var(--color-accent-300); --hf: var(--color-accent-900)">
+      <button class="acc-head" type="button" aria-expanded="false" aria-controls="ap-experiencia">
+        <span class="a-num">03</span>
+        <span class="a-txt"><span class="a-title">Mi experiencia</span><span class="a-sub">Project Assistant en investigación de mercado</span></span>
+        <span class="a-go" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+      </button>
+      <div class="acc-panel" id="ap-experiencia"><div class="panel-in"><h2 class="h-sect" style="margin-bottom: clamp(28px, 4vw, 56px)">
       <span class="mask"><span>Un poco sobre</span></span>
       <span class="mask"><span style="--d: 0.12s">mi <span class="tan">trayectoria.</span></span></span>
     </h2>
@@ -847,13 +899,15 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
           </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ——————————————————— 04 · MIS PROYECTOS ——————————————————— -->
-  <section class="sect projects" id="proyectos" data-watch>
-    <p class="kicker" data-reveal><em>04</em> Mis proyectos</p>
-    <h2 class="h-sect" style="margin-bottom: clamp(28px, 4vw, 52px)">
+    </div></div></div>
+    </section>
+    <section class="acc-item" id="proyectos" style="--i: 2; --hb: var(--color-surface); --hf: var(--color-text)">
+      <button class="acc-head" type="button" aria-expanded="false" aria-controls="ap-proyectos">
+        <span class="a-num">04</span>
+        <span class="a-txt"><span class="a-title">Mis proyectos</span><span class="a-sub">El caso completo de Emprende Ya, paso a paso</span></span>
+        <span class="a-go" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+      </button>
+      <div class="acc-panel" id="ap-proyectos"><div class="panel-in"><h2 class="h-sect" style="margin-bottom: clamp(28px, 4vw, 52px)">
       <span class="mask"><span>Investigación que</span></span>
       <span class="mask"><span style="--d: 0.12s">cambió <span class="tan">el producto.</span></span></span>
     </h2>
@@ -1011,13 +1065,15 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
         </div></div>
         <p class="pc-hint">Tocá para ver más</p>
       </article>
-    </div>
-  </section>
-
-  <!-- ——————————————————— 05 · CONTACTO ——————————————————— -->
-  <section class="close" id="contacto">
-    <div class="patch" data-reveal>
-      <p class="kicker"><em>05</em> Contacto</p>
+    </div></div></div>
+    </section>
+    <section class="acc-item" id="contacto" style="--i: 3; --hb: var(--color-accent-100); --hf: var(--color-accent-800)">
+      <button class="acc-head" type="button" aria-expanded="false" aria-controls="ap-contacto">
+        <span class="a-num">05</span>
+        <span class="a-txt"><span class="a-title">Contacto</span><span class="a-sub">Escribime y charlamos</span></span>
+        <span class="a-go" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+      </button>
+      <div class="acc-panel" id="ap-contacto"><div class="panel-in"><div class="patch" data-reveal>
       <h2 class="h-sect">
         <span class="mask"><span>¿Investigamos</span></span>
         <span class="mask"><span class="thin" style="--d: 0.12s">juntos?</span></span>
@@ -1030,14 +1086,26 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
         <a href="https://oportunidadeshsbrands.com" target="_blank" rel="noopener">Último proyecto ↗</a>
       </div>
       <p class="meta">Vicente López, Buenos Aires · Respondo rápido y pregunto mucho.</p>
-    </div>
-    <footer>
+    </div></div></div>
+    </section>
+  </div>
+
+  <footer>
       <span>© 2026 Antonella Barone</span>
       <a href="#top" onclick="scrollTo({top:0,behavior:'smooth'}); return false;">Volver arriba ↑</a>
     </footer>
-  </section>
+
 
 </div>
+
+<a class="wa" href="https://wa.me/541164613463?text=Hola%20Anto%2C%20vi%20tu%20portfolio%20y%20quer%C3%ADa%20hacerte%20una%20consulta."
+   target="_blank" rel="noopener" aria-label="Escribime por WhatsApp">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.01-1.04 2.47s1.06 2.86 1.21 3.06c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.75-.72 2-1.41.25-.69.25-1.28.17-1.41-.07-.13-.27-.2-.57-.35Z"/>
+    <path d="M12.04 2C6.6 2 2.18 6.42 2.17 11.86c0 1.74.46 3.44 1.32 4.94L2 22.5l5.85-1.53a9.83 9.83 0 0 0 4.19.94h.01c5.43 0 9.85-4.42 9.86-9.86A9.8 9.8 0 0 0 19 4.96 9.78 9.78 0 0 0 12.04 2Zm5.8 15.66a8.19 8.19 0 0 1-5.8 2.4h-.01a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.09.81.83-3.01-.2-.31a8.15 8.15 0 0 1-1.25-4.37c0-4.52 3.68-8.2 8.2-8.2a8.14 8.14 0 0 1 5.79 2.41 8.14 8.14 0 0 1 2.4 5.8c0 4.52-3.68 8.19-8.2 8.19Z"/>
+  </svg>
+  <span>Escribime</span>
+</a>
 <script>
 (() => {
   const reduce = false; // forzado: animaciones siempre activas, aunque el equipo tenga "reducir movimiento"
@@ -1167,6 +1235,32 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     [...group.children].forEach((el, i) => el.style.setProperty('--d', (i * 0.09).toFixed(2) + 's'));
   });
 
+  // los hijos de .emerge entran escalonados
+  document.querySelectorAll('.emerge').forEach((g) => {
+    [...g.children].forEach((el, i) => el.style.setProperty('--i', i));
+  });
+
+  // Los títulos de paso se parten en palabras para que suban una tras otra. Se
+  // recorre sólo los nodos de TEXTO, así el <i> de adentro sobrevive intacto.
+  document.querySelectorAll('.step-t .hl').forEach((hl) => {
+    let n = 0;
+    const walk = (node) => [...node.childNodes].forEach((c) => {
+      if (c.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        c.textContent.split(/(\s+)/).forEach((t) => {
+          if (!t.trim()) { frag.appendChild(document.createTextNode(t)); return; }
+          const w = document.createElement('span');
+          w.className = 'w'; w.style.setProperty('--i', n++); w.textContent = t;
+          frag.appendChild(w);
+        });
+        c.replaceWith(frag);
+      } else if (c.nodeType === 1) walk(c);
+    });
+    walk(hl);
+    // el marcador arranca cuando ya aterrizó la última palabra
+    hl.closest('.step-t').style.setProperty('--hld', (n * 0.06 + 0.3).toFixed(2) + 's');
+  });
+
   // observador: caídas y máscaras
   const io = new IntersectionObserver((entries) => {
     for (const e of entries) if (e.isIntersecting) {
@@ -1228,15 +1322,90 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
   document.querySelectorAll('[data-goto]').forEach((btn) => {
     btn.addEventListener('click', () => {
       pickFilter(btn.dataset.goto);
-      document.getElementById('proyectos').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      requestAnimationFrame(drawShapes);
     });
   });
   applyFilter('all');
   restripe();
 
+  /* ——— ACORDEÓN ———
+     Una sección abierta por vez. El panel se muestra de una (no se anima su
+     alto: sobre el panel de proyectos, que mide miles de píxeles, eso obligaba
+     a recalcular layout en cada frame y se sentía trabado). Lo que anima es el
+     contenido, que emerge escalonado — y encima tapa el salto de altura. */
+  const nav = document.querySelector('.nav');
+  const acc = document.getElementById('acc');
+  const heads = acc ? [...acc.querySelectorAll('.acc-head')] : [];
+  const items = acc ? [...acc.querySelectorAll('.acc-item')] : [];
+  const REVEAL = '[data-reveal], [data-watch], [data-cascade], .emerge, .step-t, .mask';
+
+  // el offset de pegado depende del alto real del nav
+  const setNavH = () => document.documentElement.style.setProperty(
+    '--nav-h', (nav ? nav.offsetHeight : 64) + 'px');
+
+  const openItem = (item, on) => {
+    if (!item) return;
+    item.classList.toggle('open', on);
+    item.querySelector('.acc-head').setAttribute('aria-expanded', String(on));
+    if (on) {
+      requestAnimationFrame(() => {
+        drawShapes();
+        item.querySelectorAll(REVEAL).forEach((el) => el.classList.add('in'));
+      });
+    } else {
+      // al cerrar se sueltan, así vuelven a emerger la próxima vez que se abra
+      item.querySelectorAll('.in').forEach((el) => el.classList.remove('in'));
+    }
+  };
+
+  const stackTop = (i) => {
+    const navH = nav ? nav.offsetHeight : 64;
+    const accH = parseFloat(getComputedStyle(acc).getPropertyValue('--acc-h')) || 60;
+    return navH + i * accH;
+  };
+
+  const abrir = (item, mover) => {
+    const i = items.indexOf(item);
+    items.forEach((it) => openItem(it, it === item));
+    if (mover) requestAnimationFrame(() => {
+      const head = item.querySelector('.acc-head');
+      scrollTo({ top: head.getBoundingClientRect().top + scrollY - stackTop(i) - 6, behavior: 'smooth' });
+    });
+  };
+
+  heads.forEach((head) => head.addEventListener('click', () => {
+    const item = head.closest('.acc-item');
+    if (item.classList.contains('open')) { openItem(item, false); return; }
+    abrir(item, true);
+  }));
+
+  // "pegado" = el encabezado ya no entra entero por encima de su línea de anclaje
+  let stickObs = [];
+  const setupStuck = () => {
+    stickObs.forEach((o) => o.disconnect());
+    stickObs = heads.map((head, i) => {
+      const o = new IntersectionObserver(([e]) => head.classList.toggle('stuck', e.intersectionRatio < 1),
+        { rootMargin: `-${stackTop(i) + 1}px 0px 0px 0px`, threshold: [1] });
+      o.observe(head); return o;
+    });
+  };
+
+  // los enlaces del nav abren la sección en vez de saltar a un ancla vacía
+  document.querySelectorAll('.nav a[href^="#"]').forEach((a) => {
+    const item = document.querySelector(a.getAttribute('href'));
+    if (!item || !item.classList.contains('acc-item')) return;
+    a.addEventListener('click', (e) => { e.preventDefault(); abrir(item, true); });
+  });
+
+  if (acc) {
+    setNavH(); setupStuck();
+    addEventListener('resize', () => { setNavH(); setupStuck(); });
+    const desde = items.find((it) => it.id === location.hash.slice(1));
+    abrir(desde || items[0], !!desde);
+  }
+
   // — scroll: progreso, nav, velocidad y foco-por-scroll en touch —
   const bar = document.getElementById('progress');
-  const nav = document.querySelector('.nav');
   const cards = touch ? pcards : [];
   let lastY = scrollY, vel = 0;
 

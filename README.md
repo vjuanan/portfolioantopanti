@@ -33,8 +33,9 @@ los estilos del portfolio, embebidos en `index.html`, se cargan después y sobre
 Hero · **Sobre mí** · **Formación & Habilidades** · **Mi experiencia** · **Mis proyectos** ·
 **Contacto**.
 
-"Sobre mí" cierra con un **índice**: una píldora por sección que funciona como menú de entrada
-al sitio.
+"Sobre mí" es la única sección suelta. Las otras cuatro viven en un **acordeón**: cada una es
+una píldora que abre su contenido ahí mismo, y los encabezados quedan pegados arriba
+apilándose, así se puede saltar a otra sección mientras se lee una sin volver para arriba.
 
 En "Mis proyectos" hay dos filtros, *Todos* y *Proyecto 1*. En *Todos* se ve una tarjeta resumen;
 el caso completo de **Emprende Ya** — contexto y objetivo y los cinco pasos de la investigación
@@ -60,7 +61,8 @@ una nueva versión en producción automáticamente.
 - Diseño responsive (breakpoints en 720 / 780 / 820 / 860 / 880 / 900 / 1024 px).
 - Formas orgánicas (ondas y festoneados) generadas por JS a la medida real de cada bloque, así
   la onda no se deforma entre desktop y mobile.
-- Índice de secciones clickeable al final de "Sobre mí", como entrada al sitio.
+- Acordeón de secciones con encabezados que se apilan y se compactan al quedar pegados.
+- Botón de WhatsApp fijo abajo a la derecha.
 - Filtro de proyectos, con bloques que quedan fuera de "Todos" (`[data-only]`) y el zigzag de las
   tarjetas recalculado sobre las visibles.
 - Títulos de paso que se resaltan con un marcador que barre de lado a lado al entrar en pantalla.
