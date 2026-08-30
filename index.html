@@ -140,7 +140,7 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
 /* — kicker editorial — */
 .kicker { display: flex; align-items: center; gap: 14px;
   font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
-  color: var(--ink-60); margin: 0 0 clamp(28px, 4vw, 56px);
+  color: var(--ink-60); margin: 0 0 clamp(12px, 1.6vw, 22px);
   font-feature-settings: "tnum" 1; }
 .kicker em { font-style: normal; color: var(--color-accent-700); }
 .kicker::after { content: ""; height: 2px; flex: 0 0 clamp(40px, 6vw, 90px);
@@ -222,8 +222,18 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
   0%   { opacity: 0; transform: translateY(-1.2em); }
   55%  { opacity: 1; }
   100% { opacity: 1; transform: translateY(0); } }
-.name .outline { color: transparent; -webkit-text-stroke: 2.5px var(--color-text);
+/* ——— Texto en contorno, sin líneas internas ———
+   Los glifos de Jost están construidos con contornos SUPERPUESTOS: al rellenar
+   no se nota, pero al trazarlos se dibuja cada costura y aparecen líneas dentro
+   de cada letra. La única forma de taparlas es pintar el trazo primero y el
+   relleno encima (paint-order), con el relleno del color del fondo. Por eso el
+   trazo va al doble de grosor: la mitad de adentro queda cubierta.
+   Si cambia el fondo detrás de un texto en contorno, hay que cambiar su relleno. */
+.name .outline { color: var(--color-bg); -webkit-text-stroke: 5px var(--color-text);
+  paint-order: stroke fill;
   transition: color 0.5s var(--soft), -webkit-text-stroke-color 0.5s var(--soft); }
+/* tracking apenas positivo para que las letras huecas no se fusionen entre sí */
+.name .outline-line { letter-spacing: 0.008em; }
 @media (hover: hover) { .name .row-line:hover .outline { color: var(--color-accent); -webkit-text-stroke-color: var(--color-accent); } }
 /* en touch "Barone" se rellena de camel al entrar en viewport */
 .is-touch .name.lit .outline { color: var(--color-accent); -webkit-text-stroke-color: var(--color-accent); }
@@ -269,7 +279,8 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
   padding-right: clamp(28px, 3.5vw, 56px); }
 .marq-item { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
   font-size: clamp(26px, 3.2vw, 44px); white-space: nowrap; letter-spacing: -0.018em; }
-.marq-item:nth-child(4n+3) { color: transparent; -webkit-text-stroke: 1.8px var(--color-text); }
+.marq-item:nth-child(4n+3) { color: var(--color-bg);
+  -webkit-text-stroke: 3.6px var(--color-text); paint-order: stroke fill; }
 .marq-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--color-accent); flex: none; }
 
 /* — títulos de sección con máscara — */
@@ -400,19 +411,26 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
 @media (max-width: 860px) { .ctx { grid-template-columns: 1fr; }
   .ctx-label { padding-top: 0; } }
 
-/* Cifras del estudio */
-.p1-stats { padding-top: clamp(36px, 6vh, 64px); }
-
 /* Los cinco pasos */
 .steps { display: grid; gap: clamp(52px, 8vw, 108px);
   padding-top: clamp(48px, 8vh, 92px); }
 .step { position: relative; }
+/* Los títulos de paso entran con la misma máscara que los de sección (suben
+   desde atrás) y una regla camel se dibuja debajo al terminar. */
 .step-t { font-family: var(--font-heading); font-weight: 700; font-style: italic;
-  font-size: clamp(21px, 2.9vw, 40px); line-height: 1.12; margin: 0 0 clamp(18px, 2.6vw, 32px);
-  letter-spacing: -0.018em; }
-.step-t span { color: var(--color-accent); }
+  font-size: clamp(25px, 3.5vw, 50px); line-height: 1.08; margin: 0 0 clamp(20px, 2.8vw, 36px);
+  letter-spacing: -0.02em; }
+.step-t .mask { padding-inline: 0.1em; margin-inline: -0.1em; }
+.step-t i { font-style: inherit; color: var(--color-accent); }
+.step-t::after { content: ""; display: block; height: 3px; border-radius: 999px;
+  width: clamp(64px, 11vw, 150px); margin-top: clamp(12px, 1.7vw, 22px);
+  background: var(--color-accent); transform: scaleX(0); transform-origin: left;
+  transition: transform 0.85s var(--soft) 0.32s; }
+.step.in .step-t::after { transform: scaleX(1); }
 .step:nth-child(even) .step-t { text-align: right; }
-.step:nth-child(even) .step-t span { color: var(--color-accent-700); }
+.step:nth-child(even) .step-t i { color: var(--color-accent-700); }
+.step:nth-child(even) .step-t::after { margin-left: auto; transform-origin: right;
+  background: var(--color-accent-700); }
 .step-grid { display: grid; gap: clamp(22px, 3.4vw, 48px); align-items: center;
   grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); }
 .step:nth-child(even) .step-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr); }
@@ -438,29 +456,8 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
   .step:nth-child(even) .step-panel { order: 0; }
   .step:nth-child(even) .step-media { order: 0; }
   .step:nth-child(even) .step-t { text-align: left; }
+  .step:nth-child(even) .step-t::after { margin-left: 0; transform-origin: left; }
 }
-
-/* — contadores / estadísticas — */
-.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(20px, 3vw, 48px); padding-top: clamp(48px, 8vh, 88px); }
-.stat { position: relative; border-top: 2px solid color-mix(in srgb, var(--color-text) 12%, transparent);
-  padding-top: 18px; transition: border-color 0.3s ease; }
-.stat::after { content: ""; position: absolute; top: -2px; left: 0; height: 2px; width: 100%;
-  background: var(--color-accent); transform: scaleX(0); transform-origin: left;
-  transition: transform 0.7s var(--soft); transition-delay: var(--d, 0s); }
-.stats.in .stat::after { transform: scaleX(1); }
-.stat-num { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
-  font-size: clamp(38px, 4.8vw, 68px); line-height: 1; margin: 0; letter-spacing: -0.03em;
-  font-feature-settings: "tnum" 1; transition: transform 0.4s var(--spring), color 0.3s ease; }
-.stat-num sup { font-size: 0.45em; color: var(--color-accent-600); margin-left: 2px;
-  vertical-align: super; }
-.stat-label { font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase;
-  font-weight: 600; color: var(--ink-60); margin: 10px 0 0; line-height: 1.45; }
-@media (hover: hover) { .stat:hover { border-color: var(--color-accent); }
-  .stat:hover .stat-num { transform: scale(1.06); color: var(--color-accent-700); } }
-.is-touch .stat.focus { border-color: var(--color-accent); }
-.is-touch .stat.focus .stat-num { transform: scale(1.06); color: var(--color-accent-700); }
-@media (max-width: 720px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 /* ——— EXPERIENCIA ——— */
 .exp { display: grid; gap: clamp(28px, 4.5vw, 64px);
@@ -489,23 +486,14 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
   font-size: clamp(15px, 1.32vw, 17.5px); line-height: 1.65; }
 .exp-list li::before { content: ""; flex: none; width: 9px; height: 9px; border-radius: 50%;
   background: var(--color-text); transform: translateY(-2px); }
-.exp-date { position: absolute; z-index: 3; top: -22px; right: 8px;
-  rotate: -14deg; text-align: center; max-width: 8em; }
+/* en un solo renglón: si envuelve, "2026" cae solo y se lee mal */
+.exp-date { position: absolute; z-index: 3; top: -26px; right: 10px;
+  rotate: -9deg; white-space: nowrap; font-size: clamp(18px, 1.85vw, 26px); }
 @media (max-width: 900px) {
   .exp { grid-template-columns: 1fr; justify-items: center; }
   .exp-card { width: 100%; }
-  .exp-date { position: static; rotate: -4deg; max-width: none; margin: 0 0 10px; text-align: left; }
+  .exp-date { position: static; rotate: -3deg; margin: 0 0 12px; }
 }
-/* segunda experiencia, más compacta */
-.exp-prev { display: grid; grid-template-columns: minmax(190px, 260px) minmax(0, 1fr);
-  gap: clamp(28px, 4.5vw, 64px); align-items: center;
-  margin-top: clamp(44px, 7vw, 88px); }
-.exp-prev .exp-mark { font-family: var(--font-heading); font-weight: 700;
-  font-size: clamp(30px, 3.6vw, 50px); line-height: 1; text-align: center;
-  color: var(--color-accent); letter-spacing: -0.02em; }
-.exp-prev .exp-mark small { display: block; font-size: 13px; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--ink-60); margin-top: 10px; font-weight: 600; }
-@media (max-width: 900px) { .exp-prev { grid-template-columns: 1fr; } }
 
 /* — sobre mí — */
 .about { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
@@ -540,7 +528,7 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
 }
 
 /* ——— FORMACIÓN & HABILIDADES: tarjetas de contorno con su chapita de ícono ——— */
-.band { position: relative; margin-top: clamp(56px, 9vw, 110px);
+.band { position: relative;
   background: var(--color-accent); color: var(--color-text);
   border-radius: calc(2.2 * var(--radius-lg)); overflow: hidden;
   padding: clamp(44px, 7vw, 92px) clamp(24px, 5vw, 76px);
@@ -566,6 +554,37 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
 @media (hover: hover) { .skill:hover .ico { transform: rotate(-8deg) scale(1.08); }
   .skill:hover .box { background: color-mix(in srgb, #fff 26%, transparent); transform: translateX(4px); } }
 
+/* ——— ÍNDICE DE SECCIONES: la puerta de entrada al sitio ———
+   Mismo lenguaje de píldora que las tarjetas de proyecto, pero como enlaces:
+   quien entra lee "Sobre mí" y desde acá salta a la sección que quiera. */
+.index { display: grid; gap: clamp(14px, 1.8vw, 22px);
+  margin-top: clamp(30px, 4.5vw, 56px); }
+.icard { display: flex; align-items: center; gap: clamp(16px, 2.4vw, 32px);
+  text-decoration: none; color: inherit; box-sizing: border-box; position: relative;
+  border-radius: calc(2.5 * var(--radius-lg));
+  padding: clamp(20px, 2.6vw, 32px) clamp(24px, 3.4vw, 44px);
+  transition: transform 0.5s var(--spring), box-shadow 0.4s ease; }
+.ic-num { flex: none; font-family: var(--font-heading); font-weight: 700;
+  font-size: clamp(14px, 1.3vw, 17px); opacity: 0.55; font-feature-settings: "tnum" 1; }
+.ic-text { flex: 1; min-width: 0; }
+.ic-title { display: block; font-family: var(--font-heading); font-weight: 700;
+  font-size: clamp(21px, 2.8vw, 36px); line-height: 1.06; letter-spacing: -0.022em; }
+.ic-sub { display: block; margin-top: 7px; font-size: 14.5px; line-height: 1.5; opacity: 0.72; }
+.ic-go { flex: none; width: 48px; height: 48px; border-radius: 50%;
+  border: 2.5px solid currentColor; display: grid; place-items: center; opacity: 0.8;
+  transition: transform 0.45s var(--spring); }
+@media (hover: hover) {
+  .icard:hover { transform: translateX(8px); box-shadow: var(--shadow-md); }
+  .icard:hover .ic-go { transform: translateX(4px); }
+}
+.icard:active { transform: scale(0.99); }
+.icard:focus-visible { outline: 2px solid var(--color-accent-700); outline-offset: 3px; }
+@media (max-width: 640px) {
+  .icard { gap: 14px; padding: 20px 22px; }
+  .ic-num { display: none; }
+  .ic-go { width: 40px; height: 40px; }
+}
+
 /* — contacto — */
 .close { padding: clamp(72px, 12vh, 140px) 0 clamp(20px, 3vh, 32px); }
 .patch { position: relative; overflow: hidden; background: var(--color-accent-900);
@@ -583,7 +602,9 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
 .patch .kicker em { color: var(--color-accent-300); }
 .patch .kicker::after { background: var(--color-accent-700); }
 .patch .h-sect { font-size: clamp(40px, 7vw, 100px); }
-.patch .h-sect .thin { color: transparent; -webkit-text-stroke: 2px var(--color-bg); }
+.patch .h-sect .thin { color: var(--color-accent-900);
+  -webkit-text-stroke: 4px var(--color-bg); paint-order: stroke fill;
+  letter-spacing: 0.008em; }
 .biglink { display: inline-flex; align-items: center; gap: 16px;
   margin-top: clamp(32px, 5vh, 56px);
   font-family: var(--font-heading); font-weight: var(--font-heading-weight);
@@ -631,10 +652,11 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
 </defs></svg>
 
 <nav class="nav">
-  <span class="nav-brand">Anto Barone</span>
-  <a href="#proyectos">Proyectos</a>
-  <a href="#experiencia">Experiencia</a>
+  <span class="nav-brand">AB.</span>
   <a href="#sobre-mi">Sobre mí</a>
+  <a href="#formacion">Formación</a>
+  <a href="#experiencia">Experiencia</a>
+  <a href="#proyectos">Proyectos</a>
   <a class="keep" href="#contacto">Contacto</a>
 </nav>
 <div class="wrap">
@@ -657,7 +679,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
           <p>Estudiante avanzada de Sociología (UBA) dando mis primeros pasos hacia UX: entender a las personas y traducir esa comprensión en decisiones concretas.</p>
         </div>
       </div>
-      <a class="badge rise" href="#proyectos" style="--d: 0.75s" data-par="-0.06" aria-label="Bajar a proyectos">
+      <a class="badge rise" href="#sobre-mi" style="--d: 0.75s" data-par="-0.06" aria-label="Bajar a sobre mí">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <defs><path id="circ" d="M 50 50 m -38 0 a 38 38 0 1 1 76 0 a 38 38 0 1 1 -76 0"></path></defs>
           <text><textPath href="#circ">research · insights · cuali + cuanti · </textPath></text>
@@ -688,9 +710,147 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     </div>
   </div>
 
-  <!-- ——————————————————— MIS PROYECTOS ——————————————————— -->
+  <!-- ——————————————————— 01 · SOBRE MÍ ——————————————————— -->
+  <section class="sect" id="sobre-mi" data-watch>
+    <p class="kicker" data-reveal><em>01</em> Sobre mí</p>
+    <svg class="doodle" style="bottom:6%; left:-60px; width:260px; height:200px" viewBox="0 0 260 200" aria-hidden="true">
+      <path d="M254 10c-52 4-96 30-120 66-18 27-8 60 18 62 24 2 34-26 16-42-22-20-70-12-104 20C40 138 20 168 8 192"/>
+    </svg>
+    <div class="about">
+      <div>
+        <h2 class="h-sect" style="margin-bottom: clamp(24px, 4vw, 48px)">
+          <span class="mask"><span>Conoceme</span></span>
+          <span class="mask"><span style="--d: 0.12s">un poco <span class="tan">más.</span></span></span>
+        </h2>
+        <p class="bio" data-reveal style="--fall: 30px; --tilt: 0deg">Soy estudiante avanzada de <b>Sociología (UBA)</b> y estoy dando mis primeros pasos hacia el mundo de <b>UX</b>, un área que combina todo lo que me gusta hacer: entender a las personas y traducir esa comprensión en decisiones concretas.</p>
+        <p class="bio" data-reveal style="--fall: 30px; --tilt: 0deg; --d: 0.1s">Cuento con experiencia en <b>investigación de mercado</b>, y mi especialización en Metodologías de la Investigación Cualitativa y Cuantitativa me dio las herramientas para estructurar procesos de investigación sólidos, desde el diseño hasta el análisis.</p>
+        <p class="bio" data-reveal style="--fall: 30px; --tilt: 0deg; --d: 0.2s">Soy una persona curiosa, con una <b>mirada analítica y creativa</b>. Estoy en constante aprendizaje, siempre buscando nuevas formas de investigar mejor.</p>
+      </div>
+      <div class="about-side" data-reveal style="--d: 0.15s">
+        <svg class="spark" style="top:-34px; left:-26px; --w:32px" aria-hidden="true"><use href="#spark4"/></svg>
+        <svg class="spark" style="top:8px; left:-58px; --w:18px; --o:0.6" aria-hidden="true"><use href="#spark4"/></svg>
+        <div class="polaroid">
+          <span class="shot"><img src="assets/anto-pdf-retrato.jpg" alt="Foto de Antonella Barone" data-par="0.04" /></span>
+          <img class="firma" src="assets/firma-anto.png" alt="Firma: Anto Barone" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Índice: desde acá se entra a cada sección -->
+    <nav class="index" aria-label="Secciones del portfolio" data-cascade>
+      <a class="icard" href="#formacion" style="background: var(--color-accent-200); color: var(--color-accent-900)">
+        <span class="ic-num">02</span>
+        <span class="ic-text">
+          <span class="ic-title">Formación &amp; Habilidades</span>
+          <span class="ic-sub">Lo que estudié y lo que sigo estudiando</span>
+        </span>
+        <span class="ic-go" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+      </a>
+      <a class="icard" href="#experiencia" style="background: var(--color-accent-300); color: var(--color-accent-900)">
+        <span class="ic-num">03</span>
+        <span class="ic-text">
+          <span class="ic-title">Mi experiencia</span>
+          <span class="ic-sub">Project Assistant en investigación de mercado</span>
+        </span>
+        <span class="ic-go" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+      </a>
+      <a class="icard" href="#proyectos" style="background: var(--color-surface); color: var(--color-text)">
+        <span class="ic-num">04</span>
+        <span class="ic-text">
+          <span class="ic-title">Mis proyectos</span>
+          <span class="ic-sub">El caso de Emprende Ya y el trabajo en HS Brands Latam</span>
+        </span>
+        <span class="ic-go" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+      </a>
+      <a class="icard" href="#contacto" style="background: var(--color-accent-100); color: var(--color-accent-800)">
+        <span class="ic-num">05</span>
+        <span class="ic-text">
+          <span class="ic-title">Contacto</span>
+          <span class="ic-sub">Escribime y charlamos</span>
+        </span>
+        <span class="ic-go" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+      </a>
+    </nav>
+  </section>
+
+  <!-- ——————————————————— 02 · FORMACIÓN & HABILIDADES ——————————————————— -->
+  <section class="sect" id="formacion" data-watch>
+    <div class="band" data-reveal data-watch>
+      <p class="kicker"><em>02</em> Formación &amp; Habilidades</p>
+      <h2 class="h-sect">
+        <span class="mask"><span>Lo que estudié</span></span>
+        <span class="mask"><span style="--d: 0.12s">y lo que sigo estudiando.</span></span>
+      </h2>
+      <div class="skills" data-cascade>
+        <div class="skill">
+          <span class="ico" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 8l10 5 10-5-10-5Z"/><path d="M5 10v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/><path d="M21 9v5"/></svg></span>
+          <span class="box"><b>Licenciatura en Sociología</b><small>Universidad de Buenos Aires · 2022–2026</small></span>
+        </div>
+        <div class="skill">
+          <span class="ico" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 22h8"/><path d="m9 9-2 2 2 2"/><path d="m15 9 2 2-2 2"/></svg></span>
+          <span class="box"><b>Curso Inicial de programación con Python</b><small>Agencia de Habilidades para el Futuro · 2024</small></span>
+        </div>
+        <div class="skill">
+          <span class="ico" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="9"/><path d="M2 11h18"/><path d="M11 2a15 15 0 0 1 0 18a15 15 0 0 1 0-18Z"/></svg></span>
+          <span class="box"><b>Inglés B2</b><small>First Certificate (FCE)</small></span>
+        </div>
+        <div class="skill">
+          <span class="ico" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V18h8v-3.3A7 7 0 0 0 12 2Z"/></svg></span>
+          <span class="box"><b>Curso Inicial de Diseño UX/UI</b><small>Formación en curso</small></span>
+        </div>
+        <div class="skill">
+          <span class="ico" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3"/><path d="M12 18v3"/><path d="M4.9 4.9 7 7"/><path d="m17 17 2.1 2.1"/><path d="M3 12h3"/><path d="M18 12h3"/><path d="M4.9 19.1 7 17"/><path d="M17 7l2.1-2.1"/><circle cx="12" cy="12" r="3.2"/></svg></span>
+          <span class="box"><b>Lovable L1 — Desarrollo con IA</b><small>Apps, automatización y low-code</small></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ——————————————————— 03 · MI EXPERIENCIA ——————————————————— -->
+  <section class="sect" id="experiencia" data-watch>
+    <p class="kicker" data-reveal><em>03</em> Mi experiencia</p>
+    <h2 class="h-sect" style="margin-bottom: clamp(28px, 4vw, 56px)">
+      <span class="mask"><span>Dónde aprendí</span></span>
+      <span class="mask"><span style="--d: 0.12s">a <span class="tan">investigar.</span></span></span>
+    </h2>
+
+    <svg class="spark" style="top:96px; right:6%; --w:30px" aria-hidden="true"><use href="#spark4"/></svg>
+    <svg class="spark" style="top:158px; right:11%; --w:17px; --o:0.6" aria-hidden="true"><use href="#spark4"/></svg>
+
+    <div class="exp">
+      <div class="exp-brand" data-reveal>
+        <span class="exp-ring">
+          <svg class="ring" viewBox="0 0 200 200" aria-hidden="true">
+            <path d="M100 6c54 0 94 42 94 94 0 52-42 94-94 94S6 152 6 100C6 47 47 6 100 6Z"/>
+            <path d="M104 14c50 2 88 40 86 92-2 50-42 86-92 84-48-2-84-40-84-90 0-46 34-82 80-86"/>
+          </svg>
+          <span class="disc"></span>
+          <img src="assets/logo-hsbrands.png" alt="HS Brands Global" />
+        </span>
+        <p class="exp-org">Agencia global de Investigación de Mercado</p>
+      </div>
+
+      <div class="exp-card" data-reveal style="--d: 0.1s">
+        <p class="exp-date hand">abril 2025 — junio 2026</p>
+        <div class="wavy tan">
+          <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
+          <div class="wavy-in">
+            <h3 class="exp-role">Project Assistant</h3>
+            <ul class="exp-list">
+              <li>Implementación de técnicas cualitativas y cuantitativas de investigación.</li>
+              <li>Redacción de instructivos claros y estructurados para evaluadores, priorizando la simplicidad, el orden y la usabilidad del contenido para distintos perfiles de usuario.</li>
+              <li>Carga, gestión y actualización de datos en plataformas internas y herramientas de clientes.</li>
+              <li>Colaboración en la presentación de resultados de proyectos e insights a clientes.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ——————————————————— 04 · MIS PROYECTOS ——————————————————— -->
   <section class="sect projects" id="proyectos" data-watch>
-    <p class="kicker" data-reveal><em>01</em> Mis proyectos</p>
+    <p class="kicker" data-reveal><em>04</em> Mis proyectos</p>
     <h2 class="h-sect" style="margin-bottom: clamp(28px, 4vw, 52px)">
       <span class="mask"><span>Investigación que</span></span>
       <span class="mask"><span style="--d: 0.12s">cambió <span class="tan">el producto.</span></span></span>
@@ -732,17 +892,10 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
         </div>
       </div>
 
-      <div class="stats p1-stats" data-cascade>
-        <div class="stat"><p class="stat-num"><span data-count="55">0</span></p><p class="stat-label">Emprendedores encuestados</p></div>
-        <div class="stat"><p class="stat-num"><span data-count="5">0</span></p><p class="stat-label">Entrevistas en profundidad</p></div>
-        <div class="stat"><p class="stat-num"><span data-count="91">0</span><sup>%</sup></p><p class="stat-label">Con perfil de emprendedor completo</p></div>
-        <div class="stat"><p class="stat-num"><span data-count="70">0</span>,1<sup>%</sup></p><p class="stat-label">Calificó la app como muy fácil</p></div>
-      </div>
-
       <div class="steps">
         <!-- 1 -->
         <div class="step" data-reveal>
-          <h4 class="step-t">Primer paso: <span>reunión con stakeholders</span></h4>
+          <h4 class="step-t"><span class="mask"><span>Primer paso: <i>reunión con stakeholders</i></span></span></h4>
           <div class="step-grid">
             <div class="step-panel wavy tan">
               <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
@@ -762,7 +915,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
 
         <!-- 2 -->
         <div class="step step-solo" data-reveal>
-          <h4 class="step-t">Segundo paso: <span>enfoque metodológico e instrumentos</span></h4>
+          <h4 class="step-t"><span class="mask"><span>Segundo paso: <i>enfoque metodológico e instrumentos</i></span></span></h4>
           <div class="step-grid">
             <div class="step-panel wavy paper">
               <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
@@ -778,7 +931,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
 
         <!-- 3 -->
         <div class="step" data-reveal>
-          <h4 class="step-t">Tercer paso: <span>trabajo de campo</span></h4>
+          <h4 class="step-t"><span class="mask"><span>Tercer paso: <i>trabajo de campo</i></span></span></h4>
           <div class="step-grid">
             <div class="step-panel wavy tan">
               <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
@@ -802,7 +955,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
 
         <!-- 4 -->
         <div class="step step-solo" data-reveal>
-          <h4 class="step-t">Cuarto paso: <span>digitalización y análisis de datos</span></h4>
+          <h4 class="step-t"><span class="mask"><span>Cuarto paso: <i>digitalización y análisis de datos</i></span></span></h4>
           <div class="step-grid">
             <div class="step-panel wavy paper">
               <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
@@ -817,7 +970,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
 
         <!-- 5 -->
         <div class="step" data-reveal>
-          <h4 class="step-t">Quinto paso: <span>presentación de resultados</span></h4>
+          <h4 class="step-t"><span class="mask"><span>Quinto paso: <i>presentación de resultados</i></span></span></h4>
           <div class="step-grid">
             <div class="step-panel wavy tan">
               <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
@@ -901,121 +1054,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     </div>
   </section>
 
-  <!-- ——————————————————— EXPERIENCIA ——————————————————— -->
-  <section class="sect" id="experiencia" data-watch>
-    <p class="kicker" data-reveal><em>02</em> Experiencia</p>
-    <h2 class="h-sect" style="margin-bottom: clamp(28px, 4vw, 56px)">
-      <span class="mask"><span>Dónde aprendí</span></span>
-      <span class="mask"><span style="--d: 0.12s">a <span class="tan">investigar.</span></span></span>
-    </h2>
-
-    <svg class="spark" style="top:96px; right:6%; --w:30px" aria-hidden="true"><use href="#spark4"/></svg>
-    <svg class="spark" style="top:158px; right:11%; --w:17px; --o:0.6" aria-hidden="true"><use href="#spark4"/></svg>
-
-    <div class="exp">
-      <div class="exp-brand" data-reveal>
-        <span class="exp-ring">
-          <svg class="ring" viewBox="0 0 200 200" aria-hidden="true">
-            <path d="M100 6c54 0 94 42 94 94 0 52-42 94-94 94S6 152 6 100C6 47 47 6 100 6Z"/>
-            <path d="M104 14c50 2 88 40 86 92-2 50-42 86-92 84-48-2-84-40-84-90 0-46 34-82 80-86"/>
-          </svg>
-          <span class="disc"></span>
-          <img src="assets/logo-hsbrands.png" alt="HS Brands Global" />
-        </span>
-        <p class="exp-org">Agencia global de Investigación de Mercado</p>
-      </div>
-
-      <div class="exp-card" data-reveal style="--d: 0.1s">
-        <p class="exp-date hand">abril 2025 — junio 2026</p>
-        <div class="wavy tan">
-          <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
-          <div class="wavy-in">
-            <h3 class="exp-role">Project Assistant</h3>
-            <ul class="exp-list">
-              <li>Implementación de técnicas cualitativas y cuantitativas de investigación.</li>
-              <li>Redacción de instructivos claros y estructurados para evaluadores, priorizando la simplicidad, el orden y la usabilidad del contenido para distintos perfiles de usuario.</li>
-              <li>Carga, gestión y actualización de datos en plataformas internas y herramientas de clientes.</li>
-              <li>Colaboración en la presentación de resultados de proyectos e insights a clientes.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="exp-prev" data-reveal style="--d: 0.16s">
-      <p class="exp-mark">2018<br />2025<small>Efe Idiomas</small></p>
-      <div class="wavy cream">
-        <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
-        <div class="wavy-in">
-          <h3 class="exp-role" style="font-size: clamp(19px, 2.2vw, 28px)">Diseño instruccional</h3>
-          <ul class="exp-list">
-            <li>Siete años creando cursos y materiales adaptados por edad y nivel, midiendo el aprendizaje para ajustar los contenidos.</li>
-            <li>Traducción de temas complejos en informes simples y accionables para familias y equipo docente.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ——————————————————— SOBRE MÍ ——————————————————— -->
-  <section class="sect" id="sobre-mi" data-watch>
-    <p class="kicker" data-reveal><em>03</em> Sobre mí</p>
-    <svg class="doodle" style="bottom:6%; left:-60px; width:260px; height:200px" viewBox="0 0 260 200" aria-hidden="true">
-      <path d="M254 10c-52 4-96 30-120 66-18 27-8 60 18 62 24 2 34-26 16-42-22-20-70-12-104 20C40 138 20 168 8 192"/>
-    </svg>
-    <div class="about">
-      <div>
-        <h2 class="h-sect" style="margin-bottom: clamp(24px, 4vw, 48px)">
-          <span class="mask"><span>Entender a las personas</span></span>
-          <span class="mask"><span style="--d: 0.12s">y traducirlo en <span class="tan">decisiones.</span></span></span>
-        </h2>
-        <p class="bio" data-reveal style="--fall: 30px; --tilt: 0deg">Soy estudiante avanzada de <b>Sociología (UBA)</b> y estoy dando mis primeros pasos hacia el mundo de <b>UX</b>, un área que combina todo lo que me gusta hacer: entender a las personas y traducir esa comprensión en decisiones concretas.</p>
-        <p class="bio" data-reveal style="--fall: 30px; --tilt: 0deg; --d: 0.1s">Cuento con experiencia en <b>investigación de mercado</b>, y mi especialización en Metodologías de la Investigación Cualitativa y Cuantitativa me dio las herramientas para estructurar procesos de investigación sólidos, desde el diseño hasta el análisis.</p>
-        <p class="bio" data-reveal style="--fall: 30px; --tilt: 0deg; --d: 0.2s">Soy una persona curiosa, con una <b>mirada analítica y creativa</b>. Estoy en constante aprendizaje, siempre buscando nuevas formas de investigar mejor.</p>
-      </div>
-      <div class="about-side" data-reveal style="--d: 0.15s">
-        <svg class="spark" style="top:-34px; left:-26px; --w:32px" aria-hidden="true"><use href="#spark4"/></svg>
-        <svg class="spark" style="top:8px; left:-58px; --w:18px; --o:0.6" aria-hidden="true"><use href="#spark4"/></svg>
-        <div class="polaroid">
-          <span class="shot"><img src="assets/anto-pdf-retrato.jpg" alt="Foto de Antonella Barone" data-par="0.04" /></span>
-          <img class="firma" src="assets/firma-anto.png" alt="Firma: Anto Barone" />
-        </div>
-      </div>
-    </div>
-
-    <!-- Formación & Habilidades: la lámina camel con las tarjetas de contorno -->
-    <div class="band" data-reveal data-watch>
-      <p class="kicker"><em>04</em> Formación &amp; Habilidades</p>
-      <h2 class="h-sect">
-        <span class="mask"><span>Lo que estudié</span></span>
-        <span class="mask"><span style="--d: 0.12s">y lo que sigo estudiando.</span></span>
-      </h2>
-      <div class="skills" data-cascade>
-        <div class="skill">
-          <span class="ico" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 8l10 5 10-5-10-5Z"/><path d="M5 10v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/><path d="M21 9v5"/></svg></span>
-          <span class="box"><b>Licenciatura en Sociología</b><small>Universidad de Buenos Aires · 2022–2026</small></span>
-        </div>
-        <div class="skill">
-          <span class="ico" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 22h8"/><path d="m9 9-2 2 2 2"/><path d="m15 9 2 2-2 2"/></svg></span>
-          <span class="box"><b>Curso Inicial de programación con Python</b><small>Agencia de Habilidades para el Futuro · 2024</small></span>
-        </div>
-        <div class="skill">
-          <span class="ico" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="9"/><path d="M2 11h18"/><path d="M11 2a15 15 0 0 1 0 18a15 15 0 0 1 0-18Z"/></svg></span>
-          <span class="box"><b>Inglés B2</b><small>First Certificate (FCE)</small></span>
-        </div>
-        <div class="skill">
-          <span class="ico" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V18h8v-3.3A7 7 0 0 0 12 2Z"/></svg></span>
-          <span class="box"><b>Curso Inicial de Diseño UX/UI</b><small>Formación en curso</small></span>
-        </div>
-        <div class="skill">
-          <span class="ico" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3"/><path d="M12 18v3"/><path d="M4.9 4.9 7 7"/><path d="m17 17 2.1 2.1"/><path d="M3 12h3"/><path d="M18 12h3"/><path d="M4.9 19.1 7 17"/><path d="M17 7l2.1-2.1"/><circle cx="12" cy="12" r="3.2"/></svg></span>
-          <span class="box"><b>Lovable L1 — Desarrollo con IA</b><small>Apps, automatización y low-code</small></span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ——————————————————— CONTACTO ——————————————————— -->
+  <!-- ——————————————————— 05 · CONTACTO ——————————————————— -->
   <section class="close" id="contacto">
     <div class="patch" data-reveal>
       <p class="kicker"><em>05</em> Contacto</p>
@@ -1168,26 +1207,10 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     [...group.children].forEach((el, i) => el.style.setProperty('--d', (i * 0.09).toFixed(2) + 's'));
   });
 
-  // contadores (arrancan escalonados, en sintonía con la línea que se dibuja)
-  const ease = (t) => 1 - Math.pow(1 - t, 3);
-  const count = (el, delay = 0) => {
-    const end = +el.dataset.count, dur = 1500;
-    if (reduce) { el.textContent = end; return; }
-    const run = () => {
-      const t0 = performance.now();
-      const tick = (t) => { const p = Math.min(1, (t - t0) / dur);
-        el.textContent = Math.round(end * ease(p));
-        if (p < 1) requestAnimationFrame(tick); };
-      requestAnimationFrame(tick);
-    };
-    delay > 0 ? setTimeout(run, delay) : run();
-  };
-
-  // observador: caídas, máscaras y contadores
+  // observador: caídas y máscaras
   const io = new IntersectionObserver((entries) => {
     for (const e of entries) if (e.isIntersecting) {
       e.target.classList.add('in');
-      e.target.querySelectorAll('[data-count]').forEach((el, i) => count(el, i * 150));
       io.unobserve(e.target);
     }
   }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
@@ -1242,14 +1265,13 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
   const bar = document.getElementById('progress');
   const nav = document.querySelector('.nav');
   const cards = touch ? pcards : [];
-  const stats = touch ? [...document.querySelectorAll('.stat')] : [];
   let lastY = scrollY, vel = 0;
 
   // foco-por-scroll con anclaje estable + histéresis: se mide la distancia al
   // HEADER de la tarjeta (no cambia de sitio al expandirse), y una tarjeta ya
   // enfocada se mantiene hasta que otra esté claramente más centrada. Así abrir
   // una tarjeta no mueve la geometría de forma que dispare un bucle abrir/cerrar.
-  let cardFocus = null, statFocus = null;
+  let cardFocus = null;
   const anchorDist = (el, sel) => {
     const a = el.querySelector(sel) || el;
     const r = a.getBoundingClientRect();
@@ -1285,7 +1307,6 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
       vel = y - lastY; lastY = y;
       if (touch && !reduce) {
         cardFocus = focusNearest(cards, cardFocus, '.pc-top', 0.22, 0.5);
-        statFocus = focusNearest(stats, statFocus, '.stat-num', 0.24, 0.5);
       }
       ticking = false;
     });

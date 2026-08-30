@@ -151,7 +151,9 @@ acomoda con un rebote.** No lo reemplaces por fades genéricos.
 - `[data-watch]` — solo marca una sección para que el observer le ponga la clase `.in`.
 - Un único `IntersectionObserver` (threshold 0.12) agrega `.in` y **deja de observar**
   (`unobserve`): las animaciones ocurren una sola vez, no se repiten al volver a scrollear.
-- `.mask > span` — títulos que suben desde detrás de una máscara al entrar en viewport.
+- `.mask > span` — títulos que suben desde detrás de una máscara al entrar en viewport. Los
+  títulos de los pasos del Proyecto 1 (`.step-t`) usan lo mismo y además se dibujan una regla
+  camel debajo con el `::after`.
 - `.name .ch` — el nombre del hero se parte letra por letra desde JS (`.split-letters`) y cada
   letra cae con `--i * 0.05s` de retraso. "Barone" va en `outline` (contorno) y se rellena de
   camel al hover en desktop o al entrar en viewport en touch (`.name.lit`).
@@ -173,8 +175,21 @@ ya respeta esa bandera.
 ## Secciones
 
 En orden: **hero** (la tapa del PDF: "Research & Insights" + el nombre) → marquee →
-**01 Mis proyectos** → **02 Experiencia** → **03 Sobre mí** (con **04 Formación & Habilidades**
-como banda camel al final) → **05 Contacto**.
+**01 Sobre mí** (con el índice al final) → **02 Formación & Habilidades** →
+**03 Mi experiencia** → **04 Mis proyectos** → **05 Contacto**.
+
+El orden lo pidió Antonella: primero quién es, después qué sabe, dónde lo aprendió y qué hizo.
+**Si agregás una sección, actualizá tres lugares:** el `<nav>`, el numerito del `.kicker` y el
+índice.
+
+### El índice (`.index` / `.icard`)
+
+Al final de "Sobre mí" hay una lista de píldoras — una por sección — que funciona como menú de
+entrada al sitio: quien llega lee quién es Antonella y salta directo a lo que le interese. Usa
+el mismo lenguaje visual que las tarjetas de proyecto, pero son `<a>` a cada `#id`.
+
+`.icard` lleva `position: relative` **a propósito**: sin eso, el garabato de la sección (que es
+`position: absolute; z-index: 0`) se pinta por encima de las tarjetas.
 
 ### Mis proyectos y el filtro
 
@@ -231,6 +246,34 @@ vez de crear otro listener:
 El handler de `scroll` está separado, con `passive: true` y throttle por `rAF`; maneja la barra
 de progreso, la clase `.scrolled` del nav y el foco táctil.
 
+## Texto en contorno: siempre con `paint-order`
+
+Los glifos de **Jost están construidos con contornos superpuestos**. Rellenos no se nota, pero
+al trazarlos (`-webkit-text-stroke` con `color: transparent`) se dibuja cada costura interna y
+aparecen líneas cruzando cada letra. No es culpa del tracking ni de la versión variable: la
+instancia estática tiene exactamente el mismo problema.
+
+La única solución es **pintar el trazo primero y el relleno encima**:
+
+```css
+color: var(--color-bg);            /* el color del fondo que hay DETRÁS del texto */
+-webkit-text-stroke: 5px var(--color-text);
+paint-order: stroke fill;          /* el relleno tapa la mitad interna del trazo */
+```
+
+Tres consecuencias a tener en cuenta:
+
+1. **El trazo va al doble de grosor**, porque la mitad de adentro queda cubierta.
+2. **El relleno tiene que ser el color del fondo real.** Si movés un texto en contorno a otro
+   lado, hay que cambiarle el relleno (por eso "juntos?" del bloque de contacto usa
+   `--color-accent-900` y no `--color-bg`).
+3. Como el relleno es opaco, dos letras que se solapen se fusionan. Por eso los renglones en
+   contorno llevan un tracking apenas positivo (`letter-spacing: 0.008em`) mientras el resto de
+   los títulos usa tracking negativo.
+
+Está aplicado en tres lugares: `.name .outline` ("Barone"), `.marq-item:nth-child(4n+3)` y
+`.patch .h-sect .thin` ("juntos?").
+
 ## Trampa de composición: nada de `backdrop-filter` sobre `.bg-fx`
 
 `.bg-fx` es la capa `position: fixed` con los brillos y el grano. Dos cosas la sostienen y las
@@ -250,16 +293,19 @@ credenciales.
 
 - **Proyecto 1 — Emprende Ya** (caso completo, del PDF): app fundada por Nancy Mendoza, mapa
   social de emprendedores de barrio. Investigación exploratoria **mixta** durante el evento de
-  lanzamiento: **55 encuestas** en papel y **5 entrevistas** semiestructuradas. Cifras de la
-  lámina de resultados: **91 %** con perfil de emprendedor completo, **70,1 %** calificó la app
-  como "muy fácil". Los cinco pasos son: reunión con stakeholders → enfoque metodológico e
-  instrumentos → trabajo de campo → digitalización y análisis → presentación de resultados.
+  lanzamiento: **55 encuestas** en papel y **5 entrevistas** semiestructuradas. Los cinco pasos
+  son: reunión con stakeholders → enfoque metodológico e instrumentos → trabajo de campo →
+  digitalización y análisis → presentación de resultados. Los porcentajes (91 %, 70,1 %) se ven
+  en la lámina de resultados del paso 5; **no** van como cifras sueltas — había una fila de
+  contadores animados y Antonella pidió sacarla porque descolgaba del relato. Con eso quedó sin
+  uso todo el sistema de contadores (`data-count`) y de `.stat`: se eliminó, está en el historial.
 - **Otros proyectos:** web internacional de HS Brands Latam (única con link externo,
   https://oportunidadeshsbrands.com), cuestionarios en el CRM interno, investigación de
   usuarios, y diseño instruccional en Efe Idiomas (2018–2025).
-- **Experiencia:** Project Assistant en HS Brands Global (agencia global de investigación de
-  mercado), **abril 2025 – junio 2026**, con los cuatro bullets de la lámina "Experiencia".
-  Debajo, Efe Idiomas 2018–2025 como experiencia previa.
+- **Mi experiencia:** Project Assistant en HS Brands Global (agencia global de investigación
+  de mercado), **abril 2025 – junio 2026**, con los cuatro bullets de la lámina "Experiencia".
+  La fecha manuscrita va con `white-space: nowrap`: si envuelve, "2026" cae solo y se lee mal.
+  Efe Idiomas vive sólo como tarjeta de proyecto (05), no como experiencia aparte.
 - **Formación:** Sociología UBA 2022–2026, Curso Inicial de programación con Python (Agencia de
   Habilidades para el Futuro, 2024), Inglés B2 (FCE), Curso Inicial de Diseño UX/UI, Lovable L1.
 - **Contacto:** antonella.m.barone@gmail.com · LinkedIn `antonella-barone2003` · Vicente López, BA.

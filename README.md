@@ -30,11 +30,14 @@ los estilos del portfolio, embebidos en `index.html`, se cargan después y sobre
 
 ## Secciones
 
-Hero · **Mis proyectos** (con filtro: *Todos · Proyecto 1 · HS Brands · Educación*) ·
-**Experiencia** · **Sobre mí** · **Formación & Habilidades** · **Contacto**.
+Hero · **Sobre mí** · **Formación & Habilidades** · **Mi experiencia** ·
+**Mis proyectos** (con filtro: *Todos · Proyecto 1 · HS Brands · Educación*) · **Contacto**.
 
-*Proyecto 1 — Emprende Ya* es un caso de estudio completo: contexto y objetivo, las cifras del
-estudio (55 encuestas, 5 entrevistas) y los cinco pasos de la investigación con sus fotos.
+"Sobre mí" cierra con un **índice**: una píldora por sección que funciona como menú de entrada
+al sitio.
+
+*Proyecto 1 — Emprende Ya* es un caso de estudio completo: contexto y objetivo y los cinco pasos
+de la investigación con sus fotos.
 
 ## Desarrollo local
 
@@ -56,9 +59,9 @@ una nueva versión en producción automáticamente.
 - Diseño responsive (breakpoints en 720 / 780 / 820 / 860 / 880 / 900 / 1024 px).
 - Formas orgánicas (ondas y festoneados) generadas por JS a la medida real de cada bloque, así
   la onda no se deforma entre desktop y mobile.
+- Índice de secciones clickeable al final de "Sobre mí", como entrada al sitio.
 - Filtro de proyectos por categoría, con el zigzag de las tarjetas recalculado sobre las visibles.
 - Animaciones de entrada por `IntersectionObserver` con máscaras y cascadas.
-- Contadores animados en las estadísticas.
 - Tarjetas de proyecto expandibles (hover en desktop, tap/Enter en touch/teclado).
 - Barra de progreso de scroll e inercia (skew) en la pila de proyectos.
 - Marquee, parallax y efectos de scroll en un único bucle de `requestAnimationFrame`.
