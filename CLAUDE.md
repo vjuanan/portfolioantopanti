@@ -216,18 +216,25 @@ Tres decisiones que lo sostienen y que no son evidentes leyendo el CSS:
    versión donde el encabezado se compactaba al pegarse (escondía su bajada): mientras esa
    transición corría — o si el observador de "pegado" no llegaba a tiempo — el alto no coincidía
    con el tope y **las píldoras se montaban una sobre otra**. Por eso el encabezado es de una
-   sola línea y la bajada de cada sección vive dentro del panel (`.a-lead`). Si algún día le
-   agregás algo al encabezado, que no le cambie el alto.
+   sola línea: número, título y flecha. Si algún día le agregás algo, que no le cambie el alto.
 
 Al abrir, el JS:
 
 - llama a `drawShapes()` **de forma síncrona** (no dentro de un `requestAnimationFrame`): leer
   `offsetWidth` fuerza el recálculo de estilos, así el panel ya mide y las ondas se dibujan con
   su ancho real. Dentro de un rAF queda a merced de que el navegador decida pintar;
-- revela **sólo lo que ya entra en pantalla** y le devuelve el resto al `IntersectionObserver`.
-  Si se les pone `.in` a todos de golpe, los cinco pasos del caso animan juntos al abrir y para
-  cuando llegás scrolleando ya pasó todo: se ve estático, que es justo lo contrario de lo que se
-  busca. Al cerrar les saca `.in`, así la próxima vez vuelven a emerger.
+- revela lo que ya está en pantalla **o por encima**, y le devuelve el resto al
+  `IntersectionObserver`. Si se les pone `.in` a todos de golpe, los cinco pasos del caso animan
+  juntos al abrir y para cuando llegás scrolleando ya pasó todo: se ve estático, que es justo lo
+  contrario de lo que se busca. Lo de "por encima" no es un detalle: el observador sólo avisa
+  cuando algo **entra**, así que un bloque que al abrir ya quedó pasado no se revelaría nunca.
+  Al cerrar les saca `.in`, así la próxima vez vuelven a emerger.
+
+**Ojo con lo que se oculta esperando ser revelado.** Un elemento sin `.in` sigue ocupando su
+alto: si nadie se lo da, queda un hueco enorme y en blanco. Ya pasó con los `.h-sect` de los
+paneles, que no tenían ningún ancestro revelable — por eso ahora **todos los `<h2 class="h-sect">`
+llevan `data-watch`**. Si agregás contenido con máscara o `[data-reveal]` dentro de un panel,
+asegurate de que algo se lo revele.
 
 Los enlaces del `<nav>` que apuntan a una sección del acordeón **abren el item** en vez de saltar
 a un ancla; lo mismo con el `#hash` al cargar.
