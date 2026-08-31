@@ -190,62 +190,50 @@ El orden lo pidió Antonella: primero quién es, después qué sabe, dónde lo a
 **Si agregás una sección, actualizá tres lugares:** el `<nav>`, el numerito del `.kicker` y el
 índice.
 
-### El acordeón (`.acc` / `.acc-item` / `.acc-head`)
+### El índice en tarjetas (`.indice` / `.ix` / `.sec-uno`)
 
-**"Sobre mí" es la única `<section>` suelta.** Las otras cuatro viven dentro del acordeón: cada
-una es una píldora que abre su contenido ahí mismo, sin mandarte a otro lado. Los encabezados
-quedan pegados arriba y se van **apilando**, así cualquier sección se puede elegir mientras se
-lee otra, sin volver para arriba.
+**"Sobre mí" es la única sección que se lee scrolleando.** Las otras cuatro viven detrás de un
+índice: cuatro tarjetas grandes en grilla 2×2 (una columna en mobile) y, debajo, **sólo la
+sección elegida**. Las demás no están ocultas con opacidad: no se muestran (`display`), así la
+página queda corta y no hay nada que se superponga.
 
-Tres decisiones que lo sostienen y que no son evidentes leyendo el CSS:
+Dos reglas que no hay que romper:
 
-1. **`.acc-item` usa `display: contents`.** Si el encabezado viviera dentro de la caja de su
-   propio item, `position: sticky` lo soltaría apenas ese item sale de pantalla y la pila se
-   desarmaría. Sin caja, el bloque contenedor pasa a ser `.acc` y cada encabezado se queda
-   pegado hasta el final del acordeón. Las custom properties (`--i`, `--hb`, `--hf`) igual
-   heredan a través de `display: contents`.
-2. **El panel NO anima su altura.** El de proyectos mide miles de píxeles; animar
-   `grid-template-rows` sobre eso obliga a recalcular layout en cada frame y es justo lo que se
-   sentía trabado. Se muestra de una (`display`) y lo que anima es el contenido, que emerge
-   escalonado — y de paso tapa el salto de altura.
-3. **La pila va SELLADA.** Todo lo que se scrollea pasa por detrás de los encabezados. Si
-   éstos sólo tuvieran su fondo de píldora, el contenido se cuela por las costuras entre una y
-   otra y por los costados — eso es el "ruido visual" que se veía. Por eso cada encabezado pinta
-   **dos capas**: `::before` es una banda crema a sangre completa (`left/right: -50vw`) que tapa
-   lo que pasa detrás, y `::after` es la píldora redondeada con su color. El fondo del `<button>`
-   queda en `transparent` y su contenido va en `z-index: 1`. La banda se estira `--acc-veil`
-   arriba y abajo, que **tiene que ser >= la mitad de `--acc-gap`** para que dos encabezados
-   apilados se solapen y no quede rendija. Por lo mismo, **el nav es opaco**, no translúcido.
-4. **El offset de pegado sale del alto real del nav.** El JS mide `nav.offsetHeight` y lo
-   escribe en `--nav-h`; cada encabezado se pega en
-   `calc(var(--nav-h) + var(--i) * var(--acc-h))`. Si tocás el nav, esto se reacomoda solo.
-5. **Los encabezados tienen ALTO FIJO (`height: var(--acc-h)`), y `--acc-h` vale exactamente
-   eso.** Es lo que garantiza que el tope de apilado coincida siempre con el alto real. Hubo una
-   versión donde el encabezado se compactaba al pegarse (escondía su bajada): mientras esa
-   transición corría — o si el observador de "pegado" no llegaba a tiempo — el alto no coincidía
-   con el tope y **las píldoras se montaban una sobre otra**. Por eso el encabezado es de una
-   sola línea: número, título y flecha. Si algún día le agregás algo, que no le cambie el alto.
+1. **Nada se pega arriba.** El índice scrollea con la página como cualquier otro bloque.
+2. **Una sección por vez.**
 
-Al abrir, el JS:
+**Esto reemplazó a un acordeón de encabezados pegajosos que se apilaban** (`.acc` / `.acc-head`,
+en el historial). La idea era poder saltar de sección sin volver arriba, y funcionaba, pero con
+cuatro secciones la pila comía 300 px de pantalla, el contenido se veía pasar por las costuras
+entre píldoras y por los costados, y se leía como ruido. Se intentó arreglar sellando la pila
+con bandas opacas a sangre completa y **aun así amontonaba**: Antonella lo rechazó dos veces.
+No lo reintentes; si hace falta acceso permanente al índice, el `<nav>` ya lo tiene.
+
+Las tarjetas son grandes a propósito — son el menú principal del sitio y tienen que competir
+con el contenido, no susurrar. Cada una toma un tono distinto de la rampa camel; **la elegida se
+llena de camel** con el texto en crema y la flecha girada, así se ve de una dónde estás parado.
+Entran cayendo escalonadas, con el mismo gesto que el resto del sitio.
+
+Al elegir una sección, el JS (`elegir()`):
 
 - llama a `drawShapes()` **de forma síncrona** (no dentro de un `requestAnimationFrame`): leer
-  `offsetWidth` fuerza el recálculo de estilos, así el panel ya mide y las ondas se dibujan con
-  su ancho real. Dentro de un rAF queda a merced de que el navegador decida pintar;
+  `offsetWidth` fuerza el recálculo de estilos, así la sección ya mide y las ondas se dibujan
+  con su ancho real. Dentro de un rAF queda a merced de que el navegador decida pintar;
 - revela lo que ya está en pantalla **o por encima**, y le devuelve el resto al
   `IntersectionObserver`. Si se les pone `.in` a todos de golpe, los cinco pasos del caso animan
-  juntos al abrir y para cuando llegás scrolleando ya pasó todo: se ve estático, que es justo lo
+  juntos y para cuando llegás scrolleando ya pasó todo: se ve estático, que es justo lo
   contrario de lo que se busca. Lo de "por encima" no es un detalle: el observador sólo avisa
-  cuando algo **entra**, así que un bloque que al abrir ya quedó pasado no se revelaría nunca.
-  Al cerrar les saca `.in`, así la próxima vez vuelven a emerger.
+  cuando algo **entra**, así que un bloque que ya quedó pasado no se revelaría nunca. Al
+  ocultar la sección les saca `.in`, así la próxima vez vuelven a emerger.
 
 **Ojo con lo que se oculta esperando ser revelado.** Un elemento sin `.in` sigue ocupando su
-alto: si nadie se lo da, queda un hueco enorme y en blanco. Ya pasó con los `.h-sect` de los
-paneles, que no tenían ningún ancestro revelable — por eso ahora **todos los `<h2 class="h-sect">`
-llevan `data-watch`**. Si agregás contenido con máscara o `[data-reveal]` dentro de un panel,
-asegurate de que algo se lo revele.
+alto: si nadie se lo da, queda un hueco enorme y en blanco. Ya pasó con los `.h-sect`, que no
+tenían ningún ancestro revelable — por eso **todos los `<h2 class="h-sect">` llevan
+`data-watch`**. Si agregás contenido con máscara o `[data-reveal]`, asegurate de que algo se lo
+revele.
 
-Los enlaces del `<nav>` que apuntan a una sección del acordeón **abren el item** en vez de saltar
-a un ancla; lo mismo con el `#hash` al cargar.
+Los enlaces del `<nav>` que apuntan a una de las cuatro secciones **la eligen** en vez de saltar
+a un ancla; lo mismo con el `#hash` al cargar. El de "Sobre mí" salta normal.
 
 ### Mis proyectos y el filtro
 
