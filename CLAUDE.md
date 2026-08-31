@@ -396,8 +396,13 @@ credenciales.
   historial de git — si algún día vuelven, el markup de las `.pcard` sirve tal cual y hay que
   devolverles su chip de filtro.
 - **Mi experiencia:** Project Assistant en HS Brands Global (agencia global de investigación
-  de mercado), con siete ítems que amplían los cuatro de la lámina "Experiencia" — los pasó
-  Antonella y salen de su CV. El último enlaza a oportunidadeshsbrands.com, la web que hizo. El período real es
+  de mercado), **abril 2025 – junio 2026**, con siete ítems que amplían los cuatro de la lámina
+  "Experiencia" — los pasó Antonella y salen de su CV. El último enlaza a
+  oportunidadeshsbrands.com, la web que hizo. La fecha va **dentro** del panel, en manuscrita y
+  a la derecha del cargo (`.exp-head` / `.exp-fecha`): hubo una versión donde flotaba por fuera
+  y quedó desprolija. Lleva `white-space: nowrap` — al envolver, "2026" cae solo y se lee mal —
+  y `margin-left: auto`, para que siga a la derecha cuando no entra al lado del cargo y baja de
+  renglón. El período real es
   **abril 2025 – junio 2026**, pero **hoy no se muestra**: la anotación manuscrita con la fecha
   se sacó a pedido. Si vuelve, que sea con `white-space: nowrap` — al envolver, "2026" cae solo
   y se lee mal.

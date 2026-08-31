@@ -505,7 +505,18 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
 .exp-org { margin: 0; font-size: 15px; line-height: 1.5; text-align: center;
   color: var(--ink-75); max-width: 20ch; }
 .exp-card { position: relative; }
-.exp-role { font-family: var(--font-heading); font-weight: 700; margin: 0 0 clamp(18px, 2.4vw, 28px);
+/* El cargo y la fecha comparten renglón: el cargo pesado a la izquierda y la
+   fecha manuscrita a la derecha, como la anotación de la lámina del PDF. Antes
+   la fecha flotaba por fuera del panel y quedaba desprolija. */
+.exp-head { display: flex; align-items: baseline; justify-content: space-between;
+  gap: 12px 24px; flex-wrap: wrap; margin: 0 0 clamp(20px, 2.6vw, 30px); }
+.exp-fecha { margin: 0 0 0 auto; white-space: nowrap; /* si envuelve, "2026" cae solo */
+  font-size: clamp(19px, 2vw, 27px); color: var(--color-accent-900);
+  transform: rotate(-3deg); transform-origin: right bottom; }
+/* El `margin-left: auto` la mantiene a la derecha TAMBIÉN cuando no entra al
+   lado del cargo y baja de renglón: así se lee como una fecha al pie del título
+   y no como una línea que se cayó sola. */
+.exp-role { font-family: var(--font-heading); font-weight: 700; margin: 0;
   font-size: clamp(22px, 2.9vw, 38px); letter-spacing: 0.01em; text-transform: uppercase;
   line-height: 1.05; }
 /* Más aire entre ítems y más alto de panel: son siete y sin separación se leen
@@ -962,7 +973,10 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
         <div class="wavy tan">
           <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
           <div class="wavy-in">
-            <h3 class="exp-role">Project Assistant</h3>
+            <div class="exp-head">
+              <h3 class="exp-role">Project Assistant</h3>
+              <p class="exp-fecha hand">abril 2025 — junio 2026</p>
+            </div>
             <ul class="exp-list">
               <li>Diseño de cuestionarios y formularios en CRM interno, adaptando el contenido y la estructura de las preguntas a los objetivos de cada cliente.</li>
               <li>Redacción de instructivos claros y estructurados para evaluadores, priorizando la simplicidad, el orden y la usabilidad del contenido para distintos perfiles de usuario.</li>
