@@ -25,7 +25,7 @@
 <meta name="twitter:description" content="Portfolio de investigación y UX. De la pregunta al insight: cuali + cuanti, trabajo de campo y resultados que cambian el producto." />
 <meta name="twitter:image" content="https://portfolioantopanti.vercel.app/assets/anto-portrait.jpg" />
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='14'%20fill='%23b99175'/%3E%3Ctext%20x='32'%20y='46'%20font-family='Futura,Jost,Avenir,sans-serif'%20font-size='40'%20font-weight='700'%20text-anchor='middle'%20fill='%23f2f1eb'%3EA%3C/text%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='14'%20fill='%23b99175'/%3E%3Ctext%20x='32'%20y='44'%20font-family='Futura,Jost,Avenir,sans-serif'%20font-size='31'%20font-weight='700'%20letter-spacing='-1'%20text-anchor='middle'%20fill='%23f2f1eb'%3EAB%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
@@ -225,14 +225,12 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
 /* — hero — */
 .hero { position: relative; padding: clamp(18px, 3vh, 40px) 0 clamp(28px, 4.5vh, 56px);
   min-height: min(78svh, 720px); display: flex; flex-direction: column; justify-content: center; }
-.hero-top { display: flex; justify-content: space-between; gap: 16px;
+/* Queda una sola línea (antes compartía renglón con "Disponible para proyectos",
+   que se sacó): `flex-end` la mantiene contra el margen derecho, alineada con el
+   nav de arriba, en vez de irse sola a la izquierda. */
+.hero-top { display: flex; justify-content: flex-end; gap: 16px;
   font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
   color: var(--ink-60); margin-bottom: clamp(16px, 3vh, 34px); }
-.hero-top .pin { display: inline-flex; align-items: center; gap: 8px; }
-.hero-top .pin::before { content: ""; width: 10px; height: 10px; border-radius: 50%;
-  background: var(--color-accent); animation: pulse 2.4s ease-in-out infinite; }
-@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 45%, transparent); }
-  60% { box-shadow: 0 0 0 9px transparent; } }
 /* la tapa del PDF: "Research & Insights" grande, el nombre debajo */
 .hero-eyebrow { font-family: var(--font-heading); font-weight: 700;
   font-size: clamp(29px, 6.2vw, 88px); line-height: 1; margin: 0 0 clamp(8px, 1.4vh, 18px);
@@ -286,8 +284,14 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
 .badge { position: relative; width: clamp(110px, 12vw, 150px); aspect-ratio: 1; flex: none; will-change: translate; }
 .badge > svg { position: absolute; inset: 0; width: 100%; height: 100%;
   animation: spin 16s linear infinite; }
+/* El tracking está calibrado para que el texto cierre el anillo EXACTO: el path
+   del círculo mide 239 unidades y el texto tiene que medir lo mismo, si no queda
+   un hueco a la vista. Con 25 caracteres y el cuerpo en 11.2px, el resto lo pone
+   el `letter-spacing`. Si cambiás el texto del sello, recalibrá acá:
+   `document.querySelector('.badge svg text').getComputedTextLength()` tiene que
+   dar ≈ 239. */
 .badge svg text { font-family: var(--font-body); font-weight: 600; font-size: 11.2px;
-  letter-spacing: 2.4px; text-transform: uppercase; fill: var(--ink-75); }
+  letter-spacing: 3.85px; text-transform: uppercase; fill: var(--ink-75); }
 .badge .core { position: absolute; inset: 0; display: grid; place-content: center; }
 .badge .core span { width: 46px; height: 46px; border-radius: 50%;
   background: var(--color-accent); display: grid; place-content: center;
@@ -866,7 +870,6 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
 
   <header class="hero">
     <div class="hero-top rise" style="--d: 0.5s">
-      <span class="pin">Disponible para proyectos</span>
       <span>Buenos Aires, AR — Portfolio 2026</span>
     </div>
     <p class="hero-eyebrow rise" style="--d: 0.06s">Research &amp; Insights</p>
@@ -885,7 +888,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
       <a class="badge rise" href="#sobre-mi" style="--d: 0.75s" data-par="-0.06" aria-label="Bajar a sobre mí">
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <defs><path id="circ" d="M 50 50 m -38 0 a 38 38 0 1 1 76 0 a 38 38 0 1 1 -76 0"></path></defs>
-          <text><textPath href="#circ">research · insights · cuali + cuanti · </textPath></text>
+          <text><textPath href="#circ">ux research · insights · </textPath></text>
         </svg>
         <span class="core"><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></span></span>
       </a>

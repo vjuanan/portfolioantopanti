@@ -209,6 +209,17 @@ El orden lo pidió Antonella: primero quién es, después qué sabe, dónde lo a
 **Si agregás una sección, actualizá tres lugares:** el `<nav>`, el numerito del `.kicker` y el
 índice.
 
+### El sello circular del hero (`.badge`)
+
+El anillo de texto que gira alrededor de la flecha de bajada dice **"UX RESEARCH · INSIGHTS ·"**
+(antes sumaba "cuali + cuanti", se sacó a pedido). El texto va sobre un `<textPath>` y **tiene
+que medir exactamente lo mismo que el círculo**, 239 unidades: si mide menos queda un hueco a la
+vista, si mide más se pisa en la costura. Con el cuerpo fijo en 11.2 px, lo que ajusta es el
+`letter-spacing` — hoy 3.85 px para 25 caracteres.
+
+**Si cambiás el texto del sello, recalibrálo:**
+`document.querySelector('.badge svg text').getComputedTextLength()` tiene que dar ≈ 239.
+
 ### El índice en tarjetas (`.indice` / `.ix` / `.sec-uno`)
 
 **"Sobre mí" es la única sección que se lee scrolleando.** Las otras cuatro viven detrás de un
@@ -496,7 +507,8 @@ Las URLs de `og:image` / `twitter:image` **tienen que ser absolutas**
 declarados. Con rutas relativas WhatsApp/LinkedIn no levantan la portada — ya pasó y se corrigió
 en el commit `4901db0`. Si cambiás la foto de la portada, actualizá también esas dimensiones.
 
-El favicon es un SVG embebido como data-URI en el `<link rel="icon">`: una "A" crema sobre camel.
+El favicon es un SVG embebido como data-URI en el `<link rel="icon">`: **"AB"** en crema sobre
+camel, las mismas siglas que la marca del `<nav>`.
 
 ## Convenciones de trabajo
 
