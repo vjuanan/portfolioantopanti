@@ -265,6 +265,16 @@ Tres detalles que ya costaron una vuelta:
   ignora `a, button` para que el botón de adentro no dispare dos veces. El toggle de expandir
   sigue vivo para las `.pcard` que no sean `.is-link`, si algún día vuelven las otras tarjetas.
 
+Los cinco pasos usan tres layouts, según cuántas fotos tengan:
+
+- **una foto** → dos columnas, panel y foto lado a lado, alternando el orden en los pares.
+- **sin foto** (`.step-solo`) → el panel ocupa todo el ancho.
+- **dos fotos** (`.step-duo`) → el panel ocupa todo el ancho y las fotos van **una al lado de la
+  otra debajo**. Iban apiladas en la columna angosta, y eso la hacía altísima: con
+  `align-items: center` el panel quedaba centrado contra esa altura y se abría un hueco enorme
+  entre el título del paso y el primer párrafo. Si agregás una segunda foto a un paso, ponele
+  `step-duo`.
+
 **Proyecto 1 (`#p1case`)** no es una tarjeta compacta sino el caso completo, lámina por lámina:
 cabecera con el logo de Emprende Ya, panel "Contexto & Objetivo general" y los cinco pasos con
 sus fotos. Va **fuera** de `#plist` a propósito: `#plist` recibe un `skewY` continuo por inercia

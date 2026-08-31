@@ -471,6 +471,20 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
 .step.step-solo .step-grid,
 .step.step-solo:nth-child(even) .step-grid { grid-template-columns: minmax(0, 1fr); }
 .step.step-solo .step-panel { max-width: min(100%, 1000px); margin-inline: auto; }
+
+/* Pasos con DOS fotos: el panel ocupa todo el ancho y las fotos van una al lado
+   de la otra debajo. Antes iban apiladas en la columna angosta, lo que la hacía
+   altísima y — con `align-items: center` — empujaba el texto muy por debajo del
+   título: quedaba un hueco enorme entre el título y el primer párrafo. */
+.step.step-duo .step-grid,
+.step.step-duo:nth-child(even) .step-grid { grid-template-columns: minmax(0, 1fr); }
+.step.step-duo .step-panel { order: 0; }
+.step.step-duo .step-media { order: 0; margin-top: clamp(26px, 4vw, 52px);
+  grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+.step.step-duo .foto { width: min(100%, 380px); }
+@media (max-width: 720px) {
+  .step.step-duo .step-media { grid-template-columns: minmax(0, 1fr); }
+}
 .step-media { display: grid; gap: clamp(18px, 2.6vw, 34px); justify-items: center; }
 .step-media figure { margin: 0; display: grid; gap: 10px; justify-items: center; width: 100%; }
 /* La inclinación va en la <figure> ENTERA, no en la foto: así el epígrafe
@@ -1074,7 +1088,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
         </div>
 
         <!-- 3 -->
-        <div class="step" data-reveal>
+        <div class="step step-duo" data-reveal>
           <h4 class="step-t"><span class="mask"><span class="hl">Tercer paso: <i>trabajo de campo</i></span></span></h4>
           <div class="step-grid">
             <div class="step-panel wavy tan">
@@ -1113,7 +1127,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
         </div>
 
         <!-- 5 -->
-        <div class="step" data-reveal>
+        <div class="step step-duo" data-reveal>
           <h4 class="step-t"><span class="mask"><span class="hl">Quinto paso: <i>presentación de resultados</i></span></span></h4>
           <div class="step-grid">
             <div class="step-panel wavy tan">
