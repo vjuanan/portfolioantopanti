@@ -201,6 +201,27 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
 .hand { font-family: var(--font-script); font-size: clamp(23px, 2.4vw, 34px);
   line-height: 1.1; color: var(--color-text); }
 
+/* ——— TEXTO QUE SE TIPEA (.teclea) ———
+   El JS parte el texto en <span class="ch"> y a cada uno le da su turno (--i).
+   Aparecen de golpe, no en desvanecido: por eso la transición dura 0.01s.
+
+   Las letras van `display: inline` (el default) a propósito: con `inline-block`
+   el texto cortaría por LETRA en vez de por palabra.
+
+   El cursor es el ::after. Espera su turno (--cursor-desde, para que dos bloques
+   encadenados no titilen a la vez), parpadea mientras dura el tecleo
+   (--cursor-veces) y se apaga. Los dos valores los calcula el JS según cuántas
+   letras haya. */
+.teclea .ch { opacity: 0; transition: opacity 0.01s linear;
+  transition-delay: calc(var(--i) * 0.026s); }
+.in .teclea .ch, .teclea.in .ch { opacity: 1; }
+.teclea::after { content: ""; display: inline-block;
+  width: 0.055em; height: 0.78em; margin-left: 0.06em; vertical-align: -0.05em;
+  background: var(--cursor-color, currentColor); opacity: 0; }
+.in .teclea::after, .teclea.in::after {
+  animation: cursor 0.5s steps(2, start) var(--cursor-desde, 0s) var(--cursor-veces, 6) forwards; }
+@keyframes cursor { 0% { opacity: 1; } 100% { opacity: 0; } }
+
 /* — hero — */
 .hero { position: relative; padding: clamp(18px, 3vh, 40px) 0 clamp(28px, 4.5vh, 56px);
   min-height: min(78svh, 720px); display: flex; flex-direction: column; justify-content: center; }
@@ -448,20 +469,9 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
   letter-spacing: -0.024em; }
 .step-t .mask { padding-inline: 0.12em; margin-inline: -0.12em; }
 .step-t i { font-style: inherit; color: var(--color-accent-700); }
-/* Se TIPEAN: cada letra aparece de golpe, una detrás de otra, con un cursor que
-   titila al final y se apaga al terminar. Las letras van `display: inline` para
-   que el título siga cortando por palabra donde corresponde; el espacio en blanco
-   no se envuelve pero sí cuenta para el tiempo, así el ritmo queda parejo. */
-.step-t .ch { opacity: 0; transition: opacity 0.01s linear;
-  transition-delay: calc(var(--i) * 0.026s); }
-.in .step-t .ch, .step-t.in .ch { opacity: 1; }
-.step-t .hl::after { content: ""; display: inline-block;
-  width: 0.055em; height: 0.78em; margin-left: 0.06em; vertical-align: -0.05em;
-  background: var(--color-accent-700); opacity: 0; }
-.in .step-t .hl::after, .step-t.in .hl::after {
-  animation: cursor 0.5s steps(2, start) var(--cursor-veces, 6) forwards; }
-@keyframes cursor { 0% { opacity: 1; } 100% { opacity: 0; } }
-.step-t .hl { display: inline; padding: 0.06em 0.1em; margin: 0 -0.1em;
+/* El tecleo en sí es la utilidad .teclea, arriba. Acá sólo el color del cursor
+   (camel, para que se lea sobre el crema) y el marcador que barre al final. */
+.step-t .hl { --cursor-color: var(--color-accent-700); display: inline; padding: 0.06em 0.1em; margin: 0 -0.1em;
   -webkit-box-decoration-break: clone; box-decoration-break: clone;
   background-image: linear-gradient(var(--color-accent-300), var(--color-accent-300));
   background-repeat: no-repeat; background-position: 0 90%; background-size: 0% 52%;
@@ -540,12 +550,23 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
    fecha manuscrita a la derecha, como la anotación de la lámina del PDF. Antes
    la fecha flotaba por fuera del panel y quedaba desprolija. */
 .exp-head { display: flex; align-items: baseline; justify-content: space-between;
-  gap: 12px 24px; flex-wrap: wrap; margin: 0 0 clamp(20px, 2.6vw, 30px); }
-.exp-fecha { margin: 0 0 0 auto; white-space: nowrap; /* si envuelve, "2026" cae solo */
+  gap: 12px 24px; flex-wrap: nowrap; margin: 0 0 clamp(20px, 2.6vw, 30px); }
+/* `nowrap` + `min-width: 0` en el cargo: si el renglón queda corto, el que
+   envuelve es el CARGO y la fecha se queda en su misma línea. Con `wrap` la
+   fecha se caía entera al renglón de abajo. */
+.exp-role { min-width: 0; }
+.exp-fecha { margin: 0 -0.16em 0 auto; white-space: nowrap; /* si envuelve, "2026" cae solo */
   font-size: clamp(19px, 2vw, 27px); color: var(--color-accent-900); }
-/* El `margin-left: auto` la mantiene a la derecha TAMBIÉN cuando no entra al
-   lado del cargo y baja de renglón: así se lee como una fecha al pie del título
-   y no como una línea que se cayó sola. */
+/* Ese `-0.16em` de la derecha es corrección ÓPTICA, no un margen negativo por
+   capricho: Sacramento deja aire después del último glifo (el trazo de unión de
+   una manuscrita), así que la caja termina bastante después de lo que se ve. Sin
+   compensar, la fecha parece descolgada del borde contra el que se alinea el
+   texto de abajo. El `margin-left: auto` la mantiene a la derecha. */
+@media (max-width: 700px) {
+  /* En pantallas chicas sí conviene que baje: partir "PROJECT ASSISTANT" en dos
+     renglones para salvar la línea se ve peor que la fecha debajo. */
+  .exp-head { flex-wrap: wrap; }
+}
 .exp-role { font-family: var(--font-heading); font-weight: 700; margin: 0;
   font-size: clamp(22px, 2.9vw, 38px); letter-spacing: 0.01em; text-transform: uppercase;
   line-height: 1.05; }
@@ -1003,9 +1024,11 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
         <div class="wavy tan">
           <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
           <div class="wavy-in">
-            <div class="exp-head">
-              <h3 class="exp-role">Project Assistant</h3>
-              <p class="exp-fecha hand">abril 2025 — junio 2026</p>
+            <!-- data-teclea-seq: el cargo y la fecha comparten el contador del
+                 tecleo, así se escriben uno DESPUÉS del otro y no a la vez. -->
+            <div class="exp-head" data-teclea-seq>
+              <h3 class="exp-role teclea">Project Assistant</h3>
+              <p class="exp-fecha hand teclea">abril 2025 — junio 2026</p>
             </div>
             <ul class="exp-list">
               <li>Diseño de cuestionarios y formularios en CRM interno, adaptando el contenido y la estructura de las preguntas a los objetivos de cada cliente.</li>
@@ -1067,7 +1090,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
       <div class="steps">
         <!-- 1 -->
         <div class="step" data-reveal>
-          <h4 class="step-t"><span class="mask"><span class="hl">Primer paso: <i>reunión con stakeholders</i></span></span></h4>
+          <h4 class="step-t"><span class="mask"><span class="hl teclea">Primer paso: <i>reunión con stakeholders</i></span></span></h4>
           <div class="step-grid">
             <div class="step-panel wavy tan">
               <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
@@ -1087,7 +1110,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
 
         <!-- 2 -->
         <div class="step step-solo" data-reveal>
-          <h4 class="step-t"><span class="mask"><span class="hl">Segundo paso: <i>enfoque metodológico e instrumentos</i></span></span></h4>
+          <h4 class="step-t"><span class="mask"><span class="hl teclea">Segundo paso: <i>enfoque metodológico e instrumentos</i></span></span></h4>
           <div class="step-grid">
             <div class="step-panel wavy paper">
               <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
@@ -1103,7 +1126,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
 
         <!-- 3 -->
         <div class="step step-duo" data-reveal>
-          <h4 class="step-t"><span class="mask"><span class="hl">Tercer paso: <i>trabajo de campo</i></span></span></h4>
+          <h4 class="step-t"><span class="mask"><span class="hl teclea">Tercer paso: <i>trabajo de campo</i></span></span></h4>
           <div class="step-grid">
             <div class="step-panel wavy tan">
               <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
@@ -1127,7 +1150,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
 
         <!-- 4 -->
         <div class="step step-solo" data-reveal>
-          <h4 class="step-t"><span class="mask"><span class="hl">Cuarto paso: <i>digitalización y análisis de datos</i></span></span></h4>
+          <h4 class="step-t"><span class="mask"><span class="hl teclea">Cuarto paso: <i>digitalización y análisis de datos</i></span></span></h4>
           <div class="step-grid">
             <div class="step-panel wavy paper">
               <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
@@ -1142,7 +1165,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
 
         <!-- 5 -->
         <div class="step step-duo" data-reveal>
-          <h4 class="step-t"><span class="mask"><span class="hl">Quinto paso: <i>presentación de resultados</i></span></span></h4>
+          <h4 class="step-t"><span class="mask"><span class="hl teclea">Quinto paso: <i>presentación de resultados</i></span></span></h4>
           <div class="step-grid">
             <div class="step-panel wavy tan">
               <svg class="wavy-bg" data-blob="wave" aria-hidden="true"></svg>
@@ -1345,13 +1368,20 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     [...g.children].forEach((el, i) => el.style.setProperty('--i', i));
   });
 
-  /* Los títulos de paso se parten LETRA por letra para tipearse. Se recorren sólo
-     los nodos de TEXTO, así el <i> de adentro sobrevive intacto. Los espacios no
-     se envuelven — envolverlos rompe el corte de línea — pero sí suman al
-     contador, para que el ritmo del tecleo sea parejo. */
-  const PASO = 0.026;   // segundos por letra
-  document.querySelectorAll('.step-t .hl').forEach((hl) => {
-    let n = 0;
+  /* Todo lo que lleva .teclea se parte LETRA por letra. Se recorren sólo los
+     nodos de TEXTO, así el <i> de adentro sobrevive intacto. Los espacios no se
+     envuelven — envolverlos rompe el corte de línea — pero sí suman al contador,
+     para que el ritmo del tecleo sea parejo.
+
+     Varios .teclea dentro de un mismo [data-teclea-seq] comparten el contador:
+     así se escriben uno DESPUÉS del otro (el cargo y recién después la fecha) en
+     vez de arrancar los dos juntos. */
+  const PASO = 0.026;          // segundos por letra
+  const corrido = new Map();   // contador compartido por grupo
+  document.querySelectorAll('.teclea').forEach((el) => {
+    const grupo = el.closest('[data-teclea-seq]') || el;
+    const desde = corrido.get(grupo) || 0;
+    let n = desde;
     const walk = (node) => [...node.childNodes].forEach((c) => {
       if (c.nodeType === 3) {
         const frag = document.createDocumentFragment();
@@ -1364,13 +1394,15 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
         c.replaceWith(frag);
       } else if (c.nodeType === 1) walk(c);
     });
-    walk(hl);
-    const t = hl.closest('.step-t');
-    const dur = n * PASO;
-    // el cursor titila mientras dura el tecleo y se apaga al terminar
-    t.style.setProperty('--cursor-veces', Math.max(2, Math.ceil((dur + 0.35) / 0.5)));
-    // y el marcador barre recién cuando se escribió la última letra
-    t.style.setProperty('--hld', (dur + 0.25).toFixed(2) + 's');
+    walk(el);
+    corrido.set(grupo, n);
+    // el cursor espera su turno y titila sólo mientras se escribe ESTE bloque
+    el.style.setProperty('--cursor-desde', (desde * PASO).toFixed(2) + 's');
+    el.style.setProperty('--cursor-veces',
+      Math.max(2, Math.ceil(((n - desde) * PASO + 0.35) / 0.5)));
+    // en los títulos de paso, el marcador camel barre cuando cayó la última letra
+    const t = el.closest('.step-t');
+    if (t) t.style.setProperty('--hld', (n * PASO + 0.25).toFixed(2) + 's');
   });
 
   // observador: caídas y máscaras

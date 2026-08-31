@@ -154,13 +154,24 @@ acomoda con un rebote.** No lo reemplaces por fades genéricos.
 - Un único `IntersectionObserver` (threshold 0.12) agrega `.in` y **deja de observar**
   (`unobserve`): las animaciones ocurren una sola vez, no se repiten al volver a scrollear.
 - `.mask > span` — títulos que suben desde detrás de una máscara al entrar en viewport.
+- **`.teclea` — texto que se escribe solo.** Es una utilidad general, no algo de una sección:
+  el JS parte el contenido letra por letra (`.ch`) y cada una aparece de golpe —
+  `transition-duration: 0.01s`, no un desvanecido — con `--i * 0.026s` de retardo. El cursor es
+  el `::after` del propio `.teclea`; espera su turno (`--cursor-desde`), titila mientras dura el
+  tecleo (`--cursor-veces`) y se apaga. Los dos valores los calcula el JS según cuántas letras
+  haya. El color sale de `--cursor-color`, que por defecto es `currentColor`.
+
+  **Encadenar dos bloques:** varios `.teclea` dentro de un mismo `[data-teclea-seq]` comparten el
+  contador, así se escriben uno **después** del otro en vez de arrancar juntos. Es lo que usa la
+  cabecera de "Mi experiencia": primero el cargo, después la fecha.
+
+  Está puesto en los títulos de paso del Proyecto 1 (`.step-t .hl`, con cursor camel) y en
+  `.exp-role` + `.exp-fecha`.
+
 - Los títulos de los pasos del Proyecto 1 (`.step-t`) van **grandes y sin regla debajo** (se
-  probó y quedó pobre) y **se tipean**: el JS los parte letra por letra (`.ch`) y cada una
-  aparece de golpe — `transition-duration: 0.01s`, no un desvanecido — con `--i * 0.026s` de
-  retardo. Un cursor camel (el `::after` del `.hl`) titila mientras se escribe y se apaga al
-  terminar: las iteraciones del parpadeo las calcula el JS según cuántas letras haya. Cuando cae
-  la última letra, un marcador camel (`.hl`, un `background-size` de `0%` a `100%`) barre el
-  título entero; su retardo (`--hld`) también sale del largo del texto.
+  probó y quedó pobre) y se tipean con `.teclea`. Cuando cae la última letra, un marcador camel
+  (`.hl`, un `background-size` de `0%` a `100%`) barre el título entero; su retardo (`--hld`)
+  también sale del largo del texto.
 
   Dos detalles del corte en letras: se recorren sólo los **nodos de texto**, para no romper el
   `<i>` de adentro; y **los espacios no se envuelven** — envolverlos rompe el corte de línea —
@@ -441,14 +452,24 @@ credenciales.
 - **Mi experiencia:** Project Assistant en HS Brands Global (agencia global de investigación
   de mercado), **abril 2025 – junio 2026**, con siete ítems que amplían los cuatro de la lámina
   "Experiencia" — los pasó Antonella y salen de su CV. El último enlaza a
-  oportunidadeshsbrands.com, la web que hizo. La fecha va **dentro** del panel, en manuscrita y
-  a la derecha del cargo (`.exp-head` / `.exp-fecha`): hubo una versión donde flotaba por fuera
-  y quedó desprolija. Lleva `white-space: nowrap` — al envolver, "2026" cae solo y se lee mal —
-  y `margin-left: auto`, para que siga a la derecha cuando no entra al lado del cargo y baja de
-  renglón. El período real es
-  **abril 2025 – junio 2026**, pero **hoy no se muestra**: la anotación manuscrita con la fecha
-  se sacó a pedido. Si vuelve, que sea con `white-space: nowrap` — al envolver, "2026" cae solo
-  y se lee mal.
+  oportunidadeshsbrands.com, la web que hizo.
+
+  **La fecha (`.exp-fecha`)** va **dentro** del panel, en manuscrita, en el mismo renglón que el
+  cargo y pegada a la derecha — hubo una versión donde flotaba por fuera y quedó desprolija.
+  Cuatro cosas la sostienen, y las cuatro tienen motivo:
+
+  - `white-space: nowrap` — al envolver, "2026" cae solo y se lee mal.
+  - `.exp-head` va **`flex-wrap: nowrap`** arriba de 700 px y `min-width: 0` en `.exp-role`: si
+    el renglón queda corto, el que envuelve es el CARGO y la fecha se queda en su línea. Con
+    `wrap` la fecha se caía entera al renglón de abajo. Debajo de 700 px sí conviene que baje:
+    partir "PROJECT ASSISTANT" en dos renglones se ve peor.
+  - `margin-left: auto` — la mantiene a la derecha también cuando baja de renglón en mobile.
+  - `margin-right: -0.16em` es corrección **óptica**, no un margen negativo por capricho:
+    Sacramento deja aire después del último glifo (el trazo de unión de una manuscrita), así que
+    la caja termina bastante después de lo que se ve. Sin compensar, la fecha parece descolgada
+    del borde contra el que se alinea el texto de abajo.
+
+  Se tipea junto con el cargo: ver `.teclea` y `data-teclea-seq` más arriba.
 - **Formación:** Sociología UBA 2022–2026, Curso Inicial de programación con Python (Agencia de
   Habilidades para el Futuro, 2024), Inglés B2 (FCE), Curso Inicial de Diseño UX/UI, Lovable L1.
 - **Contacto:** antonella.m.barone@gmail.com · LinkedIn `antonella-barone2003` · Vicente López, BA.
