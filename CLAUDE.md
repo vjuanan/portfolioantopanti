@@ -382,6 +382,13 @@ credenciales.
 - **Formación:** Sociología UBA 2022–2026, Curso Inicial de programación con Python (Agencia de
   Habilidades para el Futuro, 2024), Inglés B2 (FCE), Curso Inicial de Diseño UX/UI, Lovable L1.
 - **Contacto:** antonella.m.barone@gmail.com · LinkedIn `antonella-barone2003` · Vicente López, BA.
+- **Volver al menú (`.volver`):** botón fijo que sube al índice desde adentro de una sección.
+  Va justo encima del WhatsApp (74 px) y es su negativo — crema con borde camel, contra el
+  camel relleno del otro — para que se lea quién es la acción principal y quién la navegación.
+  **Aparece cuando el índice ya salió por arriba de la pantalla**
+  (`indice.getBoundingClientRect().bottom < 60`). Cuidado con esa condición: si se ata a
+  "scrolleaste más allá del índice", en páginas cortas el umbral queda fuera de alcance y el
+  botón **no aparece nunca** — ya pasó.
 - **WhatsApp:** en dos lugares, los dos a `wa.me/5491164613463` — en pantalla se lee
   **+54 11 6461 3463**. El **9** después del 54 no es un error: WhatsApp lo pide para los
   celulares argentinos; sin él el link no abre el chat. Si tocás el número, mantenelo.

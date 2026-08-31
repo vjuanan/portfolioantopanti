@@ -690,6 +690,40 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
 .patch .links a:active::after { transform: scaleX(1); }
 .patch .meta { margin: clamp(28px, 4vh, 44px) 0 0; font-size: 13px;
   color: color-mix(in srgb, var(--color-bg) 60%, transparent); }
+/* ——— VOLVER AL MENÚ ———
+   Sube al índice desde adentro de una sección. Va justo encima del WhatsApp y es
+   su negativo — crema con borde camel, contra el camel relleno del otro — para
+   que se lea quién es la acción principal y quién la navegación.
+
+   **Aparece cuando el índice ya salió por arriba de la pantalla**, que es
+   justo cuando el menú deja de estar a mano. Ojo con la condición: si se ata a
+   "scrolleaste más allá del índice", en secciones cortas el umbral queda fuera
+   de alcance y el botón no aparece nunca. */
+.volver { position: fixed; z-index: 81;
+  right: clamp(14px, 3vw, 30px); bottom: calc(clamp(14px, 3vw, 30px) + 74px);
+  width: 60px; height: 60px; border-radius: 999px; cursor: pointer;
+  border: 2.5px solid var(--color-accent); background: var(--color-bg);
+  color: var(--color-accent-700); display: grid; place-items: center;
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--color-text) 16%, transparent);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.45s var(--soft), transform 0.5s var(--spring),
+              background 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
+.volver.on { opacity: 1; pointer-events: auto; }
+.volver svg { animation: sube 2.1s ease-in-out infinite; }
+@keyframes sube { 0%, 100% { transform: translateY(3px); } 50% { transform: translateY(-4px); } }
+.volver .lb { position: absolute; right: calc(100% + 12px); white-space: nowrap;
+  font-weight: 700; font-size: 14px; color: var(--color-accent-700);
+  background: var(--color-bg); padding: 8px 14px; border-radius: 999px;
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--color-text) 14%, transparent);
+  opacity: 0; transform: translateX(8px);
+  transition: opacity 0.3s var(--soft), transform 0.35s var(--spring); }
+@media (hover: hover) {
+  .volver:hover { background: var(--color-accent); color: var(--color-bg);
+    border-color: var(--color-accent); transform: translateY(-3px); }
+  .volver:hover .lb { opacity: 1; transform: none; }
+}
+.volver:focus-visible { outline: 3px solid var(--color-accent-900); outline-offset: 3px; }
+
 /* ——— WHATSAPP ——— fijo abajo a la derecha, en camel para no romper la
    paleta. La etiqueta se despliega al pasar el mouse; en touch queda el ícono. */
 .wa { position: fixed; right: clamp(14px, 3vw, 30px); bottom: clamp(14px, 3vw, 30px);
@@ -1108,6 +1142,11 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
 
 </div>
 
+<button class="volver" type="button" aria-label="Volver al menú de secciones">
+  <span class="lb">Volver al menú</span>
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+</button>
+
 <a class="wa" href="https://wa.me/5491164613463?text=Hola%20Anto%2C%20vi%20tu%20portfolio%20y%20quer%C3%ADa%20hacerte%20una%20consulta."
    target="_blank" rel="noopener" aria-label="Escribime por WhatsApp">
   <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -1372,8 +1411,21 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     if (mover) requestAnimationFrame(() => {
       const y = sec.getBoundingClientRect().top + scrollY - (nav ? nav.offsetHeight : 64) - 14;
       scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+      setTimeout(syncVolver, 700);
     });
   };
+
+  // el botón de volver sube al índice y aparece recién cuando éste salió de pantalla
+  const indice = document.querySelector('.indice');
+  const btnVolver = document.querySelector('.volver');
+  const syncVolver = () => {
+    if (!indice || !btnVolver) return;
+    btnVolver.classList.toggle('on', indice.getBoundingClientRect().bottom < 60);
+  };
+  if (btnVolver) btnVolver.addEventListener('click', () => {
+    const y = indice.getBoundingClientRect().top + scrollY - (nav ? nav.offsetHeight : 64) - 12;
+    scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+  });
 
   // tarjetas del índice y enlaces del nav eligen la sección
   document.querySelectorAll('[data-go]').forEach((b) =>
@@ -1431,6 +1483,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
       const max = document.documentElement.scrollHeight - innerHeight;
       bar.style.width = (max > 0 ? (y / max) * 100 : 0) + '%';
       nav.classList.toggle('scrolled', y > 8);
+      syncVolver();
       vel = y - lastY; lastY = y;
       if (touch && !reduce) {
         cardFocus = focusNearest(cards, cardFocus, '.pc-top', 0.22, 0.5);
