@@ -123,11 +123,11 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
   transition: background 0.3s ease, box-shadow 0.3s ease; }
 .nav-brand { font-family: var(--font-heading); font-weight: 700; font-size: 19px;
   letter-spacing: 0.01em; margin-right: auto; }
-/* Sin backdrop-filter a propósito: combinado con la capa fija .bg-fx, Chromium
-   toma el nav como backdrop root y pinta media página de negro al hacer scroll.
-   Un fondo crema casi opaco da el mismo resultado visual sin ese riesgo. */
-.nav.scrolled { background: color-mix(in srgb, var(--color-bg) 93%, transparent);
-  box-shadow: var(--shadow-sm); }
+/* Fondo OPACO, no translúcido: con transparencia se ve el contenido pasar por
+   detrás del nav mientras se scrollea y ensucia todo. Tampoco lleva
+   backdrop-filter: combinado con la capa fija .bg-fx, Chromium toma el nav como
+   backdrop root y pinta media página de negro al hacer scroll. */
+.nav.scrolled { background: var(--color-bg); box-shadow: var(--shadow-sm); }
 .nav a { white-space: nowrap; position: relative; text-decoration: none;
   color: inherit; transition: color 0.2s ease; }
 .nav a::after { content: ""; position: absolute; left: 0; bottom: -5px;
@@ -579,6 +579,10 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
       justo lo que se sentía trabado. Se muestra de una y lo que anima es el
       contenido, que entra escalonado. */
 .acc { display: block; --acc-h: clamp(54px, 5.4vw, 66px);
+  --acc-gap: clamp(14px, 1.8vw, 22px);
+  /* cuanto se estira la banda crema arriba y abajo de cada píldora. Tiene que
+     ser >= la mitad de --acc-gap para que dos apiladas no dejen rendija. */
+  --acc-veil: clamp(11px, 1.5vw, 17px);
   margin-top: clamp(76px, 11vw, 140px); }
 .acc-item { display: contents; }
 .acc-head {
@@ -593,10 +597,31 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
      corría — o si el observador de "pegado" no llegaba a tiempo — el alto no
      coincidía con el tope y las píldoras se montaban una sobre otra. */
   height: var(--acc-h); padding: 0 clamp(20px, 3vw, 38px);
-  margin-bottom: clamp(14px, 1.8vw, 22px);
-  background: var(--hb); color: var(--hf);
+  margin-bottom: var(--acc-gap);
+  background: transparent; color: var(--hf);
+  transition: transform 0.45s var(--spring); }
+
+/* ——— SELLAR LA PILA ———
+   Los encabezados quedan pegados arriba, y todo lo que se scrollea pasa POR
+   DETRÁS. Si sólo tuvieran su fondo de píldora, el contenido se ve colarse por
+   las costuras entre una y otra y por los costados: es el "ruido visual".
+   Por eso cada encabezado pinta DOS capas:
+     ::before  una banda crema a sangre completa, que tapa lo que pasa detrás
+     ::after   la píldora en sí, redondeada y con su color
+   La banda se estira media separación arriba y abajo, así dos encabezados
+   apilados se solapan y no queda ninguna rendija. */
+.acc-head::before { content: ""; position: absolute; z-index: -1;
+  left: -50vw; right: -50vw;
+  top: calc(-1 * var(--acc-veil)); bottom: calc(-1 * var(--acc-veil));
+  background: var(--color-bg); }
+.acc-head::after { content: ""; position: absolute; inset: 0; z-index: 0;
+  border-radius: 999px; background: var(--hb);
   box-shadow: 0 4px 18px color-mix(in srgb, var(--color-text) 9%, transparent);
-  transition: box-shadow 0.38s ease, transform 0.45s var(--spring); }
+  transition: box-shadow 0.38s ease; }
+.acc-head > * { position: relative; z-index: 1; }
+/* la sección abierta se marca con una sombra un poco más presente */
+.acc-item.open .acc-head::after {
+  box-shadow: 0 8px 26px color-mix(in srgb, var(--color-text) 16%, transparent); }
 @media (hover: hover) { .acc-head:hover { transform: translateX(7px); } }
 .acc-head:focus-visible { outline: 2px solid var(--color-accent-700); outline-offset: 3px; }
 .a-num { flex: none; font-family: var(--font-heading); font-weight: 700;
@@ -610,7 +635,7 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
 .acc-item.open .a-go { transform: rotate(90deg); }
 .acc-panel { display: none; }
 .acc-item.open .acc-panel { display: block; }
-.panel-in { padding: clamp(30px, 5vw, 68px) 0 clamp(30px, 5vw, 64px); }
+.panel-in { padding: clamp(40px, 6vw, 84px) 0 clamp(30px, 5vw, 64px); }
 @media (max-width: 640px) {
   .acc-head { gap: 12px; padding: 0 18px; }
   .a-num { display: none; }

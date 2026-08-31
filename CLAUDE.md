@@ -208,10 +208,18 @@ Tres decisiones que lo sostienen y que no son evidentes leyendo el CSS:
    `grid-template-rows` sobre eso obliga a recalcular layout en cada frame y es justo lo que se
    sentía trabado. Se muestra de una (`display`) y lo que anima es el contenido, que emerge
    escalonado — y de paso tapa el salto de altura.
-3. **El offset de pegado sale del alto real del nav.** El JS mide `nav.offsetHeight` y lo
+3. **La pila va SELLADA.** Todo lo que se scrollea pasa por detrás de los encabezados. Si
+   éstos sólo tuvieran su fondo de píldora, el contenido se cuela por las costuras entre una y
+   otra y por los costados — eso es el "ruido visual" que se veía. Por eso cada encabezado pinta
+   **dos capas**: `::before` es una banda crema a sangre completa (`left/right: -50vw`) que tapa
+   lo que pasa detrás, y `::after` es la píldora redondeada con su color. El fondo del `<button>`
+   queda en `transparent` y su contenido va en `z-index: 1`. La banda se estira `--acc-veil`
+   arriba y abajo, que **tiene que ser >= la mitad de `--acc-gap`** para que dos encabezados
+   apilados se solapen y no quede rendija. Por lo mismo, **el nav es opaco**, no translúcido.
+4. **El offset de pegado sale del alto real del nav.** El JS mide `nav.offsetHeight` y lo
    escribe en `--nav-h`; cada encabezado se pega en
    `calc(var(--nav-h) + var(--i) * var(--acc-h))`. Si tocás el nav, esto se reacomoda solo.
-4. **Los encabezados tienen ALTO FIJO (`height: var(--acc-h)`), y `--acc-h` vale exactamente
+5. **Los encabezados tienen ALTO FIJO (`height: var(--acc-h)`), y `--acc-h` vale exactamente
    eso.** Es lo que garantiza que el tope de apilado coincida siempre con el alto real. Hubo una
    versión donde el encabezado se compactaba al pegarse (escondía su bajada): mientras esa
    transición corría — o si el observador de "pegado" no llegaba a tiempo — el alto no coincidía
