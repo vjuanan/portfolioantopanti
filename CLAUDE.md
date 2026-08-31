@@ -111,9 +111,12 @@ utilidades y conviene reusarlos antes que inventar otros:
      <div class="wavy-in"> …contenido… </div>
    </div>
    ```
-2. **`.stamp`** — marco festoneado de las fotos (el borde oscuro de bollitos redondos).
-   `<span class="stamp tilt-r" data-blob="scallop"><img …></span>`. Las clases `.tilt-l` /
-   `.tilt-r` le dan la inclinación de collage.
+2. **`.foto`** — la foto del caso: esquinas redondeadas y una sombra que la despega del fondo
+   crema. **El marco festoneado del PDF (el borde de bollitos redondos) se eliminó a pedido**;
+   está en el historial junto con el modo `scallop` del generador. La inclinación de collage va
+   en la `<figure>` ENTERA (`.tilt-l` / `.tilt-r`, que definen `--tilt`), no en la foto: así el
+   epígrafe manuscrito acompaña la dirección de la imagen en vez de estar torcido por su cuenta.
+   Al pasar el mouse la figura se endereza y la foto crece un poco.
 3. **`.spark`** — estrellita de cuatro puntas: `<svg class="spark" style="…"><use href="#spark4"/></svg>`.
    El símbolo está definido una sola vez en un `<svg>` de `defs` al principio del `<body>`.
 4. **`.doodle`** — garabato de línea fina. Se **dibuja solo** al entrar en viewport: el JS mide
@@ -128,16 +131,14 @@ perímetro de un rectángulo redondeado, desplaza cada punto sobre su normal sig
 y suaviza con Catmull-Rom convertido a cúbicas de Bézier:
 
 - El número de ondas es **entero**, así la curva cierra sin costura.
-- Modo `wave` usa `cos` (la onda entra y sale); modo `scallop` usa `abs(cos)` (todos los
-  bollos hacia afuera, como el marco de una foto).
 - **Se dibuja a la medida real del elemento**, no se estira un SVG fijo. Eso es deliberado: con
   `preserveAspectRatio` la onda quedaría chata y larga en desktop y apretada en mobile, y
   perdería el aire de "hecho a mano". Por eso hay que redibujar cuando cambia el tamaño —
-  `drawShapes()` se llama en `load`, en `resize` (con debounce), cuando termina de cargar cada
-  imagen de un `.stamp`, cuando resuelve `document.fonts.ready` y al cambiar de filtro.
+  `drawShapes()` se llama en `load`, en `resize` (con debounce), cuando resuelve
+  `document.fonts.ready`, al cambiar de filtro y al elegir una sección.
 
-Si agregás un panel ondulado o un marco festoneado nuevo, alcanza con poner el markup de
-arriba: `drawShapes()` los toma por `[data-blob]`.
+Si agregás un panel ondulado nuevo, alcanza con poner el markup de arriba: `drawShapes()` lo
+toma por `[data-blob="wave"]`.
 
 ## Sistema de animación de "caída"
 
