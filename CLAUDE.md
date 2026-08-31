@@ -155,15 +155,21 @@ acomoda con un rebote.** No lo reemplaces por fades genéricos.
   (`unobserve`): las animaciones ocurren una sola vez, no se repiten al volver a scrollear.
 - `.mask > span` — títulos que suben desde detrás de una máscara al entrar en viewport.
 - Los títulos de los pasos del Proyecto 1 (`.step-t`) van **grandes y sin regla debajo** (se
-  probó y quedó pobre). Encadenan dos tiempos: el JS los parte en palabras (`.w`, recorriendo
-  sólo los nodos de texto para no romper el `<i>` de adentro) y cada una sube desde atrás de la
-  máscara con `--i * 0.06s`; cuando aterriza la última, un marcador camel (`.hl`, un
-  `background-size` de `0%` a `100%`) barre el título entero. El retardo del marcador lo calcula
-  el JS según cuántas palabras haya (`--hld`). El `.hl` usa `box-decoration-break: clone` para
-  que cuando el título cae en dos renglones la banda se dibuje en los dos. **Todos van alineados
-  a la izquierda:** hubo una versión donde los pasos pares iban a la derecha y se veía
-  desprolijo apenas el título envolvía, con la segunda línea colgando. La alternancia
-  izquierda/derecha sigue viva pero sólo en el `.step-grid` (panel y foto), que sí funciona.
+  probó y quedó pobre) y **se tipean**: el JS los parte letra por letra (`.ch`) y cada una
+  aparece de golpe — `transition-duration: 0.01s`, no un desvanecido — con `--i * 0.026s` de
+  retardo. Un cursor camel (el `::after` del `.hl`) titila mientras se escribe y se apaga al
+  terminar: las iteraciones del parpadeo las calcula el JS según cuántas letras haya. Cuando cae
+  la última letra, un marcador camel (`.hl`, un `background-size` de `0%` a `100%`) barre el
+  título entero; su retardo (`--hld`) también sale del largo del texto.
+
+  Dos detalles del corte en letras: se recorren sólo los **nodos de texto**, para no romper el
+  `<i>` de adentro; y **los espacios no se envuelven** — envolverlos rompe el corte de línea —
+  aunque sí suman al contador, para que el ritmo del tecleo sea parejo. Las letras van
+  `display: inline` por lo mismo: con `inline-block` el título cortaría por letra.
+
+  **Todos van alineados a la izquierda:** hubo una versión donde los pasos pares iban a la
+  derecha y se veía desprolijo apenas el título envolvía, con la segunda línea colgando. La
+  alternancia izquierda/derecha sigue viva pero sólo en el `.step-grid` (panel y foto).
 - `.name .ch` — el nombre del hero se parte letra por letra desde JS (`.split-letters`) y cada
   letra cae con `--i * 0.05s` de retraso. "Barone" va en `outline` (contorno) y se rellena de
   camel al hover en desktop o al entrar en viewport en touch (`.name.lit`).

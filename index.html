@@ -296,7 +296,9 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
   transition: transform 0.85s var(--soft); transition-delay: var(--d, 0s); }
 .in .mask > span { transform: none; }
 .h-sect { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
-  font-size: clamp(34px, 5.8vw, 82px); line-height: 1.02; margin: 0; letter-spacing: -0.024em; }
+  /* 1.14 y no menos: con el interlineado muy justo, el descendente de la "q" de
+     un renglón toca el ascendente de la "d" del siguiente ("…que / …producto"). */
+  font-size: clamp(34px, 5.8vw, 82px); line-height: 1.14; margin: 0; letter-spacing: -0.024em; }
 .h-sect .tan { color: var(--color-accent); }
 
 /* ——— EL SISTEMA DE CAÍDA: los elementos caen desde arriba, apenas
@@ -446,10 +448,19 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
   letter-spacing: -0.024em; }
 .step-t .mask { padding-inline: 0.12em; margin-inline: -0.12em; }
 .step-t i { font-style: inherit; color: var(--color-accent-700); }
-.step-t .w { display: inline-block; opacity: 0; transform: translateY(112%);
-  transition: transform 0.8s var(--drop), opacity 0.4s ease;
-  transition-delay: calc(var(--i) * 0.06s); }
-.in .step-t .w, .step-t.in .w { opacity: 1; transform: none; }
+/* Se TIPEAN: cada letra aparece de golpe, una detrás de otra, con un cursor que
+   titila al final y se apaga al terminar. Las letras van `display: inline` para
+   que el título siga cortando por palabra donde corresponde; el espacio en blanco
+   no se envuelve pero sí cuenta para el tiempo, así el ritmo queda parejo. */
+.step-t .ch { opacity: 0; transition: opacity 0.01s linear;
+  transition-delay: calc(var(--i) * 0.026s); }
+.in .step-t .ch, .step-t.in .ch { opacity: 1; }
+.step-t .hl::after { content: ""; display: inline-block;
+  width: 0.055em; height: 0.78em; margin-left: 0.06em; vertical-align: -0.05em;
+  background: var(--color-accent-700); opacity: 0; }
+.in .step-t .hl::after, .step-t.in .hl::after {
+  animation: cursor 0.5s steps(2, start) var(--cursor-veces, 6) forwards; }
+@keyframes cursor { 0% { opacity: 1; } 100% { opacity: 0; } }
 .step-t .hl { display: inline; padding: 0.06em 0.1em; margin: 0 -0.1em;
   -webkit-box-decoration-break: clone; box-decoration-break: clone;
   background-image: linear-gradient(var(--color-accent-300), var(--color-accent-300));
@@ -1196,7 +1207,6 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
 
   <footer>
       <span>© 2026 Antonella Barone</span>
-      <a href="#top" onclick="scrollTo({top:0,behavior:'smooth'}); return false;">Volver arriba ↑</a>
     </footer>
 
 
@@ -1332,25 +1342,32 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     [...g.children].forEach((el, i) => el.style.setProperty('--i', i));
   });
 
-  // Los títulos de paso se parten en palabras para que suban una tras otra. Se
-  // recorre sólo los nodos de TEXTO, así el <i> de adentro sobrevive intacto.
+  /* Los títulos de paso se parten LETRA por letra para tipearse. Se recorren sólo
+     los nodos de TEXTO, así el <i> de adentro sobrevive intacto. Los espacios no
+     se envuelven — envolverlos rompe el corte de línea — pero sí suman al
+     contador, para que el ritmo del tecleo sea parejo. */
+  const PASO = 0.026;   // segundos por letra
   document.querySelectorAll('.step-t .hl').forEach((hl) => {
     let n = 0;
     const walk = (node) => [...node.childNodes].forEach((c) => {
       if (c.nodeType === 3) {
         const frag = document.createDocumentFragment();
-        c.textContent.split(/(\s+)/).forEach((t) => {
-          if (!t.trim()) { frag.appendChild(document.createTextNode(t)); return; }
-          const w = document.createElement('span');
-          w.className = 'w'; w.style.setProperty('--i', n++); w.textContent = t;
-          frag.appendChild(w);
-        });
+        for (const ch of c.textContent) {
+          if (/\s/.test(ch)) { frag.appendChild(document.createTextNode(ch)); n++; continue; }
+          const sp = document.createElement('span');
+          sp.className = 'ch'; sp.style.setProperty('--i', n++); sp.textContent = ch;
+          frag.appendChild(sp);
+        }
         c.replaceWith(frag);
       } else if (c.nodeType === 1) walk(c);
     });
     walk(hl);
-    // el marcador arranca cuando ya aterrizó la última palabra
-    hl.closest('.step-t').style.setProperty('--hld', (n * 0.06 + 0.3).toFixed(2) + 's');
+    const t = hl.closest('.step-t');
+    const dur = n * PASO;
+    // el cursor titila mientras dura el tecleo y se apaga al terminar
+    t.style.setProperty('--cursor-veces', Math.max(2, Math.ceil((dur + 0.35) / 0.5)));
+    // y el marcador barre recién cuando se escribió la última letra
+    t.style.setProperty('--hld', (dur + 0.25).toFixed(2) + 's');
   });
 
   // observador: caídas y máscaras
