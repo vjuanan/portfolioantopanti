@@ -195,7 +195,7 @@ body { margin: 0; text-wrap: pretty; overflow-x: clip;
 /* el garabato se dibuja solo al entrar en viewport (JS mide la longitud) */
 .doodle path { stroke-dasharray: var(--len, 1600); stroke-dashoffset: var(--len, 1600);
   transition: stroke-dashoffset 2.4s var(--soft) 0.2s; }
-.in .doodle path { stroke-dashoffset: 0; }
+.in .doodle path, .doodle.in path { stroke-dashoffset: 0; }
 
 /* Anotación manuscrita (en el PDF, Brittany Signature). */
 .hand { font-family: var(--font-script); font-size: clamp(23px, 2.4vw, 34px);
@@ -439,10 +439,10 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
   padding-top: clamp(48px, 8vh, 92px); }
 .step { position: relative; }
 /* ——— TÍTULOS DE PASO ———
-   Grandes, sin regla debajo, y con dos tiempos encadenados: las palabras suben
-   una tras otra desde atrás de la máscara y, cuando aterriza la última, un
-   marcador camel barre el título entero. El retardo del marcador lo calcula el
-   JS según cuántas palabras tenga (--hld). */
+   Grandes, sin regla debajo, y con dos tiempos encadenados: el título se TIPEA
+   letra por letra y, cuando se escribió la última, un marcador camel lo barre
+   entero. El retardo del marcador lo calcula el JS según cuántas letras tenga
+   (--hld), igual que la cantidad de parpadeos del cursor (--cursor-veces). */
 .step-t { font-family: var(--font-heading); font-weight: 700; font-style: italic;
   font-size: clamp(29px, 4.4vw, 62px); line-height: 1.04; margin: 0 0 clamp(22px, 3vw, 38px);
   letter-spacing: -0.024em; }
@@ -1033,8 +1033,11 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     </div>
 
     <!-- Proyecto 1 — Emprende Ya: el caso entero, tal como está en el PDF -->
-    <article class="case" id="p1case" data-cat="p1" data-only data-watch>
-      <svg class="doodle" style="top:-30px; right:-40px; width:280px; height:170px" viewBox="0 0 280 170" aria-hidden="true">
+    <!-- Sin data-watch a proposito: este bloque envuelve los cinco pasos, y si
+         recibe `.in` satisface cualquier selector `.in .algo` de adentro y los
+         revela todos juntos. Cada paso se revela solo. -->
+    <article class="case" id="p1case" data-cat="p1" data-only>
+      <svg class="doodle" data-watch style="top:-30px; right:-40px; width:280px; height:170px" viewBox="0 0 280 170" aria-hidden="true">
         <path d="M6 120C40 40 96 6 140 34c34 22 8 72-24 66-30-6-24-58 22-70 40-10 92 10 136 60"/>
       </svg>
       <svg class="spark" style="top:14px; right:210px; --w:30px" aria-hidden="true"><use href="#spark4"/></svg>
@@ -1379,6 +1382,34 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
   }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
   document.querySelectorAll('[data-reveal], [data-watch], [data-cascade]').forEach((el) => io.observe(el));
 
+  /* ——— REVELAR UN BLOQUE QUE ACABA DE APARECER ———
+     Lo que ya está en pantalla (o quedó por encima) se revela de una; el resto
+     vuelve al observador y va emergiendo al scrollear.
+
+     La condición de la primera línea es la importante: **un elemento sin caja no
+     se revela**. Los que viven dentro de algo en `display: none` — el caso del
+     Proyecto 1 cuando el filtro está en "Todos" — miden 0, y un rect en cero pasa
+     como "top < alto de ventana" y se daba por visible. Resultado: la animación
+     corría con el bloque oculto y, al mostrarlo, ya estaba toda hecha. */
+  const REVEAL_SEL = '[data-reveal], [data-watch], [data-cascade]';
+  // el propio bloque cuenta: al filtrar, la tarjeta que aparece ES el revelable
+  const revelables = (root) =>
+    [...(root.matches(REVEAL_SEL) ? [root] : []), ...root.querySelectorAll(REVEAL_SEL)];
+
+  const revelar = (root) => {
+    const vh = innerHeight || document.documentElement.clientHeight || 0;
+    revelables(root).forEach((el) => {
+      if (!el.offsetWidth && !el.offsetHeight) { io.observe(el); return; }
+      if (vh <= 0 || el.getBoundingClientRect().top < vh) el.classList.add('in');
+      else io.observe(el);
+    });
+  };
+  // al ocultar un bloque se le sueltan los revelados, así vuelve a emerger
+  const soltar = (root) => {
+    root.classList.remove('in');
+    root.querySelectorAll('.in').forEach((el) => el.classList.remove('in'));
+  };
+
   // "Barone" se rellena de camel cuando el hero está a la vista (útil en touch)
   const heroEl = document.querySelector('.hero');
   const nameEl = document.querySelector('.name');
@@ -1414,8 +1445,8 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
       // aparece cuando se elige su filtro, para no volcar todo de entrada.
       const show = el.dataset.cat === want || (want === 'all' && !el.hasAttribute('data-only'));
       el.classList.toggle('is-hidden', !show);
-      // lo que aparece ya está "caído": si no, quedaría invisible al filtrar
-      if (show) el.classList.add('in');
+      if (show) revelar(el);   // NO se le pone `.in` al contenedor: ver el markup
+      else soltar(el);
     }
     restripe();
     requestAnimationFrame(drawShapes);
@@ -1451,7 +1482,6 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
      pega arriba, así que no hay pila que sellar ni offsets que calcular. */
   const nav = document.querySelector('.nav');
   const secs = [...document.querySelectorAll('.sec-uno')];
-  const REVEAL = '[data-reveal], [data-watch], [data-cascade]';
 
   const elegir = (id, mover) => {
     const sec = document.getElementById(id);
@@ -1459,8 +1489,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     secs.forEach((x) => {
       const on = x === sec;
       x.classList.toggle('open', on);
-      // al ocultarla se le sacan los revelados, así vuelve a emerger la próxima vez
-      if (!on) x.querySelectorAll('.in').forEach((e) => e.classList.remove('in'));
+      if (!on) soltar(x);   // vuelve a emerger la próxima vez que se abra
     });
     document.querySelectorAll('[data-go]').forEach((b) =>
       b.setAttribute('aria-pressed', String(b.dataset.go === id)));
@@ -1468,14 +1497,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     // Sincrónico a propósito: leer offsetWidth fuerza el recálculo de estilos, así
     // la sección ya mide y las ondas se dibujan con su ancho real.
     drawShapes();
-    // Se revela lo que esté en pantalla o ya por encima; el resto vuelve al
-    // observador y va apareciendo al scrollear. Si se revela todo de golpe, los
-    // cinco pasos del caso animan juntos y para cuando llegás ya pasó todo.
-    const vh = innerHeight || document.documentElement.clientHeight || 0;
-    sec.querySelectorAll(REVEAL).forEach((el) => {
-      if (vh <= 0 || el.getBoundingClientRect().top < vh) el.classList.add('in');
-      else io.observe(el);
-    });
+    revelar(sec);
 
     if (mover) requestAnimationFrame(() => {
       const y = sec.getBoundingClientRect().top + scrollY - (nav ? nav.offsetHeight : 64) - 14;

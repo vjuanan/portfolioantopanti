@@ -234,6 +234,31 @@ Al elegir una sección, el JS (`elegir()`):
   cuando algo **entra**, así que un bloque que ya quedó pasado no se revelaría nunca. Al
   ocultar la sección les saca `.in`, así la próxima vez vuelven a emerger.
 
+### Dos trampas del revelado que ya costaron caro
+
+Las dos salen del mismo malentendido: creer que `.in` es una propiedad del elemento
+cuando en realidad la mayoría de los selectores la buscan en **cualquier ancestro**.
+
+**1 · Un contenedor revelable revela todo lo que tiene adentro.** Los selectores del
+sistema son descendentes (`.in .mask > span`, `.in .emerge > *`, `.in .step-t .ch`): les
+alcanza con que *algún* ancestro tenga `.in`. En bloques chicos eso es lo que se busca —
+`#sobre-mi` se marca y su título y su bajada emergen juntos. Pero `#p1case` envuelve los
+**cinco pasos**, cada uno de una pantalla: con `.in` en el contenedor, los cinco títulos se
+tipeaban de una apenas se abría la sección, y para cuando llegabas scrolleando ya estaba
+todo escrito. Se veía como si el efecto no existiera. Por eso **`#p1case` no lleva
+`data-watch`** y el garabato que vive adentro se revela solo. Regla: si un bloque es más
+alto que la ventana, que no se marque a sí mismo — que se marquen sus hijos.
+
+**2 · Un elemento sin caja no se revela.** Lo que está dentro de algo en `display: none`
+mide 0, y un rect en cero tiene `top === 0`, que pasa como "está arriba de la ventana" y se
+daba por visible. Pasaba con el caso del Proyecto 1 mientras el filtro estaba en "Todos": se
+revelaba oculto. Por eso `revelar()` arranca con `if (!el.offsetWidth && !el.offsetHeight)
+{ io.observe(el); return; }` — sin caja, va al observador y espera.
+
+`revelar(root)` y `soltar(root)` están definidas al lado del observador y son el **único**
+camino para mostrar un bloque que aparece (el filtro y `elegir()` las usan). No agregues
+`.in` a mano: te comés las dos trampas.
+
 **Ojo con lo que se oculta esperando ser revelado.** Un elemento sin `.in` sigue ocupando su
 alto: si nadie se lo da, queda un hueco enorme y en blanco. Ya pasó con los `.h-sect`, que no
 tenían ningún ancestro revelable — por eso **todos los `<h2 class="h-sect">` llevan
