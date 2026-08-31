@@ -389,6 +389,20 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
 .pc-hint { font-size: 12px; font-weight: 600; opacity: 0.55; margin: 10px 0 0; }
 @media (hover: hover) { .pc-hint { display: none; } }
 
+/* ——— La tarjeta del caso es un enlace entera ———
+   No se expande ni se cierra: su contenido está siempre a la vista y tocar
+   cualquier parte del rectángulo lleva al caso completo. El "Ver el caso
+   completo" queda igual, como señal de a dónde va. */
+.pcard.is-link { cursor: pointer; }
+.pcard.is-link .pc-body { grid-template-rows: 1fr; opacity: 1; margin-top: 16px; }
+.pcard.is-link .flecha { flex: none; width: 46px; height: 46px; border-radius: 50%;
+  border: 2.5px solid currentColor; display: grid; place-items: center; opacity: 0.8;
+  transition: transform 0.45s var(--spring); }
+@media (hover: hover) {
+  .pcard.is-link:hover .flecha { transform: translateX(5px); }
+  .pcard.is-link:hover .pc-link svg { transform: translateX(4px); }
+}
+
 /* ——— PROYECTO 1: el caso completo, lámina por lámina ——— */
 .case { position: relative; margin-bottom: clamp(48px, 8vw, 104px);
   --fall: 70px; --tilt: -1.6deg; }
@@ -494,7 +508,13 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
 .exp-role { font-family: var(--font-heading); font-weight: 700; margin: 0 0 clamp(18px, 2.4vw, 28px);
   font-size: clamp(22px, 2.9vw, 38px); letter-spacing: 0.01em; text-transform: uppercase;
   line-height: 1.05; }
-.exp-list { margin: 0; padding: 0; list-style: none; display: grid; gap: clamp(16px, 2.2vw, 26px); }
+/* Más aire entre ítems y más alto de panel: son siete y sin separación se leen
+   como un bloque. */
+.exp-list { margin: 0; padding: 0; list-style: none; display: grid; gap: clamp(20px, 2.9vw, 34px); }
+.exp-card .wavy-in { padding-block: clamp(40px, 5.4vw, 76px); }
+.exp-list a { color: inherit; text-decoration: underline; text-underline-offset: 3px;
+  text-decoration-thickness: 1.5px; transition: opacity 0.2s ease; }
+.exp-list a:hover { opacity: 0.7; }
 .exp-list li { display: flex; gap: 14px; align-items: baseline;
   font-size: clamp(15px, 1.32vw, 17.5px); line-height: 1.65; }
 .exp-list li::before { content: ""; flex: none; width: 9px; height: 9px; border-radius: 50%;
@@ -940,10 +960,13 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
           <div class="wavy-in">
             <h3 class="exp-role">Project Assistant</h3>
             <ul class="exp-list">
-              <li>Implementación de técnicas cualitativas y cuantitativas de investigación.</li>
+              <li>Diseño de cuestionarios y formularios en CRM interno, adaptando el contenido y la estructura de las preguntas a los objetivos de cada cliente.</li>
               <li>Redacción de instructivos claros y estructurados para evaluadores, priorizando la simplicidad, el orden y la usabilidad del contenido para distintos perfiles de usuario.</li>
+              <li>Aplicación de técnicas de investigación cuantitativa y cualitativa (entrevistas, encuestas, análisis de datos) para la recolección y el análisis de información de usuarios.</li>
+              <li>Asignación, capacitación y seguimiento de evaluadores, asegurando la correcta interpretación de instructivos y flujos de trabajo.</li>
               <li>Carga, gestión y actualización de datos en plataformas internas y herramientas de clientes.</li>
-              <li>Colaboración en la presentación de resultados de proyectos e insights a clientes.</li>
+              <li>Presentación de resultados de proyectos e insights a clientes.</li>
+              <li>Uso de plataformas agénticas y de IA para la administración de bases de datos y el diseño de una página web de uso internacional (<a href="https://oportunidadeshsbrands.com" target="_blank" rel="noopener">oportunidadeshsbrands.com</a>), aplicando lógica de automatización y herramientas low-code.</li>
             </ul>
           </div>
         </div>
@@ -1094,20 +1117,20 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     <!-- En "Todos" se ve sólo esta tarjeta; el caso completo aparece al elegir
          el filtro "Proyecto 1" (o tocando "Ver el caso completo"). -->
     <div class="plist" id="plist">
-      <article class="pcard" tabindex="0" data-cat="teaser" data-reveal style="background: var(--color-surface); color: var(--color-text)">
+      <article class="pcard is-link" tabindex="0" role="button" data-cat="teaser" data-reveal
+               aria-label="Ver el caso completo de Emprende Ya" style="background: var(--color-surface); color: var(--color-text)">
         <div class="pc-top">
           <div>
             <p class="pc-kick">Proyecto 1 · UX Research · Emprende Ya</p>
             <h3 class="pc-title">Emprende Ya</h3>
           </div>
-          <span class="plus" aria-hidden="true"></span>
+          <span class="flecha" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
         </div>
         <div class="pc-body"><div>
           <p class="pc-copy">Investigación exploratoria mixta con emprendedores usuarios de la app, hecha durante su evento de lanzamiento: 55 encuestas en papel y 5 entrevistas en profundidad, de la reunión con stakeholders a la presentación de insights.</p>
           <div class="pc-tags"><span class="tag">UX Research</span><span class="tag">Cuali + cuanti</span><span class="tag">Trabajo de campo</span></div>
           <button type="button" class="pc-link" data-goto="p1">Ver el caso completo <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
         </div></div>
-        <p class="pc-hint">Tocá para ver más</p>
       </article>
     </div></div>
   </section>
@@ -1328,7 +1351,7 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
   }
 
   // tarjetas expandibles (hover expande en desktop; tap/click o Enter fija)
-  document.querySelectorAll('.pcard').forEach((card) => {
+  document.querySelectorAll('.pcard:not(.is-link)').forEach((card) => {
     const toggle = () => card.classList.toggle('open');
     card.addEventListener('click', (e) => { if (e.target.closest('a, button')) return; toggle(); });
     card.addEventListener('keydown', (e) => {
@@ -1367,11 +1390,20 @@ footer a:hover, footer a:active { color: var(--color-accent-700); }
     applyFilter(want);
   };
   chips.forEach((chip) => chip.addEventListener('click', () => pickFilter(chip.dataset.filter)));
-  // atajo desde la tarjeta: "Ver el caso completo" elige el filtro y baja al caso
+  // atajo desde la tarjeta: "Ver el caso completo" elige el filtro
   document.querySelectorAll('[data-goto]').forEach((btn) => {
     btn.addEventListener('click', () => {
       pickFilter(btn.dataset.goto);
       requestAnimationFrame(drawShapes);
+    });
+  });
+  // … y tocar CUALQUIER parte de la tarjeta hace lo mismo, para no obligar a
+  // apuntarle al enlace. El botón de adentro se ignora: ya tiene su handler.
+  document.querySelectorAll('.pcard.is-link').forEach((card) => {
+    const ir = () => { pickFilter('p1'); requestAnimationFrame(drawShapes); };
+    card.addEventListener('click', (e) => { if (e.target.closest('a, button')) return; ir(); });
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ir(); }
     });
   });
   applyFilter('all');

@@ -257,8 +257,11 @@ Tres detalles que ya costaron una vuelta:
   `:nth-child(even)` las tarjetas ocultas seguían contando y al filtrar el zigzag se rompía.
 - Lo que aparece al filtrar recibe `.in` a mano: si no, un bloque que nunca intersectó
   quedaría invisible al mostrarlo.
-- El click de la tarjeta ignora `a, button`, si no el botón "Ver el caso completo" abriría y
-  cerraría la tarjeta al mismo tiempo que cambia el filtro.
+- **La tarjeta resumen es un enlace entera** (`.pcard.is-link`): no se expande ni se cierra, su
+  contenido está siempre a la vista y tocar cualquier parte lleva al caso completo. El "Ver el
+  caso completo" sigue ahí como señal de a dónde va, pero no hay que apuntarle. El handler
+  ignora `a, button` para que el botón de adentro no dispare dos veces. El toggle de expandir
+  sigue vivo para las `.pcard` que no sean `.is-link`, si algún día vuelven las otras tarjetas.
 
 **Proyecto 1 (`#p1case`)** no es una tarjeta compacta sino el caso completo, lámina por lámina:
 cabecera con el logo de Emprende Ya, panel "Contexto & Objetivo general" y los cinco pasos con
@@ -375,7 +378,8 @@ credenciales.
   historial de git — si algún día vuelven, el markup de las `.pcard` sirve tal cual y hay que
   devolverles su chip de filtro.
 - **Mi experiencia:** Project Assistant en HS Brands Global (agencia global de investigación
-  de mercado), con los cuatro bullets de la lámina "Experiencia". El período real es
+  de mercado), con siete ítems que amplían los cuatro de la lámina "Experiencia" — los pasó
+  Antonella y salen de su CV. El último enlaza a oportunidadeshsbrands.com, la web que hizo. El período real es
   **abril 2025 – junio 2026**, pero **hoy no se muestra**: la anotación manuscrita con la fecha
   se sacó a pedido. Si vuelve, que sea con `white-space: nowrap` — al envolver, "2026" cae solo
   y se lee mal.
