@@ -57,8 +57,8 @@ HTML, CSS y JavaScript vanilla. **Sin build step, sin dependencias, sin `package
 │   ├── p1-reunion.jpg       # Proyecto 1 · paso 1 — captura de la reunión virtual
 │   ├── p1-carnet.jpg        # Proyecto 1 · paso 3 — carnet de investigadora sobre una encuesta
 │   ├── p1-fundadora.jpg     # Proyecto 1 · paso 3 — foto con la fundadora en el lanzamiento
-│   ├── p1-resultados.png    # Proyecto 1 · paso 5 — lámina de resultados (gráfico de dificultad)
-│   └── p1-insights.png      # Proyecto 1 · paso 5 — lámina de insights
+│   ├── p1-portada-2026.png  # Proyecto 1 · paso 5 — portada de la presentación de resultados
+│   └── p1-productos-2026.png # Proyecto 1 · paso 5 — lámina de insights "Productos de la tienda"
 ├── .claude/launch.json  # Config del preview del navegador (python -m http.server 8123)
 ├── vercel.json     # cleanUrls + cache inmutable de un año para /assets/*
 ├── CLAUDE.md       # Este archivo
@@ -67,7 +67,8 @@ HTML, CSS y JavaScript vanilla. **Sin build step, sin dependencias, sin `package
 
 **Ojo con el cache inmutable de `/assets/*`:** si cambiás el CONTENIDO de una imagen sin
 cambiarle el nombre, quien ya la tenga cacheada sigue viendo la vieja durante un año. Para
-reemplazar una foto, usá un nombre nuevo.
+reemplazar una foto, usá un nombre nuevo — por eso las láminas del paso 5 llevan el sufijo
+`-2026`: reemplazaron a `p1-resultados.png` y `p1-insights.png`, que están en el historial.
 
 **Orden de cascada (importante):** `styles.css` se enlaza *primero* y define los tokens del
 sistema base. El `<style>` embebido en `index.html` se carga *después* y **sobrescribe**
