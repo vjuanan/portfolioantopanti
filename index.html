@@ -515,10 +515,14 @@ button.pc-link { font: inherit; background: none; border: 0; padding: 0; cursor:
 .exp-list a { color: inherit; text-decoration: underline; text-underline-offset: 3px;
   text-decoration-thickness: 1.5px; transition: opacity 0.2s ease; }
 .exp-list a:hover { opacity: 0.7; }
-.exp-list li { display: flex; gap: 14px; align-items: baseline;
+/* El bullet va en un ::before ABSOLUTO, no como ítem flex. Con `display: flex`
+   en el <li>, cualquier elemento inline de adentro (un <a>, un <b>) se convierte
+   en otro ítem flex y el texto se parte en columnas. Ya pasó con el enlace a
+   oportunidadeshsbrands.com. Así el texto fluye normal y admite lo que sea. */
+.exp-list li { position: relative; padding-left: 23px;
   font-size: clamp(15px, 1.32vw, 17.5px); line-height: 1.65; }
-.exp-list li::before { content: ""; flex: none; width: 9px; height: 9px; border-radius: 50%;
-  background: var(--color-text); transform: translateY(-2px); }
+.exp-list li::before { content: ""; position: absolute; left: 0; top: 0.6em;
+  width: 9px; height: 9px; border-radius: 50%; background: var(--color-text); }
 @media (max-width: 900px) {
   .exp { grid-template-columns: 1fr; justify-items: center; }
   .exp-card { width: 100%; }

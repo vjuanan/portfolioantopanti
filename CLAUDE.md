@@ -304,6 +304,24 @@ vez de crear otro listener:
 El handler de `scroll` está separado, con `passive: true` y throttle por `rAF`; maneja la barra
 de progreso, la clase `.scrolled` del nav y el foco táctil.
 
+## Bullets: el punto va en un `::before` absoluto, nunca como ítem flex
+
+Los `<li>` de `.exp-list` **no** son contenedores flex, aunque para poner el puntito redondo sea
+lo primero que uno hace. Con `display: flex` en el `<li>`, cualquier elemento inline de adentro
+— un `<a>`, un `<b>` — se convierte en **otro ítem flex** y el texto se parte en columnas:
+literalmente se ve el párrafo cortado en dos bloques con el enlace al medio. Pasó con el enlace
+a oportunidadeshsbrands.com.
+
+La forma correcta, que es la que está puesta:
+
+```css
+.exp-list li { position: relative; padding-left: 23px; }
+.exp-list li::before { content: ""; position: absolute; left: 0; top: 0.6em; … }
+```
+
+Así el texto fluye normal y admite cualquier inline adentro. Si agregás otra lista con viñetas,
+copiá este patrón.
+
 ## Texto en contorno: siempre con `paint-order`
 
 Los glifos de **Jost están construidos con contornos superpuestos**. Rellenos no se nota, pero
