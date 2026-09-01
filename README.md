@@ -3,7 +3,7 @@
 Sitio de presentación (portfolio) de **Antonella Barone** — *Research & Insights*: investigación
 social, UX research y gestión de proyectos.
 
-**En vivo:** <https://portfolioantopanti.vercel.app>
+**En vivo:** <https://www.antonellabarone.com.ar>
 
 El diseño está calcado de su portfolio en PDF: paleta camel `#b99175` + crema `#f2f1eb` + tinta
 `#312727`, tipografía geométrica (*Jost*, en lugar de la *Glacial Indifference* del original) y

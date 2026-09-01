@@ -7,11 +7,34 @@ Guía para cualquier agente que trabaje en este repo. Leerla completa antes de t
 Portfolio personal de **Antonella Barone** (investigación social, UX research y gestión de
 proyectos). Sitio de una sola página, en español (`lang="es"`), público y en producción.
 
-- **En vivo:** https://portfolioantopanti.vercel.app
+- **En vivo:** https://www.antonellabarone.com.ar (dominio propio; `portfolioantopanti.vercel.app` sigue vivo)
 - **Repo:** https://github.com/vjuanan/portfolioantopanti (público, rama por defecto `main`)
 - **Deploy:** Vercel, proyecto `juanans-projects-d939887f/portfolioantopanti`, conectado por
   integración de GitHub. **Todo push a `main` publica automáticamente en producción.**
   No hay comando de build ni variables de entorno: es un sitio estático puro.
+
+### DNS — el dominio vive en Cloudflare, no en Vercel
+
+`antonellabarone.com.ar` usa los nameservers de **Cloudflare** (cuenta `Admin@epnstore.com.ar`,
+plan free). Vercel sólo recibe el tráfico; el DNS se edita en Cloudflare. Son dos registros,
+los dos apuntando al mismo destino que da Vercel:
+
+| Tipo | Nombre | Contenido | Proxy |
+|---|---|---|---|
+| CNAME | `@` | `9d249a0a6bf5e0f4.vercel-dns-017.com` | **Solo DNS** |
+| CNAME | `www` | `9d249a0a6bf5e0f4.vercel-dns-017.com` | **Solo DNS** |
+
+Tres cosas que no hay que romper:
+
+- **El proxy va apagado (nube gris).** Vercel lo pide explícito. Con la nube naranja el
+  certificado de Vercel no se emite y se arma un bucle de redirección. Cloudflare muestra un
+  aviso amarillo recomendando prenderlo: ignoralo.
+- **El CNAME en la raíz es legal acá** porque Cloudflare lo aplana solo (CNAME flattening) y
+  devuelve las IPs de Vercel. En un DNS común un CNAME en el apex no se puede.
+- **No pasar los nameservers a `ns1.vercel-dns.com`.** Esa es la ruta alternativa (mover el DNS
+  entero a Vercel) y es excluyente con la que está puesta.
+
+En Vercel, `www` es el dominio de producción y el apex hace un **308 hacia www**.
 
 ## El PDF fuente — leer esto antes de cambiar el diseño
 
@@ -503,7 +526,7 @@ credenciales.
 ## Meta tags y compartir
 
 Las URLs de `og:image` / `twitter:image` **tienen que ser absolutas**
-(`https://portfolioantopanti.vercel.app/assets/...`), con `og:image:width` y `og:image:height`
+(`https://www.antonellabarone.com.ar/assets/...`), con `og:image:width` y `og:image:height`
 declarados. Con rutas relativas WhatsApp/LinkedIn no levantan la portada — ya pasó y se corrigió
 en el commit `4901db0`. Si cambiás la foto de la portada, actualizá también esas dimensiones.
 
@@ -542,7 +565,6 @@ Ninguna es urgente; el sitio está terminado y en producción. Son las líneas a
 - [ ] Las láminas de resultados e insights del paso 5 se leen chicas. Estaría bueno un lightbox
       para verlas en grande.
 - [ ] No hay CV descargable en PDF. Sería el complemento natural del bloque de contacto.
-- [ ] Dominio propio en vez del subdominio `.vercel.app` (se configura en Vercel + DNS).
 - [ ] Sin analítica. Vercel Analytics se activa desde el panel del proyecto, sin tocar código.
 - [ ] La imagen de Open Graph sigue siendo `anto-portrait.jpg` (la foto anterior). Si se quiere
       alinear con la identidad nueva, hay que generar una portada 1200×630 y actualizar las
