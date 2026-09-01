@@ -71,9 +71,9 @@ HTML, CSS y JavaScript vanilla. **Sin build step, sin dependencias, sin `package
 ├── index.html      # Página completa: markup + <style> del portfolio + <script> de interacciones
 ├── styles.css      # Sistema de diseño base "Organic": tokens, fuentes y componentes
 ├── assets/
-│   ├── anto-avatar.jpg      # Foto circular del hero
-│   ├── anto-portrait.jpg    # Retrato 4:5 — hoy sólo se usa como imagen de Open Graph (900×1125)
-│   ├── anto-pdf-retrato.jpg # Retrato del PDF; es el que va en el polaroid de "Sobre mí"
+│   ├── anto-avatar-2026.jpg # Foto circular del hero
+│   ├── anto-pdf-retrato.jpg # Retrato del PDF; va en el polaroid de "Sobre mí" y en la portada social
+│   ├── og-anto-2026.jpg     # Portada de compartir, 1200×630: ese mismo retrato sobre crema + la firma
 │   ├── firma-anto.png       # Firma "Anto Barone" recortada del PDF, con transparencia
 │   ├── logo-emprendeya.png  # Logo del cliente del Proyecto 1 (círculo, fondo transparente)
 │   ├── logo-hsbrands.png    # Logo de HS Brands Global (transparente)
@@ -530,6 +530,18 @@ Las URLs de `og:image` / `twitter:image` **tienen que ser absolutas**
 declarados. Con rutas relativas WhatsApp/LinkedIn no levantan la portada — ya pasó y se corrigió
 en el commit `4901db0`. Si cambiás la foto de la portada, actualizá también esas dimensiones.
 
+La portada es `assets/og-anto-2026.jpg`, **1200×630** (el 1,91:1 que piden LinkedIn, WhatsApp y
+Facebook, así no recortan). Es el retrato del polaroid sobre el crema del sitio, con la firma
+abajo a la izquierda y un filete camel arriba. Se generó con Pillow desde `anto-pdf-retrato.jpg`.
+Dos cosas que la sostienen: **el retrato va centrado** —donde la vista previa es cuadrada, el
+recorte del medio cae sobre la foto y no sobre el fondo vacío— y **no lleva texto tipográfico**,
+porque Jost no está instalada localmente y un sustituto se notaría; quien firma la portada es la
+firma real. Antes apuntaba a `anto-portrait.jpg`, una foto que ya no está en el sitio: al
+compartir el link aparecía una Antonella distinta de la del portfolio.
+
+`anto-portrait.jpg` y `anto-avatar.jpg` quedaron sin uso (están en el historial). No se borraron
+por las dudas, pero no las referencia nadie.
+
 El favicon es un SVG embebido como data-URI en el `<link rel="icon">`: **"AB"** en crema sobre
 camel, las mismas siglas que la marca del `<nav>`.
 
@@ -566,8 +578,5 @@ Ninguna es urgente; el sitio está terminado y en producción. Son las líneas a
       para verlas en grande.
 - [ ] No hay CV descargable en PDF. Sería el complemento natural del bloque de contacto.
 - [ ] Sin analítica. Vercel Analytics se activa desde el panel del proyecto, sin tocar código.
-- [ ] La imagen de Open Graph sigue siendo `anto-portrait.jpg` (la foto anterior). Si se quiere
-      alinear con la identidad nueva, hay que generar una portada 1200×630 y actualizar las
-      dimensiones en los meta tags.
 - [ ] El sitio ignora `prefers-reduced-motion` a propósito (ver arriba). Si alguna vez se busca
       cumplir accesibilidad estricta, ese es el primer punto a revisar.
