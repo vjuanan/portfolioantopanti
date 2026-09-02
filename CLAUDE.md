@@ -421,22 +421,39 @@ La única solución es **pintar el trazo primero y el relleno encima**:
 
 ```css
 color: var(--color-bg);            /* el color del fondo que hay DETRÁS del texto */
--webkit-text-stroke: 5px var(--color-text);
+-webkit-text-stroke: 0.03em var(--color-text);
 paint-order: stroke fill;          /* el relleno tapa la mitad interna del trazo */
 ```
 
-Tres consecuencias a tener en cuenta:
+Cuatro consecuencias a tener en cuenta:
 
 1. **El trazo va al doble de grosor**, porque la mitad de adentro queda cubierta.
-2. **El relleno tiene que ser el color del fondo real.** Si movés un texto en contorno a otro
+2. **El grosor se escribe en `em`, nunca en px.** Los tres textos en contorno tienen el cuerpo
+   fluido (`clamp`), así que un valor fijo cambia de peso con la pantalla: el trazo se mantiene
+   mientras la letra se achica. "Barone" llegó a producción con `5px` sobre un cuerpo que va de
+   46px a 164px, y en el celular eso era `0.109em` — tres veces y media el peso que tenía en
+   desktop. El trazo se comía el 53 % del hueco de la `o` y el apellido se leía como una mancha.
+   En `em` el trazo acompaña al cuerpo y el dibujo es el mismo en los dos extremos.
+3. **El relleno tiene que ser el color del fondo real.** Si movés un texto en contorno a otro
    lado, hay que cambiarle el relleno (por eso "juntos?" del bloque de contacto usa
    `--color-accent-900` y no `--color-bg`).
-3. Como el relleno es opaco, dos letras que se solapen se fusionan. Por eso los renglones en
+4. Como el relleno es opaco, dos letras que se solapen se fusionan. Por eso los renglones en
    contorno llevan un tracking apenas positivo (`letter-spacing: 0.008em`) mientras el resto de
    los títulos usa tracking negativo.
 
-Está aplicado en tres lugares: `.name .outline` ("Barone"), `.marq-item:nth-child(4n+3)` y
-`.patch .h-sect .thin` ("juntos?").
+Está aplicado en tres lugares. El valor de cada uno es la proporción que ya se veía bien en
+desktop, así que el cambio a `em` no movió nada arriba y sólo corrigió el celular:
+
+| Dónde | Cuerpo | Trazo |
+| --- | --- | --- |
+| `.name .outline` ("Barone") | `clamp(46px, 11.6vw, 164px)` | `0.03em` |
+| `.marq-item:nth-child(4n+3)` (marquee) | `clamp(26px, 3.2vw, 44px)` | `0.082em` |
+| `.patch .h-sect .thin` ("juntos?") | `clamp(40px, 7vw, 100px)` | `0.04em` |
+
+Ojo con un detalle que confunde al mirarlo en el celular: en touch `.name.lit .outline` pinta el
+relleno **y** el trazo de camel, así que ahí el contorno no dibuja ningún borde — lo único que
+hace es engordar la letra. Por eso un trazo de más en mobile no se ve como "contorno grueso"
+sino como una letra deforme.
 
 ## Movimiento: barato o nada
 
